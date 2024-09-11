@@ -5,8 +5,14 @@ def handle_events():
   for e in get_events():
     if e.type == SDL_QUIT:
       running = False
-    elif e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE:
-      running = False
+    elif e.type == SDL_KEYDOWN:
+      if e.key == SDLK_ESCAPE:
+        running = False
+      elif e.key == SDLK_LEFT:
+        x -= 10
+      elif e.key == SDLK_RIGHT:
+        x += 10
+
 
 open_canvas()
 
