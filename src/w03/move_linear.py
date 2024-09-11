@@ -28,16 +28,28 @@ def init_angle():
   dy = speed * math.sin(angle_radian)
 
 def init_mouse1():
-  global dx, dy
+  global dx, dy, tx, ty
   steps = 100
   dx = (mouse_x - x) / steps
   dy = (mouse_y - y) / steps
+  tx, ty = mouse_x, mouse_y
+
+def update_to_target():
+  global x, y, dx, dy
+  x += dx
+  if (dx > 0 and x > tx) or (dx < 0 and x < tx):
+    x = tx
+    dx = 0
+  y += dy
+  if (dy > 0 and y > ty) or (dy < 0 and y < ty):
+    y = ty
+    dy = 0
 
 func_tables = [
   (reset, reset),
   (init_delta, update_delta),
   (init_angle, update_delta),
-  (init_mouse1, update_delta)
+  (init_mouse1, update_to_target)
 ]
 
 def handle_events():
