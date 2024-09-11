@@ -1,4 +1,5 @@
 from pico2d import *
+import math
 
 def char_draw():
   global frame_index
@@ -15,6 +16,12 @@ def update_delta():
   y += dy
   # print(f'{x=} {y=} {dx=} {dy=}')
 
+def update_angle():
+  global x, y
+  rad = math.radians(angle_degree)
+  x += speed * math.cos(rad)
+  y += speed * math.sin(rad)
+
 def handle_events():
   global running, update
   for e in get_events():
@@ -28,6 +35,12 @@ def handle_events():
         dx, dy = 1.2, 0.7
         reset()
         update = update_delta
+      elif e.key == SDLK_RETURN:
+        global angle_degree, speed
+        angle_degree = 19
+        speed = 1.4
+        reset()
+        update = update_angle
 
 
 open_canvas()
