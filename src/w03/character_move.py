@@ -6,10 +6,13 @@ grass = load_image('grass.png')
 character = load_image('run_animation.png')
 frame_index = 0
 
+rad = 0
+flip = ''
+
 for x in range(0, 800, 5):
   clear_canvas()
   grass.draw(400, 30)
-  character.clip_draw(100 * frame_index, 0, 100, 100, x, 90, 200, 200)
+  character.clip_composite_draw(100 * frame_index, 0, 100, 100, rad, flip, x, 90, 200, 200)
   frame_index = (frame_index + 1) % 8
   update_canvas()
   delay(0.01)
