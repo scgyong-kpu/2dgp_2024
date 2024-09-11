@@ -23,7 +23,7 @@ def handle_events():
       elif e.key == SDLK_RIGHT:
         dx -= 1
     elif e.type == SDL_MOUSEMOTION:
-      x, y = e.x, e.y
+      x, y = e.x, get_canvas_height() - e.y
 
 
 open_canvas()
