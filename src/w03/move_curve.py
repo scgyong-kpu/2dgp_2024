@@ -2,6 +2,9 @@ from pico2d import *
 import math
 import random
 
+# pip install bezier 를 실행하여 설치해야 실행해 볼 수 있다.
+import bezier
+
 BASE_Y = 65
 
 def reset():
@@ -71,6 +74,19 @@ def circle2_init():
   angle_speed = speed / radius #(mouse_x - cx) * 0.05 * 0.01
   print(f'{cx=} {cy=} {radius=} {angle_speed=:.4f}')
 
+def bezier_init():
+  global curve, progress
+  nodes = [[16.0, 88.5, 129.8, 129.8], [548.4, 541.2, 490.8, 428.9]]
+  curve = bezier.Curve(nodes, degree=3)
+  progress = 0
+
+def bezier_update():
+  global progress, x, y
+  progress += 0.01
+  arr = curve.evaluate(progress)
+  x, y = arr[0][0], arr[1][0]
+  if progress > 1: progress = 0
+
 func_tables = [
   (reset, reset),
   (jump_init, jump_update),
@@ -78,6 +94,7 @@ func_tables = [
   (parabola_init, jump_bounce),
   (circle_init, circle_update),
   (circle2_init, circle_update),
+  (bezier_init, bezier_update),
 ]
 
 def handle_events():
