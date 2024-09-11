@@ -12,6 +12,11 @@ for x in range(0, 800):
   character.clip_draw(100 * frame_index, 0, 100, 100, x, 90, 100, 100)
   frame_index = (frame_index + 1) % 8
   update_canvas()
+
+  for e in get_events():
+    if e.type == SDL_QUIT:
+      break
+
   delay(0.01)
 
 close_canvas()
