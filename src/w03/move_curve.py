@@ -75,17 +75,34 @@ def circle2_init():
   print(f'{cx=} {cy=} {radius=} {angle_speed=:.4f}')
 
 def bezier_init():
-  global curve, progress
-  nodes = [[16.0, 88.5, 129.8, 129.8], [548.4, 541.2, 490.8, 428.9]]
-  curve = bezier.Curve(nodes, degree=3)
+  global curves, curve_index, curve_count, progress
+  nodes_array = [
+    [[16.0, 88.5, 129.8, 129.8], [548.4, 541.2, 490.8, 428.9]],
+    [[129.8, 129.8, 63.6, 64.4], [428.9, 367.0, 357.1, 290.2]],
+    [[64.4, 65.1, 118.4, 186.7], [290.2, 223.4, 156.5, 155.8]],
+    [[186.7, 254.9, 306.1, 307.6], [155.8, 155.1, 219.8, 288.8]],
+    [[307.6, 309.0, 264.2, 264.9], [288.8, 357.8, 350.0, 422.5]],
+    [[264.9, 265.6, 364.4, 402.1], [422.5, 495.0, 520.6, 520.6]],
+    [[402.1, 439.8, 537.2, 538.0], [520.6, 520.6, 481.5, 425.3]],
+    [[538.0, 538.7, 487.5, 487.5], [425.3, 369.2, 353.5, 291.6]],
+    [[487.5, 487.5, 541.5, 616.9], [291.6, 229.8, 162.9, 163.6]],
+    [[616.9, 692.3, 737.8, 735.6], [163.6, 164.4, 237.6, 294.5]],
+    [[735.6, 733.5, 670.2, 670.9], [294.5, 351.4, 384.1, 442.4]],
+    [[670.9, 671.6, 745.6, 791.1], [442.4, 500.7, 540.5, 537.0]],
+  ]
+  curves = [ bezier.Curve(nodes, degree=3) for nodes in nodes_array ]
+  curve_index = 0
+  curve_count = len(nodes_array)
   progress = 0
 
 def bezier_update():
-  global progress, x, y
+  global curve_index, progress, x, y
   progress += 0.01
-  arr = curve.evaluate(progress)
+  arr = curves[curve_index].evaluate(progress)
   x, y = arr[0][0], arr[1][0]
-  if progress > 1: progress = 0
+  if progress > 1: 
+    progress = 0
+    curve_index = (curve_index + 1) % curve_count
 
 func_tables = [
   (reset, reset),
