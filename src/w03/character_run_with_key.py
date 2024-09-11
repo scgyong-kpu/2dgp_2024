@@ -37,6 +37,8 @@ character = load_image('run_animation.png')
 frame_index = 0
 
 x, y = get_canvas_width() // 2, get_canvas_height() // 2
+hide_cursor()
+
 dx = 0
 running = True
 flip = ''
