@@ -27,8 +27,8 @@ def jump_bounce():
   global x, y, dx, dy
   x += dx
   y += dy
-  if y <= BASE_Y:
-    dy *= -1
+  if dy < 0 and y <= BASE_Y: # 공이 아래로 떨어지고 있는 것을 확인해야 한다
+    dy *= -0.8 # power가 여러 에너지로 변환되어 80% 만 남아있다.
   else:
     dy -= gravity
 
