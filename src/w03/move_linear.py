@@ -63,12 +63,17 @@ def update_to_target():
     y = ty
     dy = 0
 
+def follow_mouse():
+  init_mouse2()
+  update_to_target()
+
 func_tables = [
   (reset, reset),
   (init_delta, update_delta),
   (init_angle, update_delta),
   (init_mouse1, update_to_target),
   (init_mouse2, update_to_target),
+  (init_mouse2, follow_mouse),
 ]
 
 def handle_events():
