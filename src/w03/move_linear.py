@@ -31,6 +31,12 @@ def update_angle():
   x += speed * math.cos(rad)
   y += speed * math.sin(rad)
 
+func_tables = [
+  (reset, reset),
+  (init_delta, update_delta),
+  (init_angle, update_angle),
+]
+
 def handle_events():
   global running, update
   for e in get_events():
@@ -39,14 +45,13 @@ def handle_events():
     elif e.type == SDL_KEYDOWN:
       if e.key == SDLK_ESCAPE:
         running = False
-      elif e.key == SDLK_1:
-        reset()
-        init_delta()
-        update = update_delta
-      elif e.key == SDLK_2:
-        reset()
-        init_angle()
-        update = update_angle
+      else:
+        idx = e.key - SDLK_0
+        print(f'{e.key=} {idx=}')
+        if idx >= 0 and idx < len(func_tables):
+          reset()
+          init_func, update = func_tables[idx]
+          init_func()
 
 
 open_canvas()
