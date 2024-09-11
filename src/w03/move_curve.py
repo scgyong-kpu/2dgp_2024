@@ -19,6 +19,7 @@ def jump_update():
   y += dy
   if y <= BASE_Y:
     dx,dy = 0,0
+    y = BASE_Y
   else:
     dy -= gravity
 
