@@ -6,6 +6,11 @@ def char_draw():
   character.clip_composite_draw(100 * frame_index, 0, 100, 100, 0, flip, x, y, 100, 100)
   frame_index = (frame_index + 1) % 8
 
+def set_direction():
+  global flip
+  if dx < 0: flip = 'h'
+  if dx > 0: flip = ''
+
 def reset():
   global x, y
   x, y = 100, 100
@@ -13,6 +18,7 @@ def reset():
 def init_delta():
   global dx, dy
   dx, dy = 1.2, 0.7
+  set_direction()
 
 def update_delta():
   global x, y
@@ -26,6 +32,7 @@ def init_angle():
   speed = 1.4
   dx = speed * math.cos(angle_radian)
   dy = speed * math.sin(angle_radian)
+  set_direction()
 
 def init_mouse1():
   global dx, dy, tx, ty
@@ -33,6 +40,7 @@ def init_mouse1():
   dx = (mouse_x - x) / steps
   dy = (mouse_y - y) / steps
   tx, ty = mouse_x, mouse_y
+  set_direction()
 
 def init_mouse2():
   global dx, dy, tx, ty
@@ -42,6 +50,7 @@ def init_mouse2():
   dx = speed * math.cos(angle_radian)
   dy = speed * math.sin(angle_radian)
   tx, ty = mouse_x, mouse_y
+  set_direction()
 
 def update_to_target():
   global x, y, dx, dy
