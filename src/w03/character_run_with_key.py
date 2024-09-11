@@ -14,9 +14,10 @@ grass = load_image('grass.png')
 character = load_image('run_animation.png')
 frame_index = 0
 
+x = 800 // 2
 running = True
 
-for x in range(0, 800):
+while running:
   clear_canvas()
   grass.draw(400, 30)
   character.clip_draw(100 * frame_index, 0, 100, 100, x, 90, 100, 100)
@@ -24,9 +25,6 @@ for x in range(0, 800):
   update_canvas()
 
   handle_events()
-
-  if not running:
-    break
 
   delay(0.01)
 
