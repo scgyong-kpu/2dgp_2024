@@ -23,6 +23,15 @@ def jump_update():
   else:
     dy -= gravity
 
+def jump_bounce():
+  global x, y, dx, dy
+  x += dx
+  y += dy
+  if y <= BASE_Y:
+    dy *= -1
+  else:
+    dy -= gravity
+
 def parabola_init():
   global gravity, dx, dy
   dx = mouse_x * 0.5 * 0.01
@@ -33,6 +42,7 @@ func_tables = [
   (reset, reset),
   (jump_init, jump_update),
   (parabola_init, jump_update),
+  (parabola_init, jump_bounce),
 ]
 
 def handle_events():
