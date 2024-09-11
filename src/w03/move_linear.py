@@ -67,6 +67,15 @@ def follow_mouse():
   init_mouse2()
   update_to_target()
 
+def update_bounce():
+  update_delta()
+  global dx, dy
+  if x < 0 or x > get_canvas_width():
+    dx *= -1
+    set_direction()
+  if y < 0 or y > get_canvas_height():
+    dy *= -1
+
 func_tables = [
   (reset, reset),
   (init_delta, update_delta),
@@ -74,6 +83,7 @@ func_tables = [
   (init_mouse1, update_to_target),
   (init_mouse2, update_to_target),
   (init_mouse2, follow_mouse),
+  (init_mouse1, update_bounce),
 ]
 
 def handle_events():
