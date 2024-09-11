@@ -10,8 +10,7 @@ for x in range(0, 800, 5):
   clear_canvas()
   grass.draw(400, 30)
   character.clip_draw(100 * frame_index, 0, 100, 100, x, 90)
-  frame_index += 1
-  if frame_index == 8: frame_index = 0
+  frame_index = (frame_index + 1) % 8
   update_canvas()
   delay(0.01)
 
