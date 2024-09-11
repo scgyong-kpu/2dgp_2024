@@ -70,10 +70,14 @@ def follow_mouse():
 def update_bounce():
   update_delta()
   global dx, dy
-  if x < 0 or x > get_canvas_width():
+
+  # margin of left, top, right, bottom
+  l,t,r,b = 25,35,25,35
+
+  if x < l or x > get_canvas_width() - r:
     dx *= -1
     set_direction()
-  if y < 0 or y > get_canvas_height():
+  if y < t or y > get_canvas_height() - b:
     dy *= -1
 
 func_tables = [
