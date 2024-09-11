@@ -10,11 +10,20 @@ def reset():
   global x, y
   x, y = 100, 100
 
+def init_delta():
+  global dx, dy
+  dx, dy = 1.2, 0.7
+
 def update_delta():
   global x, y
   x += dx
   y += dy
   # print(f'{x=} {y=} {dx=} {dy=}')
+
+def init_angle():
+  global angle_degree, speed
+  angle_degree = 19
+  speed = 1.4
 
 def update_angle():
   global x, y
@@ -31,15 +40,12 @@ def handle_events():
       if e.key == SDLK_ESCAPE:
         running = False
       elif e.key == SDLK_1:
-        global dx, dy
-        dx, dy = 1.2, 0.7
         reset()
+        init_delta()
         update = update_delta
       elif e.key == SDLK_2:
-        global angle_degree, speed
-        angle_degree = 19
-        speed = 1.4
         reset()
+        init_angle()
         update = update_angle
 
 
