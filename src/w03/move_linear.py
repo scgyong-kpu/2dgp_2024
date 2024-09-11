@@ -27,15 +27,17 @@ def init_angle():
   dx = speed * math.cos(angle_radian)
   dy = speed * math.sin(angle_radian)
 
-# def update_angle():
-#   global x, y
-#   x += speed * math.cos(angle_radian)
-#   y += speed * math.sin(angle_radian)
+def init_mouse1():
+  global dx, dy
+  steps = 100
+  dx = (mouse_x - x) / steps
+  dy = (mouse_y - y) / steps
 
 func_tables = [
   (reset, reset),
   (init_delta, update_delta),
   (init_angle, update_delta),
+  (init_mouse1, update_delta)
 ]
 
 def handle_events():
@@ -43,6 +45,9 @@ def handle_events():
   for e in get_events():
     if e.type == SDL_QUIT:
       running = False
+    elif e.type == SDL_MOUSEMOTION:
+      global mouse_x, mouse_y
+      mouse_x, mouse_y = e.x, get_canvas_height() - e.y - 1
     elif e.type == SDL_KEYDOWN:
       if e.key == SDLK_ESCAPE:
         running = False
