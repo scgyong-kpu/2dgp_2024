@@ -42,11 +42,28 @@ def parabola_init():
   dy = mouse_y * 1.5 * 0.01
   gravity = 9.8 * 0.01
 
+def circle_init():
+  global cx, cy, radius, angle_radians, angle_speed
+  cw, ch = get_canvas_width(), get_canvas_height()
+  cx, cy = cw // 2, ch // 2
+  radius = mouse_y - cy
+  if radius < 0: radius *= -1
+  angle_radians = 0
+  angle_speed = (mouse_x - cx) * 0.05 * 0.01
+  print(f'{cx=} {cy=} {radius=} {angle_speed=:.4f}')
+
+def circle_update():
+  global angle_radians, x, y
+  angle_radians += angle_speed
+  x = cx + radius * math.cos(angle_radians)
+  y = cy + radius * math.sin(angle_radians)
+
 func_tables = [
   (reset, reset),
   (jump_init, jump_update),
   (parabola_init, jump_update),
   (parabola_init, jump_bounce),
+  (circle_init, circle_update),
 ]
 
 def handle_events():
