@@ -18,6 +18,8 @@ for x in range(0, 800):
   for e in get_events():
     if e.type == SDL_QUIT:
       running = False
+    elif e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE:
+      running = False
 
   if not running:
     break
