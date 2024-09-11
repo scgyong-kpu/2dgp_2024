@@ -3,7 +3,7 @@ from pico2d import *
 def handle_events():
   global running
   global dx
-  global x, y
+  global x, y, flip
 
   for e in get_events():
     if e.type == SDL_QUIT:
@@ -23,6 +23,10 @@ def handle_events():
       elif e.key == SDLK_RIGHT:
         dx -= 1
     elif e.type == SDL_MOUSEMOTION:
+      mdx = e.x - x
+      if mdx < 0: flip = 'h'
+      if mdx > 0: flip = ''
+
       x, y = e.x, get_canvas_height() - e.y
 
 
