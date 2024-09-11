@@ -2,6 +2,7 @@ from pico2d import *
 
 def handle_events():
   global running
+  global x
   for e in get_events():
     if e.type == SDL_QUIT:
       running = False
