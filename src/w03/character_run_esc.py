@@ -6,6 +6,8 @@ grass = load_image('grass.png')
 character = load_image('run_animation.png')
 frame_index = 0
 
+running = True
+
 for x in range(0, 800):
   clear_canvas()
   grass.draw(400, 30)
@@ -13,12 +15,11 @@ for x in range(0, 800):
   frame_index = (frame_index + 1) % 8
   update_canvas()
 
-  shouldEnd = False
   for e in get_events():
     if e.type == SDL_QUIT:
-      shouldEnd = True
+      running = False
 
-  if shouldEnd:
+  if not running:
     break
 
   delay(0.01)
