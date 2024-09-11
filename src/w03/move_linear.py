@@ -1,5 +1,6 @@
 from pico2d import *
 import math
+import random
 
 def char_draw():
   global frame_index
@@ -69,16 +70,25 @@ def follow_mouse():
 
 def update_bounce():
   update_delta()
+
   global dx, dy
 
   # margin of left, top, right, bottom
   l,t,r,b = 25,35,25,35
 
   if x < l or x > get_canvas_width() - r:
-    dx *= -1
+    dx *= -random.uniform(0.1, 3.0)
+    if dx < -10: 
+      dx = -1
+    elif dx > 10: 
+      dx = 1
     set_direction()
   if y < t or y > get_canvas_height() - b:
-    dy *= -1
+    dy *= -random.uniform(0.1, 3.0)
+    if dy < -10: 
+      dy = -1
+    elif dy > 10:
+      dy = 1
 
 func_tables = [
   (reset, reset),
