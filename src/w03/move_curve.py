@@ -30,6 +30,9 @@ def jump_bounce():
   if dy < 0 and y <= BASE_Y: # 공이 아래로 떨어지고 있는 것을 확인해야 한다
     dy *= -0.8 # power가 여러 에너지로 변환되어 80% 만 남아있다.
     dx *= 0.8 # 앞으로 나아가는 힘도 줄었다
+    if dy < 0.5: # 속도가 어느정도 이하가 되면 작은 숫자만큼 움직이는 것이 아니라 멈추는 것이 좋겠다
+      dx, dy = 0, 0
+      y = BASE_Y
   else:
     dy -= gravity
 
