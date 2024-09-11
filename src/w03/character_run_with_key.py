@@ -3,6 +3,7 @@ from pico2d import *
 def handle_events():
   global running
   global dx
+
   for e in get_events():
     if e.type == SDL_QUIT:
       running = False
@@ -31,14 +32,17 @@ frame_index = 0
 x = 800 // 2
 dx = 0
 running = True
+flip = ''
 
 while running:
   clear_canvas()
   grass.draw(400, 30)
-  character.clip_draw(100 * frame_index, 0, 100, 100, x, 90, 100, 100)
+  character.clip_composite_draw(100 * frame_index, 0, 100, 100, 0, flip, x, 90, 100, 100)
   frame_index = (frame_index + 1) % 8
   x += dx
-  print(f'{x=} {dx=}')
+  if dx < 0: flip = 'h'
+  if dx > 0: flip = ''
+  print(f'{x=} {dx=:2} {flip=}')
   update_canvas()
 
   handle_events()
