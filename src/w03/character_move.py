@@ -3,7 +3,7 @@ from pico2d import *
 open_canvas()
 
 grass = load_image('grass.png')
-character = load_image('character.png')
+character = load_image('run_animation.png')
 
 for x in range(0, 800):
   clear_canvas()
