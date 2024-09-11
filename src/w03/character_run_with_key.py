@@ -29,7 +29,7 @@ grass = load_image('grass.png')
 character = load_image('run_animation.png')
 frame_index = 0
 
-x = 800 // 2
+x, y = get_canvas_width() // 2, get_canvas_height() // 2
 dx = 0
 running = True
 flip = ''
@@ -37,7 +37,7 @@ flip = ''
 while running:
   clear_canvas()
   grass.draw(400, 30)
-  character.clip_composite_draw(100 * frame_index, 0, 100, 100, 0, flip, x, 90, 100, 100)
+  character.clip_composite_draw(100 * frame_index, 0, 100, 100, 0, flip, x, y, 100, 100)
   frame_index = (frame_index + 1) % 8
   x += dx
   if dx < 0: flip = 'h'
