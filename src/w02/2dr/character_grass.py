@@ -5,10 +5,13 @@ open_canvas()
 grass = load_image('grass.png')
 character = load_image('character.png')
 
-grass.draw_now(400, 30)
-character.draw_now(400, 90)
+x = 0
 
-delay(5)
+while x < 800:
+  grass.draw_now(400, 30)
+  character.draw_now(x, 90)
+  x += 2
+  delay(0.01)
 
 close_canvas()
 
