@@ -34,6 +34,15 @@ def init_mouse1():
   dy = (mouse_y - y) / steps
   tx, ty = mouse_x, mouse_y
 
+def init_mouse2():
+  global dx, dy, tx, ty
+  # x,y 는 reset() 이 불린 이후라 100,100 이다.
+  angle_radian = math.atan2(mouse_y - y, mouse_x - x) 
+  speed = 1.4
+  dx = speed * math.cos(angle_radian)
+  dy = speed * math.sin(angle_radian)
+  tx, ty = mouse_x, mouse_y
+
 def update_to_target():
   global x, y, dx, dy
   x += dx
@@ -49,7 +58,8 @@ func_tables = [
   (reset, reset),
   (init_delta, update_delta),
   (init_angle, update_delta),
-  (init_mouse1, update_to_target)
+  (init_mouse1, update_to_target),
+  (init_mouse2, update_to_target),
 ]
 
 def handle_events():
@@ -65,10 +75,10 @@ def handle_events():
         running = False
       else:
         idx = e.key - SDLK_0
-        print(f'{e.key=} {idx=}')
         if idx >= 0 and idx < len(func_tables):
           reset()
           init_func, update = func_tables[idx]
+          print(f'{e.key=} {idx=} ({init_func.__name__},{update.__name__})')
           init_func()
 
 
