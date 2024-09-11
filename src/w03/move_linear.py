@@ -21,19 +21,21 @@ def update_delta():
   # print(f'{x=} {y=} {dx=} {dy=}')
 
 def init_angle():
-  global angle_radian, speed
+  global dx, dy
   angle_radian = math.radians(19)
   speed = 1.4
+  dx = speed * math.cos(angle_radian)
+  dy = speed * math.sin(angle_radian)
 
-def update_angle():
-  global x, y
-  x += speed * math.cos(angle_radian)
-  y += speed * math.sin(angle_radian)
+# def update_angle():
+#   global x, y
+#   x += speed * math.cos(angle_radian)
+#   y += speed * math.sin(angle_radian)
 
 func_tables = [
   (reset, reset),
   (init_delta, update_delta),
-  (init_angle, update_angle),
+  (init_angle, update_delta),
 ]
 
 def handle_events():
