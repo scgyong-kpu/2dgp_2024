@@ -6,8 +6,20 @@ def reset():
   global x, y
   x, y = 100, 65
 
+def jump_init():
+  global power, gravity, dx, dy
+  power, gravity = 900 * 0.01, 9.8 * 0.01
+  dx, dy = 0, power
+
+def jump_update():
+  global x, y, dy
+  x += dx
+  y += dy
+  dy -= gravity
+
 func_tables = [
   (reset, reset),
+  (jump_init, jump_update),
 ]
 
 def handle_events():
