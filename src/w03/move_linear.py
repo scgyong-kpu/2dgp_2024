@@ -30,12 +30,12 @@ def handle_events():
     elif e.type == SDL_KEYDOWN:
       if e.key == SDLK_ESCAPE:
         running = False
-      elif e.key == SDLK_SPACE:
+      elif e.key == SDLK_1:
         global dx, dy
         dx, dy = 1.2, 0.7
         reset()
         update = update_delta
-      elif e.key == SDLK_RETURN:
+      elif e.key == SDLK_2:
         global angle_degree, speed
         angle_degree = 19
         speed = 1.4
