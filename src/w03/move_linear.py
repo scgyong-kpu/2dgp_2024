@@ -76,14 +76,14 @@ def update_bounce():
   # margin of left, top, right, bottom
   l,t,r,b = 25,35,25,35
 
-  if x < l or x > get_canvas_width() - r:
+  if (dx < 0 and x < l) or (dx > 0 and x > get_canvas_width() - r):
     dx *= -random.uniform(0.1, 3.0)
     if dx < -10: 
       dx = -1
     elif dx > 10: 
       dx = 1
     set_direction()
-  if y < t or y > get_canvas_height() - b:
+  if (dy < 0 and y < t) or (dy > 0 and y > get_canvas_height() - b):
     dy *= -random.uniform(0.1, 3.0)
     if dy < -10: 
       dy = -1
