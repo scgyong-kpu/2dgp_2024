@@ -2,9 +2,11 @@ from pico2d import *
 import math
 import random
 
+BASE_Y = 65
+
 def reset():
   global x, y
-  x, y = 100, 65
+  x, y = 100, BASE_Y
 
 def jump_init():
   global power, gravity, dx, dy
@@ -12,14 +14,24 @@ def jump_init():
   dx, dy = 0, power
 
 def jump_update():
-  global x, y, dy
+  global x, y, dx, dy
   x += dx
   y += dy
-  dy -= gravity
+  if y <= BASE_Y:
+    dx,dy = 0,0
+  else:
+    dy -= gravity
+
+def parabola_init():
+  global gravity, dx, dy
+  dx = mouse_x * 0.5 * 0.01
+  dy = mouse_y * 1.5 * 0.01
+  gravity = 9.8 * 0.01
 
 func_tables = [
   (reset, reset),
   (jump_init, jump_update),
+  (parabola_init, jump_update),
 ]
 
 def handle_events():
