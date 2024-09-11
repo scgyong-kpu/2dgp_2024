@@ -3,6 +3,7 @@ from pico2d import *
 def handle_events():
   global running
   global dx
+  global x, y
 
   for e in get_events():
     if e.type == SDL_QUIT:
@@ -21,6 +22,8 @@ def handle_events():
         dx += 1
       elif e.key == SDLK_RIGHT:
         dx -= 1
+    elif e.type == SDL_MOUSEMOTION:
+      x, y = e.x, e.y
 
 
 open_canvas()
