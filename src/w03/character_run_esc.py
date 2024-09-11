@@ -13,9 +13,13 @@ for x in range(0, 800):
   frame_index = (frame_index + 1) % 8
   update_canvas()
 
+  shouldEnd = False
   for e in get_events():
     if e.type == SDL_QUIT:
-      break
+      shouldEnd = True
+
+  if shouldEnd:
+    break
 
   delay(0.01)
 
