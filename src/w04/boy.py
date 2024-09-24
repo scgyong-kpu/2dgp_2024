@@ -4,7 +4,7 @@ import random
 class Boy:
     def __init__(self):
         self.image = load_image('run_animation.png')
-        self.frameIndex = 0
+        self.frameIndex = random.randint(0, 7)
         self.x = random.randint(100, 700)
         self.y = random.randint(90, 500)
     def draw(self):

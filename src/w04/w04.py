@@ -31,7 +31,13 @@ boy = Boy()
 
 # load_image('grass.png')
 
-gameObjects = [ boy, grass ]
+gameObjects = [ grass ]
+# for i in range(11):
+# 	gameObjects.append(Boy())
+boys = [ Boy() for i in range(11) ]
+gameObjects += boys
+
+print(len(gameObjects))
 
 running = True
 while running:
@@ -47,7 +53,7 @@ while running:
 
   handle_events()
 
-  delay(0.01)
+  delay(0.05)
 
 close_canvas()
 
