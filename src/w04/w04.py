@@ -34,7 +34,7 @@ boy = Boy()
 gameObjects = [ grass ]
 # for i in range(11):
 # 	gameObjects.append(Boy())
-boys = [ Boy() for i in range(11) ]
+boys = [ Boy() for i in range(10000) ]
 gameObjects += boys
 
 print(len(gameObjects))
