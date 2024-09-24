@@ -31,12 +31,19 @@ boy = Boy()
 
 # load_image('grass.png')
 
+gameObjects = [ boy, grass ]
+
 running = True
 while running:
   clear_canvas()
-  grass.draw()
-  boy.draw()
+
+  for gobj in gameObjects:
+  	gobj.draw()
+
   update_canvas()
+
+  for gobj in gameObjects:
+  	gobj.update()
 
   handle_events()
 
