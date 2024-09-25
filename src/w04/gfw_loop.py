@@ -29,3 +29,10 @@ def start(scene):
 
     close_canvas() # Game Loop 를 빠져 나왔으므로 화면을 닫는다
 
+def start_main_module():
+    import sys
+    scene = sys.modules['__main__'] 
+    # 시스템으로부터 __main__ 이라는 이름을 가진 module 객체를 얻어낸다
+
+    start(scene)
+
