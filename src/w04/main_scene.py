@@ -11,6 +11,9 @@ def enter():
     gfw_loop.game_objects.append(boy)
     gfw_loop.game_objects.append(Grass())
 
+def exit():
+    pass
+
 def handle_event(e):
     if e.type == SDL_KEYDOWN:
         if e.key == SDLK_LEFT:

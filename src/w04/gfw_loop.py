@@ -27,6 +27,8 @@ def start(scene):
             else:
                 scene.handle_event(e)
 
+    scene.exit() # scene 종료 전에 할 일이 있으면 할 수 있는 기회를 준다
+    
     close_canvas() # Game Loop 를 빠져 나왔으므로 화면을 닫는다
 
 def start_main_module():
