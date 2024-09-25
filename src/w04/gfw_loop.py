@@ -10,5 +10,9 @@ def start():
         # update() 를 수행한다 (Game Logic)
         # draw() 를 수행한다 (Rendering)
         # event 를 처리한다
+        for e in get_events():
+            if e.type == SDL_QUIT:
+                running = False
+
     close_canvas() # Game Loop 를 빠져 나왔으므로 화면을 닫는다
 
