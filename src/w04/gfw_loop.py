@@ -3,7 +3,7 @@ from pico2d import *
 game_objects = []
 running = True
 
-def start(enter_function):
+def start(enter_function, event_function):
     global running
     open_canvas() # canvas 를 열어서 화면을 준비한다
 
@@ -24,6 +24,8 @@ def start(enter_function):
         for e in get_events():
             if e.type == SDL_QUIT:
                 running = False
+            else:
+                event_function(e)
 
     close_canvas() # Game Loop 를 빠져 나왔으므로 화면을 닫는다
 
