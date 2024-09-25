@@ -1,14 +1,22 @@
 from pico2d import *
 
+game_objects = []
 running = True
 
 def start():
     global running
     open_canvas() # canvas 를 열어서 화면을 준비한다
     while running: # 무한루프를 돈다
-        pass
         # update() 를 수행한다 (Game Logic)
+        for go in game_objects:
+            go.update()
+
         # draw() 를 수행한다 (Rendering)
+        clear_canvas()
+        for go in game_objects:
+            go.draw()
+        update_canvas()
+
         # event 를 처리한다
         for e in get_events():
             if e.type == SDL_QUIT:
