@@ -18,10 +18,15 @@ def handle_event(e):
         elif e.key == SDLK_RIGHT:
             boy.x += 10
 
-import sys
-scene = sys.modules['__main__'] 
-# 시스템으로부터 __main__ 이라는 이름을 가진 module 객체를 얻어낸다
+if __name__ == '__main__':
+    import sys
+    scene = sys.modules['__main__'] 
+    # 시스템으로부터 __main__ 이라는 이름을 가진 module 객체를 얻어낸다
 
-gfw_loop.start(scene)
+    gfw_loop.start(scene)
 
+'''
+    scene module 들 끼리는 서로 import 를 하게 되는데 import 될때마다 start() 하면 곤란하므로 
+    main 으로 실행되었을 때에만 start 하게 하자
+'''
 
