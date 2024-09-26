@@ -13,13 +13,15 @@ def start(scene):
 
     while running: # 무한루프를 돈다
         # update() 를 수행한다 (Game Logic)
-        for go in stack[-1].world.objects:
-            go.update()
+        for objs in stack[-1].world.objects:
+            for go in objs:
+                go.update()
 
         # draw() 를 수행한다 (Rendering)
         clear_canvas()
-        for go in stack[-1].world.objects:
-            go.draw()
+        for objs in stack[-1].world.objects:
+            for go in objs:
+                go.draw()
         update_canvas()
 
         # event 를 처리한다

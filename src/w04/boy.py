@@ -16,7 +16,8 @@ class Boy:
         self.frameIndex = (self.frameIndex + 1) % 8
 
         scene = gfw.top()
-        for go in gfw.top().world.objects:
+        for objs in gfw.top().world.objects:
+          for go in objs:
             if not isinstance(go, Ball): continue
             if not go.bounced: continue
             dx, dy = self.x - go.x, self.y - go.y
