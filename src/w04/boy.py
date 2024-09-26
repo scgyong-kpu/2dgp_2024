@@ -14,3 +14,9 @@ class Boy:
     def update(self):
         self.frameIndex = (self.frameIndex + 1) % 8
 
+    def handle_event(self, e):
+        if e.type == SDL_KEYDOWN:
+            if e.key == SDLK_LEFT:
+                self.x -= 10
+            elif e.key == SDLK_RIGHT:
+                self.x += 10

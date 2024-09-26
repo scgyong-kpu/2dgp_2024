@@ -26,14 +26,11 @@ def resume():
     print('[main.resume()]')
 
 def handle_event(e):
-    if e.type == SDL_KEYDOWN:
-        if e.key == SDLK_LEFT:
-            boy.x -= 10
-        elif e.key == SDLK_RIGHT:
-            boy.x += 10
-        elif e.key == SDLK_RETURN:
-            gfw.push(sub_scene)
-            # sub_scene 으로 전환하는 것이 아니고 내 위에 쌓는다
+    if e.type == SDL_KEYDOWN and e.key == SDLK_RETURN:
+        gfw.push(sub_scene)
+        return True # 이 이벤트는 처리했음을 알린다
+
+    boy.handle_event(e)
 
 if __name__ == '__main__':
     gfw.start_main_module()
