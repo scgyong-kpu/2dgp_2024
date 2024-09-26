@@ -35,4 +35,5 @@ class Boy:
                 scene = gfw.top()
                 scene.world.append(ball)
 
-
+    def __repr__(self):
+        return 'Boy'

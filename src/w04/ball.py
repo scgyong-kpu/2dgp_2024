@@ -23,3 +23,5 @@ class Ball:
         if (self.dy < 0 and self.y < t) or (self.dy > 0 and self.y > get_canvas_height() - b):
             self.dy *= -1
             self.bounced = True
+    def __repr__(self):
+        return f'Ball({self.x:.1f},{self.y:.1f})'
