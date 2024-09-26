@@ -2,7 +2,6 @@ from pico2d import *
 import gfw_image as image
 from gfw_world import World
 
-from random import uniform
 import time
 
 running = True
@@ -11,7 +10,7 @@ frame_time = 0.01
 stack = []
 
 def start(scene):
-    open_canvas() # canvas 를 열어서 화면을 준비한다
+    open_canvas(sync=True) # canvas 를 열어서 화면을 준비한다
 
     push(scene)
 
@@ -42,8 +41,6 @@ def start(scene):
                 elif e.type == SDL_KEYDOWN:
                     if e.key == SDLK_ESCAPE:
                         pop()
-                
-        delay(uniform(0.001, 0.05))
 
     while stack:
         stack.pop().exit()
