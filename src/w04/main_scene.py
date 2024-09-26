@@ -7,14 +7,16 @@ from boy import Boy
 
 import sub_scene
 
+game_objects = []
+
 def enter():
     global boy
     boy = Boy()
-    gfw_loop.game_objects.append(boy)
-    gfw_loop.game_objects.append(Grass())
+    game_objects.append(boy)
+    game_objects.append(Grass())
 
 def exit():
-    gfw_loop.game_objects.clear()
+    game_objects.clear()
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN:

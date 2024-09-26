@@ -22,12 +22,13 @@ class Ball:
         if (self.dy < 0 and self.y < t) or (self.dy > 0 and self.y > get_canvas_height() - b):
             self.dy *= -1
 
+game_objects = []
 
 def enter():
-    gfw_loop.game_objects.append(Ball())
+    game_objects.append(Ball())
 
 def exit():
-    gfw_loop.game_objects.clear()
+    game_objects.clear()
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN:

@@ -1,6 +1,5 @@
 from pico2d import *
 
-game_objects = []
 running = True
 
 def start(scene):
@@ -14,12 +13,12 @@ def start(scene):
 
     while running: # 무한루프를 돈다
         # update() 를 수행한다 (Game Logic)
-        for go in game_objects:
+        for go in current_scene.game_objects:
             go.update()
 
         # draw() 를 수행한다 (Rendering)
         clear_canvas()
-        for go in game_objects:
+        for go in current_scene.game_objects:
             go.draw()
         update_canvas()
 
