@@ -7,20 +7,13 @@ from boy import Boy
 
 import sub_scene
 
-world = gfw.World(3)
+world = gfw.World(2)
 
 def enter():
     global boy
     boy = Boy()
-    world.append(boy, 1)
-    world.append(Grass(), 0)
-''' 레이어 번호를 잘 맞춰주지 않으면 당연히 여러 에러가 발생한다.
-Traceback (most recent call last):
-  ...(생략)...
-  File "D:/Lectures/2024_2/2dgp/git/src/w04/boy.py", line 21, in update
-    if not go.bounced: continue
-AttributeError: 'Boy' object has no attribute 'bounced'
-'''
+    world.append(boy)
+    world.append(Grass())
 
 def exit():
     world.clear()
