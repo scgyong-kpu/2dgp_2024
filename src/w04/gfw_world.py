@@ -20,7 +20,7 @@ class World:
             go.draw()
 
     def all_objects(self):
-        all_objs = []
         for objs in self.objects:
-            all_objs += objs
-        return all_objs
+            for go in objs:
+                yield go 
+        # generator 를 사용하면 all_objs 같이 메모리를 할당하지 않아도 된다
