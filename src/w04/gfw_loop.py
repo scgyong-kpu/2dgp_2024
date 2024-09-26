@@ -54,13 +54,16 @@ def change(scene):
 
 def push(scene):
     global current_scene
+    if len(stack) > 0:
+        stack[-1].pause()
+
     stack.append(scene)
     current_scene = scene
     print(f'{current_scene=}')
     current_scene.enter()
 
 def pop():
-    global current_scene
+    global current_scene, running
     if len(stack) <= 1:
         running = False
         return
@@ -69,4 +72,5 @@ def pop():
     stack.pop()
     current_scene = stack[-1]
     print(f'{current_scene=}')
+    current_scene.resume()
 

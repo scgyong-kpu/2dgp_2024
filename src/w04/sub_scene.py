@@ -31,6 +31,12 @@ def enter():
 def exit():
     game_objects.clear()
 
+def pause():
+    pass
+
+def resume():
+    pass
+
 def handle_event(e):
     if e.type == SDL_KEYDOWN:
         if e.key == SDLK_ESCAPE:
