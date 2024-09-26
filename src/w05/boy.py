@@ -22,7 +22,7 @@ class Boy:
         self.frame = round(self.time * fps) % frame_count
         self.x += self.dx * self.speed * gfw.frame_time
         self.y += self.dy * self.speed * gfw.frame_time
-
+        print(f'{gfw.frame_time=}')
     def fire(self):
         gfw.top().world.append(Ball(self))
 

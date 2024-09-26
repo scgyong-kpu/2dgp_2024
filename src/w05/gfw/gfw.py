@@ -1,7 +1,6 @@
 from pico2d import *
-import gfw_image as image
-from gfw_image import Sprite, AnimSprite
-from gfw_world import World
+from gfw.image import Sprite, AnimSprite
+from gfw.world import World
 
 import time
 
