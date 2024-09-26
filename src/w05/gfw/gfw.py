@@ -2,9 +2,8 @@ from pico2d import *
 
 import time
 
-running = True
-
-stack = []
+_running = True
+_stack = []
 
 def start(scene):
     import gfw
@@ -15,7 +14,7 @@ def start(scene):
     global frame_time
     last_time = time.time()
 
-    while running: # 무한루프를 돈다
+    while _running: # 무한루프를 돈다
 
         # inter-frame (delta) time
         now = time.time()
@@ -23,16 +22,16 @@ def start(scene):
         last_time = now
 
         # update() 를 수행한다 (Game Logic)
-        stack[-1].world.update()
+        _stack[-1].world.update()
 
         # draw() 를 수행한다 (Rendering)
         clear_canvas()
-        stack[-1].world.draw()
+        _stack[-1].world.draw()
         update_canvas()
 
         # event 를 처리한다
         for e in get_events():
-            handled = stack[-1].handle_event(e)
+            handled = _stack[-1].handle_event(e)
             if not handled:
                 if e.type == SDL_QUIT:
                     quit()
@@ -40,8 +39,8 @@ def start(scene):
                     if e.key == SDLK_ESCAPE:
                         pop()
 
-    while stack:
-        stack.pop().exit()
+    while _stack:
+        _stack.pop().exit()
         # scene 종료 전에 할 일이 있으면 할 수 있는 기회를 준다
 
     close_canvas() # Game Loop 를 빠져 나왔으므로 화면을 닫는다
@@ -54,34 +53,34 @@ def start_main_module():
     start(scene)
 
 def change(scene):
-    if stack:
-        stack.pop().exit()
+    if _stack:
+        _stack.pop().exit()
 
-    stack.append(scene)
+    _stack.append(scene)
     print(f'current_scene={scene}')
     scene.enter()
 
 def push(scene):
-    if stack:
-        stack[-1].pause()
+    if _stack:
+        _stack[-1].pause()
 
-    stack.append(scene)
+    _stack.append(scene)
     print(f'current_scene={scene}')
     scene.enter()
 
 def pop():
-    stack.pop().exit()
-    if not stack:
+    _stack.pop().exit()
+    if not _stack:
         quit()
         return
 
-    scene = stack[-1]
+    scene = _stack[-1]
     print(f'current_scene={scene}')
     scene.resume()
 
 def quit():
-    global running
-    running = False
+    global _running
+    _running = False
 
 def top():
-    return stack[-1]
+    return _stack[-1]

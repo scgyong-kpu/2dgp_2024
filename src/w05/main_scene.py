@@ -37,5 +37,5 @@ def handle_event(e):
 
 if __name__ == '__main__':
     gfw.start_main_module()
-    print(f'{gfw.running=}')
+    print(f'{gfw._running=}') # 에러가 난다. _ 로 시작하는 것은 export 되지 않는다.
 
