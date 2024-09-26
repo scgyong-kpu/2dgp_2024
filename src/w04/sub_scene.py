@@ -27,7 +27,7 @@ def enter():
     gfw_loop.game_objects.append(Ball())
 
 def exit():
-    pass
+    gfw_loop.game_objects.clear()
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN:
