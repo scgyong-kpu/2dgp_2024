@@ -2,7 +2,7 @@ from pico2d import *
 # SDL_*, SDLK_* 상수를 쓰려면 선언해야 한다
 
 import gfw
-from grass import Grass
+import grass
 from boy import Boy
 
 import sub_scene
@@ -13,7 +13,8 @@ def enter():
     global boy
     boy = Boy()
     world.append(boy, world.layer.player)
-    world.append(Grass(), world.layer.bg)
+    grass.init()
+    world.append(grass, world.layer.bg)
 
 def exit():
     world.clear()
