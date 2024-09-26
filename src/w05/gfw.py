@@ -30,6 +30,7 @@ def start(scene):
                     if e.key == SDLK_ESCAPE:
                         pop()
                 
+        delay(0.01)
 
     while stack:
         stack.pop().exit()
