@@ -8,7 +8,7 @@ class Boy:
         self.frame = random.randint(0, 7)
         self.x, self.y = get_canvas_width() // 2, get_canvas_height() // 2
         self.dx, self.dy = 0, 0
-        self.speed = 0.3
+        self.speed = 10
         self.action = 2 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
     def draw(self):
         x = self.frame * 100

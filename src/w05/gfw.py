@@ -2,6 +2,8 @@ from pico2d import *
 import gfw_image as image
 from gfw_world import World
 
+from random import uniform
+
 running = True
 
 stack = []
@@ -30,7 +32,7 @@ def start(scene):
                     if e.key == SDLK_ESCAPE:
                         pop()
                 
-        delay(0.01)
+        delay(uniform(0.001, 0.05))
 
     while stack:
         stack.pop().exit()
