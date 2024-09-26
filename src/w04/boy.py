@@ -3,20 +3,21 @@ import random
 from ball import Ball
 import gfw
 
+import sys
+self = sys.modules[__name__]
+
 def init():
-    global image, frameIndex, x, y
-    image = gfw.image.load('run_animation.png')
-    frameIndex = random.randint(0, 7)
-    x = random.randint(100, 700)
-    y = random.randint(90, 500)
+    self.image = gfw.image.load('run_animation.png')
+    self.frameIndex = random.randint(0, 7)
+    self.x = random.randint(100, 700)
+    self.y = random.randint(90, 500)
 
 def draw():
     src_x = frameIndex * 100
-    image.clip_draw(src_x, 0, 100, 100, x, y)
+    image.clip_draw(src_x, 0, 100, 100, self.x, self.y)
 
 def update():
-    global frameIndex
-    frameIndex = (frameIndex + 1) % 8
+    self.frameIndex = (frameIndex + 1) % 8
 
     scene = gfw.top()
     for go in gfw.top().world.objects_at(scene.world.layer.ball):
@@ -28,12 +29,11 @@ def update():
             scene.world.remove(go)
 
 def handle_event(e):
-    global x, y
     if e.type == SDL_KEYDOWN:
         if e.key == SDLK_LEFT:
-            x -= 10
+            self.x -= 10
         elif e.key == SDLK_RIGHT:
-            x += 10
+            self.x += 10
         elif e.key == SDLK_SPACE:
             ball = Ball(x, y)
             scene = gfw.top()
