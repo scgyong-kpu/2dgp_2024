@@ -17,8 +17,8 @@ class Ball:
     def draw(self):
         self.image.draw(self.x, self.y)
     def update(self):
-        self.x += self.dx * gfw.frame_time
-        self.y += self.dy * gfw.frame_time
+        self.x += self.dx * gfw.frame_time # 시간을 곱한다
+        self.y += self.dy * gfw.frame_time # 시간을 곱한다
 
         l,r,b = -25, get_canvas_width()+25, 20
         if self.x < l or r < self.x:
@@ -31,7 +31,10 @@ class Ball:
                 gfw.top().world.remove(self)
                 return
         else:
-            self.dy -= GRAVITY * gfw.frame_time
+            self.dy -= GRAVITY * gfw.frame_time 
+            # 중력을 적용할 때에도 시간을 곱한다.
+            # dy 만큼 이동할 때에도 시간을 곱하고 dy 를 변경할 때에도 시간을 곱하므로
+            # x^2 즉 2차함수 포물선형태가 된다.
 
     def __repr__(self):
         return f'Ball({self.x:.1f},{self.y:.1f})'
