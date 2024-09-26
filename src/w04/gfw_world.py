@@ -23,7 +23,7 @@ class World:
         self.objects[layer_index].remove(go)
     def clear(self):
         layer_count = len(self.objects)
-        self.objects = [[]] * layer_count
+        self.objects = [[] for i in range(layer_count)]
     def update(self):
         for go in self.all_objects():
             go.update()
