@@ -5,7 +5,8 @@ import gfw
 class Boy:
     def __init__(self):
         self.image = gfw.image.load('animation_sheet.png')
-        self.frame = random.randint(0, 7)
+        self.time = 0 # age in seconds
+        self.frame = 0
         self.x, self.y = get_canvas_width() // 2, get_canvas_height() // 2
         self.dx, self.dy = 0, 0
         self.speed = 200
@@ -15,7 +16,9 @@ class Boy:
         y = self.action * 100
         self.image.clip_draw(x, y, 100, 100, self.x, self.y)
     def update(self):
-        self.frame = (self.frame + 1) % 8
+        self.time += gfw.frame_time
+        fps, frame_count = 10, 8
+        self.frame = round(self.time * fps) % frame_count
         self.x += self.dx * self.speed * gfw.frame_time
         self.y += self.dy * self.speed * gfw.frame_time
 
