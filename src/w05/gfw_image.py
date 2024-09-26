@@ -15,3 +15,13 @@ def unload(file):
     global images
     if file in images:
         del images[file]
+
+class Sprite:
+    def __init__(self, filename, x, y):
+        self.filename = filename
+        self.image = load(filename)
+        self.x, self.y = x, y
+    def draw(self):
+        self.image.draw(self.x, self.y)
+    def update(self):
+        pass
