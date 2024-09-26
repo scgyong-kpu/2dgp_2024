@@ -10,6 +10,7 @@ class Ball:
         self.dx = uniform(1.0, 2.0) * (1 if randrange(2) == 0 else -1)
         self.dy = uniform(1.0, 2.0) * (1 if randrange(2) == 0 else -1)
         self.bounced = False
+        self.layer_index = gfw.top().world.layer.ball
     def draw(self):
         self.image.draw(self.x, self.y)
     def update(self):

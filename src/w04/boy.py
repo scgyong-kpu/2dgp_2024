@@ -22,7 +22,7 @@ class Boy:
             dx, dy = self.x - go.x, self.y - go.y
             if (-30 < dx and dx < 30) and (-50 < dy and dy < 50):
                 # 충돌한 것으로 본다
-                scene.world.remove(go, scene.world.layer.ball)
+                scene.world.remove(go)
 
 
     def handle_event(self, e):
@@ -34,6 +34,6 @@ class Boy:
             elif e.key == SDLK_SPACE:
                 ball = Ball(self.x, self.y)
                 scene = gfw.top()
-                scene.world.append(ball, scene.world.layer.ball)
+                scene.world.append(ball)
 
 
