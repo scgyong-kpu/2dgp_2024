@@ -24,7 +24,6 @@ class Boy:
                 # 충돌한 것으로 본다
                 scene.world.remove(go)
 
-
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:
             if e.key == SDLK_LEFT:
