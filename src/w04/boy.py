@@ -22,7 +22,7 @@ class Boy:
             dx, dy = self.x - go.x, self.y - go.y
             if (-30 < dx and dx < 30) and (-50 < dy and dy < 50):
                 # 충돌한 것으로 본다
-                scene.world.remove(go) # 이것으로 충분할까?
+                scene.world.remove(go, 1) # 이것으로 충분할까?
 
 
     def handle_event(self, e):
@@ -37,19 +37,3 @@ class Boy:
                 scene.world.append(ball, 1) # layer_index 가 1 인걸 기억할수 있을까?
 
 
-'''
-Pico2d is prepared.
-current_scene=<module '__main__' from 'D://Lectures//2024_2//2dgp//git//src//w04//main_scene.py'>
-Traceback (most recent call last):
-  File "D:/Lectures/2024_2/2dgp/git/src/w04/main_scene.py", line 38, in <module>
-    gfw.start_main_module()
-  File "D:/Lectures/2024_2/2dgp/git/src/w04/gfw.py", line 45, in start_main_module
-    start(scene)
-  File "D:/Lectures/2024_2/2dgp/git/src/w04/gfw.py", line 16, in start
-    stack[-1].world.update()
-  File "D:/Lectures/2024_2/2dgp/git/src/w04/gfw_world.py", line 17, in update
-    go.update()
-  File "D:/Lectures/2024_2/2dgp/git/src/w04/boy.py", line 21, in update
-    if not go.bounced: continue
-AttributeError: 'Boy' object has no attribute 'bounced'
-'''

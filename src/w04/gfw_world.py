@@ -3,8 +3,7 @@ import gfw
 
 class World:
     def __init__(self, layer_count=1):
-        self.objects = [[]] * layer_count
-        # self.objects = [[] for i in range(layer_count)]
+        self.objects = [[] for i in range(layer_count)]
     def append(self, go, layer_index=0):
         self.objects[layer_index].append(go)
     def remove(self, go, layer_index=0):
