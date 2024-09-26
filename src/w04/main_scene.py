@@ -25,7 +25,8 @@ def handle_event(e):
         elif e.key == SDLK_RIGHT:
             boy.x += 10
         elif e.key == SDLK_RETURN:
-            gfw_loop.change(sub_scene)
+            gfw_loop.push(sub_scene)
+            # sub_scene 으로 전환하는 것이 아니고 내 위에 쌓는다
 
 if __name__ == '__main__':
     gfw_loop.start_main_module()

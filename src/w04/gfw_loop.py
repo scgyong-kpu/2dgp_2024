@@ -2,9 +2,14 @@ from pico2d import *
 
 running = True
 
+stack = []
+
 def start(scene):
     global current_scene
     current_scene = scene
+
+    global stack
+    stack = [scene]
 
     global running
     open_canvas() # canvas 를 열어서 화면을 준비한다
@@ -44,4 +49,24 @@ def change(scene):
     global current_scene
     current_scene.exit()
     current_scene = scene
+    print(f'{current_scene=}')
     current_scene.enter()
+
+def push(scene):
+    global current_scene
+    stack.append(scene)
+    current_scene = scene
+    print(f'{current_scene=}')
+    current_scene.enter()
+
+def pop():
+    global current_scene
+    if len(stack) <= 1:
+        running = False
+        return
+
+    current_scene.exit()
+    stack.pop()
+    current_scene = stack[-1]
+    print(f'{current_scene=}')
+

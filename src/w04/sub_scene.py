@@ -2,7 +2,8 @@ from pico2d import *
 import gfw_loop
 from random import randrange, uniform
 
-import main_scene
+# import main_scene
+# main_scene 으로 전환하는 것이 아니고 나만 종료 (pop) 하면 된다.
 
 class Ball:
     def __init__(self):
@@ -32,7 +33,8 @@ def exit():
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN:
-        gfw_loop.change(main_scene)
+        if e.key == SDLK_ESCAPE:
+            gfw_loop.pop()
 
 if __name__ == '__main__':
     gfw_loop.start_main_module()
