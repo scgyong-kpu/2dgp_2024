@@ -1,21 +1,21 @@
 from pico2d import *
 import time
 
-images = {}
+_images = {}
 
 def load(file):
-    global images
-    if file in images:
-        return images[file]
+    global _images
+    if file in _images:
+        return _images[file]
 
     image = load_image(file)
-    images[file] = image
+    _images[file] = image
     return image
 
 def unload(file):
-    global images
-    if file in images:
-        del images[file]
+    global _images
+    if file in _images:
+        del _images[file]
 
 class Sprite:
     def __init__(self, filename, x, y):

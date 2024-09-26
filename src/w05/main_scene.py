@@ -28,7 +28,7 @@ def resume():
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_RETURN:
-        gfw.push(sub_scene)
+        # gfw.push(sub_scene)
         return True # 이 이벤트는 처리했음을 알린다
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
@@ -37,5 +37,4 @@ def handle_event(e):
 
 if __name__ == '__main__':
     gfw.start_main_module()
-    print(f'{gfw._running=}') # 에러가 난다. _ 로 시작하는 것은 export 되지 않는다.
 
