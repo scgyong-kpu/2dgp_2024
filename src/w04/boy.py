@@ -23,5 +23,6 @@ class Boy:
             elif e.key == SDLK_RIGHT:
                 self.x += 10
             elif e.key == SDLK_SPACE:
-                ball = Ball()
-                gfw.stack[-1].game_objects.append(ball)
+                ball = Ball(self.x, self.y)
+                scene = gfw.top()
+                scene.game_objects.append(ball) # 이 부분도 불필요하게 구체적이다. 추후 수정하자.

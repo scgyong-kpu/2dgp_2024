@@ -73,3 +73,6 @@ def pop():
 def quit():
     global running
     running = False
+
+def top():
+    return stack[-1]

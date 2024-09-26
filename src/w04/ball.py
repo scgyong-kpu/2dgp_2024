@@ -2,10 +2,10 @@ from pico2d import *
 from random import randrange, uniform
 
 class Ball:
-    def __init__(self):
+    def __init__(self, x=None, y=None):
         self.image = load_image('ball_41x41.png')
-        self.x = randrange(100, 700)
-        self.y = randrange(100, 500)
+        self.x = randrange(100, 700) if x is None else x
+        self.y = randrange(100, 500) if y is None else y
         self.dx = uniform(1.0, 2.0) * (1 if randrange(2) == 0 else -1)
         self.dy = uniform(1.0, 2.0) * (1 if randrange(2) == 0 else -1)
     def draw(self):
