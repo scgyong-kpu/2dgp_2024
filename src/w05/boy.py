@@ -7,6 +7,8 @@ class Boy:
         self.image = gfw.image.load('animation_sheet.png')
         self.frame = random.randint(0, 7)
         self.x, self.y = get_canvas_width() // 2, get_canvas_height() // 2
+        self.dx, self.dy = 0, 0
+        self.speed = 0.3
         self.action = 2 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
     def draw(self):
         x = self.frame * 100
@@ -14,15 +16,42 @@ class Boy:
         self.image.clip_draw(x, y, 100, 100, self.x, self.y)
     def update(self):
         self.frame = (self.frame + 1) % 8
+        self.x += self.dx * self.speed
+        self.y += self.dy * self.speed
 
     def handle_event(self, e):
+        dx, dy = self.dx, self.dy
         if e.type == SDL_KEYDOWN:
             if e.key == SDLK_LEFT:
-                self.x -= 10
+                self.dx -= 1
             elif e.key == SDLK_RIGHT:
-                self.x += 10
-            elif e.key == SDLK_SPACE:
-                self.action = (self.action + 1) % 4
+                self.dx += 1
+            elif e.key == SDLK_DOWN:
+                self.dy -= 1
+            elif e.key == SDLK_UP:
+                self.dy += 1
+        elif e.type == SDL_KEYUP:
+            if e.key == SDLK_LEFT:
+                self.dx += 1
+            elif e.key == SDLK_RIGHT:
+                self.dx -= 1
+            elif e.key == SDLK_DOWN:
+                self.dy += 1
+            elif e.key == SDLK_UP:
+                self.dy -= 1
+
+        if (dx, dy) != (self.dx, self.dy):
+            if self.dx > 0:
+                self.action = 1
+            elif self.dx < 0:
+                self.action = 0
+            else:
+                if self.dy != 0: 
+                    if self.action >= 2:
+                        self.action -= 2
+                else:
+                    if self.action < 2:
+                        self.action += 2
 
     def __repr__(self):
         return 'Boy'
