@@ -24,3 +24,7 @@ class World:
             for go in objs:
                 yield go 
         # generator 를 사용하면 all_objs 같이 메모리를 할당하지 않아도 된다
+
+    def objects_at(self, layer_index):
+        for go in self.objects[layer_index]:
+            yield go 

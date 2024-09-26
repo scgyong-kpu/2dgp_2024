@@ -7,7 +7,7 @@ from boy import Boy
 
 import sub_scene
 
-world = gfw.World()
+world = gfw.World(2)
 
 def enter():
     global boy
@@ -29,6 +29,8 @@ def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_RETURN:
         gfw.push(sub_scene)
         return True # 이 이벤트는 처리했음을 알린다
+    if e.type == SDL_KEYDOWN and e.key == SDLK_1:
+        print(world.objects)
 
     boy.handle_event(e)
 
