@@ -27,6 +27,8 @@ class Sprite:
         self.image.draw(self.x, self.y)
     def update(self):
         pass
+    def __repr__(self):
+        return f'{type(self).__name__}({self.filename})'
 
 class AnimSprite(Sprite):
     def __init__(self, filename, x, y, fps, frame_count=0):
