@@ -5,9 +5,11 @@ from boy import Boy
 world = gfw.World(['bg', 'player', 'ball'])
 
 def enter():
-    cx, cy = get_canvas_width() // 2, get_canvas_height() // 2
+    cw, ch = get_canvas_width(), get_canvas_height()
+    cx, cy = cw // 2, ch // 2
     world.append(gfw.Sprite('sky.jpg', cx, cy), world.layer.bg)
     world.append(gfw.Sprite('grass.png', cx, 30), world.layer.bg)
+    world.append(gfw.Sprite('sun.png', cw - 100, ch - 100), world.layer.bg)
     global boy
     boy = Boy()
     world.append(boy, world.layer.player)
