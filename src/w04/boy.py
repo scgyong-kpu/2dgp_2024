@@ -16,13 +16,13 @@ class Boy:
         self.frameIndex = (self.frameIndex + 1) % 8
 
         scene = gfw.top()
-        for go in gfw.top().world.objects_at(1):
+        for go in gfw.top().world.objects_at(scene.world.layer.ball):
             # if not isinstance(go, Ball): continue
             if not go.bounced: continue
             dx, dy = self.x - go.x, self.y - go.y
             if (-30 < dx and dx < 30) and (-50 < dy and dy < 50):
                 # 충돌한 것으로 본다
-                scene.world.remove(go, 1) # 이것으로 충분할까?
+                scene.world.remove(go, scene.world.layer.ball)
 
 
     def handle_event(self, e):
@@ -34,6 +34,6 @@ class Boy:
             elif e.key == SDLK_SPACE:
                 ball = Ball(self.x, self.y)
                 scene = gfw.top()
-                scene.world.append(ball, 1) # layer_index 가 1 인걸 기억할수 있을까?
+                scene.world.append(ball, scene.world.layer.ball)
 
 

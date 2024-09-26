@@ -3,6 +3,15 @@ import gfw
 
 class World:
     def __init__(self, layer_count=1):
+        if isinstance(layer_count, list):
+            layer_names = layer_count
+            layer_count = len(layer_count)
+            index = 0
+            self.layer = lambda: None # 임의의 객체를 생성할 때 python 에서 즐겨 사용하는 방식
+            for name in layer_names:
+                self.layer.__dict__[name] = index
+                index += 1
+
         self.objects = [[] for i in range(layer_count)]
     def append(self, go, layer_index=0):
         self.objects[layer_index].append(go)

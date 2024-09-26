@@ -7,13 +7,13 @@ from boy import Boy
 
 import sub_scene
 
-world = gfw.World(2)
+world = gfw.World(['bg', 'player', 'ball'])
 
 def enter():
     global boy
     boy = Boy()
-    world.append(boy)
-    world.append(Grass())
+    world.append(boy, world.layer.player)
+    world.append(Grass(), world.layer.bg)
 
 def exit():
     world.clear()
