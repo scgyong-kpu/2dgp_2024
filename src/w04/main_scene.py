@@ -13,16 +13,8 @@ def enter():
     global boy
     boy = Boy()
     world.append(boy, world.layer.player)
-    world.append(Grass())
-''' 한 번만 추가하는 객체는 객체가 layer_index 를 가지고 있는 것이 오히려 불편하다
-Traceback (most recent call last):
-  ...(생략)...
-  File "D:/Lectures/2024_2/2dgp/git/src/w04/main_scene.py", line 16, in enter
-    world.append(Grass())
-  File "D:/Lectures/2024_2/2dgp/git/src/w04/gfw_world.py", line 18, in append
-    layer_index = go.layer_index
-AttributeError: 'Grass' object has no attribute 'layer_index'
-'''
+    world.append(Grass(), world.layer.bg)
+
 def exit():
     world.clear()
     print('[main.exit()]')
