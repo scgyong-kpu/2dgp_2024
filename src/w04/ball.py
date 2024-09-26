@@ -11,6 +11,9 @@ class Ball:
         self.dy = uniform(1.0, 2.0) * (1 if randrange(2) == 0 else -1)
         self.bounced = False
         self.layer_index = gfw.top().world.layer.ball
+        print(f'{self.layer_index=}')
+        # 만일 Ball 이 main_scene 에서 만 사용된다면
+        # main_scene.world.layer.ball 로 해도 된다.
     def draw(self):
         self.image.draw(self.x, self.y)
     def update(self):
