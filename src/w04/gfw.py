@@ -1,5 +1,6 @@
 from pico2d import *
 import gfw_image as image
+import gfw_world as world
 
 running = True
 
@@ -12,12 +13,12 @@ def start(scene):
 
     while running: # 무한루프를 돈다
         # update() 를 수행한다 (Game Logic)
-        for go in stack[-1].game_objects:
+        for go in stack[-1].world.objects:
             go.update()
 
         # draw() 를 수행한다 (Rendering)
         clear_canvas()
-        for go in stack[-1].game_objects:
+        for go in stack[-1].world.objects:
             go.draw()
         update_canvas()
 

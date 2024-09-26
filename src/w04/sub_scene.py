@@ -1,13 +1,13 @@
 import gfw
 from ball import Ball
 
-game_objects = []
+world = gfw.world.World()
 
 def enter():
-    game_objects.append(Ball())
+    world.append(Ball())
 
 def exit():
-    game_objects.clear()
+    world.clear()
     print('[sub.exit()]')
 
 def pause():

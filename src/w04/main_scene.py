@@ -7,16 +7,16 @@ from boy import Boy
 
 import sub_scene
 
-game_objects = []
+world = gfw.world.World()
 
 def enter():
     global boy
     boy = Boy()
-    game_objects.append(boy)
-    game_objects.append(Grass())
+    world.append(boy)
+    world.append(Grass())
 
 def exit():
-    game_objects.clear()
+    world.clear()
     print('[main.exit()]')
 
 def pause():

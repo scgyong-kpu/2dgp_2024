@@ -16,13 +16,13 @@ class Boy:
         self.frameIndex = (self.frameIndex + 1) % 8
 
         scene = gfw.top()
-        for go in gfw.top().game_objects:
+        for go in gfw.top().world.objects:
             if not isinstance(go, Ball): continue
             if not go.bounced: continue
             dx, dy = self.x - go.x, self.y - go.y
             if (-30 < dx and dx < 30) and (-50 < dy and dy < 50):
                 # 충돌한 것으로 본다
-                scene.game_objects.remove(go) # 이것으로 충분할까?
+                scene.world.remove(go) # 이것으로 충분할까?
 
 
     def handle_event(self, e):
@@ -34,4 +34,4 @@ class Boy:
             elif e.key == SDLK_SPACE:
                 ball = Ball(self.x, self.y)
                 scene = gfw.top()
-                scene.game_objects.append(ball) # 이 부분도 불필요하게 구체적이다. 추후 수정하자.
+                scene.world.append(ball) # 이 부분도 불필요하게 구체적이다. 추후 수정하자.
