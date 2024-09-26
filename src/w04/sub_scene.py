@@ -1,5 +1,5 @@
 from pico2d import * 
-import gfw_loop
+import gfw
 from random import randrange, uniform
 
 # import main_scene
@@ -42,5 +42,5 @@ def handle_event(e):
     pass
 
 if __name__ == '__main__':
-    gfw_loop.start_main_module()
+    gfw.start_main_module()
 

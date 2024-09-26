@@ -1,7 +1,7 @@
 from pico2d import * 
 # SDL_*, SDLK_* 상수를 쓰려면 선언해야 한다
 
-import gfw_loop
+import gfw
 from grass import Grass
 from boy import Boy
 
@@ -32,9 +32,9 @@ def handle_event(e):
         elif e.key == SDLK_RIGHT:
             boy.x += 10
         elif e.key == SDLK_RETURN:
-            gfw_loop.push(sub_scene)
+            gfw.push(sub_scene)
             # sub_scene 으로 전환하는 것이 아니고 내 위에 쌓는다
 
 if __name__ == '__main__':
-    gfw_loop.start_main_module()
+    gfw.start_main_module()
 
