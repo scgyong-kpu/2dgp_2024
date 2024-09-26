@@ -16,6 +16,16 @@ class Boy:
     def update(self):
         self.frameIndex = (self.frameIndex + 1) % 8
 
+        scene = gfw.top()
+        for go in gfw.top().game_objects:
+            if not isinstance(go, Ball): continue
+            if not go.bounced: continue
+            dx, dy = self.x - go.x, self.y - go.y
+            if (-30 < dx and dx < 30) and (-50 < dy and dy < 50):
+                # 충돌한 것으로 본다
+                scene.game_objects.remove(go) # 이것으로 충분할까?
+
+
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:
             if e.key == SDLK_LEFT:
