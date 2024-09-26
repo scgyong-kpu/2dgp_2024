@@ -30,6 +30,7 @@ def enter():
 
 def exit():
     game_objects.clear()
+    print('[sub.exit()]')
 
 def pause():
     pass

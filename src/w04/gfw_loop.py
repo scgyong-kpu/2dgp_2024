@@ -34,7 +34,9 @@ def start(scene):
             else:
                 current_scene.handle_event(e)
 
-    current_scene.exit() # scene 종료 전에 할 일이 있으면 할 수 있는 기회를 준다
+    while stack:
+        stack.pop().exit()
+        # scene 종료 전에 할 일이 있으면 할 수 있는 기회를 준다
 
     close_canvas() # Game Loop 를 빠져 나왔으므로 화면을 닫는다
 
@@ -47,7 +49,11 @@ def start_main_module():
 
 def change(scene):
     global current_scene
-    current_scene.exit()
+    if stack:
+        current_scene.exit()
+        stack.pop()
+
+    stack.append(scene)
     current_scene = scene
     print(f'{current_scene=}')
     current_scene.enter()
@@ -65,7 +71,7 @@ def push(scene):
 def pop():
     global current_scene, running
     if len(stack) <= 1:
-        running = False
+        quit()
         return
 
     current_scene.exit()
@@ -74,3 +80,6 @@ def pop():
     print(f'{current_scene=}')
     current_scene.resume()
 
+def quit():
+    global running
+    running = False

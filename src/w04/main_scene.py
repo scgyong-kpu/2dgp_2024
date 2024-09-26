@@ -17,12 +17,13 @@ def enter():
 
 def exit():
     game_objects.clear()
+    print('[main.exit()]')
 
 def pause():
-    pass
+    print('[main.pause()]')
 
 def resume():
-    pass
+    print('[main.resume()]')
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN:
