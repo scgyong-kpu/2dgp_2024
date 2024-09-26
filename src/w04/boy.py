@@ -1,12 +1,11 @@
 from pico2d import *
 import random
-import gfw_image
 from ball import Ball
 import gfw
 
 class Boy:
     def __init__(self):
-        self.image = gfw_image.load('run_animation.png')
+        self.image = gfw.image.load('run_animation.png')
         self.frameIndex = random.randint(0, 7)
         self.x = random.randint(100, 700)
         self.y = random.randint(90, 500)

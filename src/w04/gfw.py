@@ -1,4 +1,5 @@
 from pico2d import *
+import gfw_image as image
 
 running = True
 

@@ -1,9 +1,10 @@
 from pico2d import *
 from random import randrange, uniform
+import gfw
 
 class Ball:
     def __init__(self, x=None, y=None):
-        self.image = load_image('ball_41x41.png')
+        self.image = gfw.image.load('ball_41x41.png')
         self.x = randrange(100, 700) if x is None else x
         self.y = randrange(100, 500) if y is None else y
         self.dx = uniform(1.0, 2.0) * (1 if randrange(2) == 0 else -1)
