@@ -3,15 +3,14 @@ from pico2d import *
 
 import gfw
 import grass
-from boy import Boy
+import boy
 
 import sub_scene
 
 world = gfw.World(['bg', 'player', 'ball'])
 
 def enter():
-    global boy
-    boy = Boy()
+    boy.init()
     world.append(boy, world.layer.player)
     grass.init()
     world.append(grass, world.layer.bg)
