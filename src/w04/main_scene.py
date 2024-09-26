@@ -7,7 +7,7 @@ from boy import Boy
 
 import sub_scene
 
-world = gfw.world.World()
+world = gfw.World()
 
 def enter():
     global boy

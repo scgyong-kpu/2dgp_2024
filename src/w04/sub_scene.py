@@ -1,7 +1,7 @@
 import gfw
 from ball import Ball
 
-world = gfw.world.World()
+world = gfw.World()
 
 def enter():
     world.append(Ball())

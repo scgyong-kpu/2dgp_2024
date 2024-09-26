@@ -1,6 +1,6 @@
 from pico2d import *
 import gfw_image as image
-import gfw_world as world
+from gfw_world import World
 
 running = True
 
