@@ -5,6 +5,8 @@ import gfw_loop
 from grass import Grass
 from boy import Boy
 
+import sub_scene
+
 def enter():
     global boy
     boy = Boy()
@@ -20,6 +22,8 @@ def handle_event(e):
             boy.x -= 10
         elif e.key == SDLK_RIGHT:
             boy.x += 10
+        elif e.key == SDLK_RETURN:
+            gfw_loop.change(sub_scene)
 
 if __name__ == '__main__':
     gfw_loop.start_main_module()
