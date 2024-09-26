@@ -2,6 +2,8 @@ from pico2d import *
 import gfw_loop
 from random import randrange, uniform
 
+import main_scene
+
 class Ball:
     def __init__(self):
         self.image = load_image('ball_41x41.png')
@@ -29,10 +31,7 @@ def exit():
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN:
-        if e.key == SDLK_LEFT:
-            boy.x -= 10
-        elif e.key == SDLK_RIGHT:
-            boy.x += 10
+        gfw_loop.change(main_scene)
 
 if __name__ == '__main__':
     gfw_loop.start_main_module()
