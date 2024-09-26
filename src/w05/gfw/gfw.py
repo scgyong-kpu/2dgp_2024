@@ -1,15 +1,13 @@
 from pico2d import *
-from gfw.image import Sprite, AnimSprite
-from gfw.world import World
 
 import time
 
 running = True
-frame_time = 0.01
 
 stack = []
 
 def start(scene):
+    import gfw
     open_canvas(sync=True) # canvas 를 열어서 화면을 준비한다
 
     push(scene)
@@ -21,7 +19,7 @@ def start(scene):
 
         # inter-frame (delta) time
         now = time.time()
-        frame_time = now - last_time
+        gfw.frame_time = now - last_time
         last_time = now
 
         # update() 를 수행한다 (Game Logic)
