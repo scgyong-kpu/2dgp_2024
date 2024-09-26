@@ -10,6 +10,7 @@ def enter():
     world.append(gfw.Sprite('sky.jpg', cx, cy), world.layer.bg)
     world.append(gfw.Sprite('grass.png', cx, 30), world.layer.bg)
     world.append(gfw.Sprite('sun.png', cw - 100, ch - 100), world.layer.bg)
+    world.append(gfw.AnimSprite('fireball.png', cx, cy, 8.3), world.layer.bg)
     global boy
     boy = Boy()
     world.append(boy, world.layer.player)
