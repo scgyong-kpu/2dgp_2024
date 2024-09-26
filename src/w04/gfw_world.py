@@ -13,9 +13,9 @@ class World:
                 index += 1
 
         self.objects = [[] for i in range(layer_count)]
-    def append(self, go, layer_index=0):
+    def append(self, go, layer_index):
         self.objects[layer_index].append(go)
-    def remove(self, go, layer_index=0):
+    def remove(self, go, layer_index):
         self.objects[layer_index].remove(go)
     def clear(self):
         layer_count = len(self.objects)
