@@ -1,16 +1,17 @@
 from pico2d import *
 import random
 import gfw
+from ball import Ball
 
 class Boy:
     def __init__(self):
         self.image = gfw.image.load('animation_sheet.png')
         self.time = 0 # age in seconds
         self.frame = 0
-        self.x, self.y = get_canvas_width() // 2, get_canvas_height() // 2
+        self.x, self.y = 50, 50
         self.dx, self.dy = 0, 0
         self.speed = 200
-        self.action = 2 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
+        self.action = 3 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
     def draw(self):
         x = self.frame * 100
         y = self.action * 100
@@ -21,6 +22,9 @@ class Boy:
         self.frame = round(self.time * fps) % frame_count
         self.x += self.dx * self.speed * gfw.frame_time
         self.y += self.dy * self.speed * gfw.frame_time
+
+    def fire(self):
+        gfw.top().world.append(Ball(self))
 
     def handle_event(self, e):
         dx, dy = self.dx, self.dy
@@ -33,6 +37,9 @@ class Boy:
                 self.dy -= 1
             elif e.key == SDLK_UP:
                 self.dy += 1
+            elif e.key == SDLK_SPACE:
+                self.fire()
+
         elif e.type == SDL_KEYUP:
             if e.key == SDLK_LEFT:
                 self.dx += 1

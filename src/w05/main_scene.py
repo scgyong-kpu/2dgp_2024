@@ -2,7 +2,7 @@ from pico2d import *
 import gfw
 from boy import Boy
 
-world = gfw.World(['player'])
+world = gfw.World(['player', 'ball'])
 
 def enter():
     global boy
