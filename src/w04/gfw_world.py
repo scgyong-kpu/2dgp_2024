@@ -12,6 +12,12 @@ class World:
     def clear(self):
         layer_count = len(self.objects)
         self.objects = [[]] * layer_count
+    def update(self):
+        for go in self.all_objects():
+            go.update()
+    def draw(self):
+        for go in self.all_objects():
+            go.draw()
 
     def all_objects(self):
         all_objs = []
