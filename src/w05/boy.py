@@ -12,17 +12,19 @@ class Boy:
         self.dx, self.dy = 0, 0
         self.speed = 200
         self.action = 3 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
+
     def draw(self):
         x = self.frame * 100
         y = self.action * 100
         self.image.clip_draw(x, y, 100, 100, self.x, self.y)
+
     def update(self):
         self.time += gfw.frame_time
         fps, frame_count = 10, 8
         self.frame = round(self.time * fps) % frame_count
         self.x += self.dx * self.speed * gfw.frame_time
         self.y += self.dy * self.speed * gfw.frame_time
-        print(f'{gfw.frame_time=}')
+
     def fire(self):
         gfw.top().world.append(Ball(self))
 
