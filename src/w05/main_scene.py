@@ -7,6 +7,7 @@ world = gfw.World(['bg', 'player', 'ball'])
 def enter():
     cx, cy = get_canvas_width() // 2, get_canvas_height() // 2
     world.append(gfw.Sprite('sky.jpg', cx, cy), world.layer.bg)
+    world.append(gfw.Sprite('grass.png', cx, 30), world.layer.bg)
     global boy
     boy = Boy()
     world.append(boy, world.layer.player)
