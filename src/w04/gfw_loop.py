@@ -5,34 +5,31 @@ running = True
 stack = []
 
 def start(scene):
-    global current_scene
-    current_scene = scene
-
-    global stack
-    stack = [scene]
-
-    global running
     open_canvas() # canvas 를 열어서 화면을 준비한다
 
-    current_scene.enter() # canvas 를 연 뒤에 해야 할 일이 있다면 하게 해 준다
+    push(scene)
 
     while running: # 무한루프를 돈다
         # update() 를 수행한다 (Game Logic)
-        for go in current_scene.game_objects:
+        for go in stack[-1].game_objects:
             go.update()
 
         # draw() 를 수행한다 (Rendering)
         clear_canvas()
-        for go in current_scene.game_objects:
+        for go in stack[-1].game_objects:
             go.draw()
         update_canvas()
 
         # event 를 처리한다
         for e in get_events():
-            if e.type == SDL_QUIT:
-                running = False
-            else:
-                current_scene.handle_event(e)
+            handled = stack[-1].handle_event(e)
+            if not handled:
+                if e.type == SDL_QUIT:
+                    quit()
+                elif e.type == SDL_KEYDOWN:
+                    if e.key == SDLK_ESCAPE:
+                        pop()
+                
 
     while stack:
         stack.pop().exit()
@@ -48,37 +45,30 @@ def start_main_module():
     start(scene)
 
 def change(scene):
-    global current_scene
     if stack:
-        current_scene.exit()
-        stack.pop()
+        stack.pop().exit()
 
     stack.append(scene)
-    current_scene = scene
-    print(f'{current_scene=}')
-    current_scene.enter()
+    print(f'current_scene={scene}')
+    scene.enter()
 
 def push(scene):
-    global current_scene
-    if len(stack) > 0:
+    if stack:
         stack[-1].pause()
 
     stack.append(scene)
-    current_scene = scene
-    print(f'{current_scene=}')
-    current_scene.enter()
+    print(f'current_scene={scene}')
+    scene.enter()
 
 def pop():
-    global current_scene, running
-    if len(stack) <= 1:
+    stack.pop().exit()
+    if not stack:
         quit()
         return
 
-    current_scene.exit()
-    stack.pop()
-    current_scene = stack[-1]
-    print(f'{current_scene=}')
-    current_scene.resume()
+    scene = stack[-1]
+    print(f'current_scene={scene}')
+    scene.resume()
 
 def quit():
     global running

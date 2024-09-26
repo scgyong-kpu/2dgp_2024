@@ -39,9 +39,7 @@ def resume():
     pass
 
 def handle_event(e):
-    if e.type == SDL_KEYDOWN:
-        if e.key == SDLK_ESCAPE:
-            gfw_loop.pop()
+    pass
 
 if __name__ == '__main__':
     gfw_loop.start_main_module()
