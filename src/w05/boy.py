@@ -8,7 +8,7 @@ class Boy:
         self.frame = random.randint(0, 7)
         self.x, self.y = get_canvas_width() // 2, get_canvas_height() // 2
         self.dx, self.dy = 0, 0
-        self.speed = 10
+        self.speed = 200
         self.action = 2 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
     def draw(self):
         x = self.frame * 100
@@ -16,8 +16,8 @@ class Boy:
         self.image.clip_draw(x, y, 100, 100, self.x, self.y)
     def update(self):
         self.frame = (self.frame + 1) % 8
-        self.x += self.dx * self.speed
-        self.y += self.dy * self.speed
+        self.x += self.dx * self.speed * gfw.frame_time
+        self.y += self.dy * self.speed * gfw.frame_time
 
     def handle_event(self, e):
         dx, dy = self.dx, self.dy

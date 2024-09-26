@@ -3,8 +3,10 @@ import gfw_image as image
 from gfw_world import World
 
 from random import uniform
+import time
 
 running = True
+frame_time = 0.01
 
 stack = []
 
@@ -13,7 +15,16 @@ def start(scene):
 
     push(scene)
 
+    global frame_time
+    last_time = time.time()
+
     while running: # 무한루프를 돈다
+
+        # inter-frame (delta) time
+        now = time.time()
+        frame_time = now - last_time
+        last_time = now
+
         # update() 를 수행한다 (Game Logic)
         stack[-1].world.update()
 
