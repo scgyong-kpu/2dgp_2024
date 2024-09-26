@@ -17,7 +17,7 @@ class Boy:
 
         scene = gfw.top()
         for go in gfw.top().world.objects_at(1):
-            if not isinstance(go, Ball): continue
+            # if not isinstance(go, Ball): continue
             if not go.bounced: continue
             dx, dy = self.x - go.x, self.y - go.y
             if (-30 < dx and dx < 30) and (-50 < dy and dy < 50):
@@ -35,3 +35,21 @@ class Boy:
                 ball = Ball(self.x, self.y)
                 scene = gfw.top()
                 scene.world.append(ball, 1) # layer_index 가 1 인걸 기억할수 있을까?
+
+
+'''
+Pico2d is prepared.
+current_scene=<module '__main__' from 'D://Lectures//2024_2//2dgp//git//src//w04//main_scene.py'>
+Traceback (most recent call last):
+  File "D:/Lectures/2024_2/2dgp/git/src/w04/main_scene.py", line 38, in <module>
+    gfw.start_main_module()
+  File "D:/Lectures/2024_2/2dgp/git/src/w04/gfw.py", line 45, in start_main_module
+    start(scene)
+  File "D:/Lectures/2024_2/2dgp/git/src/w04/gfw.py", line 16, in start
+    stack[-1].world.update()
+  File "D:/Lectures/2024_2/2dgp/git/src/w04/gfw_world.py", line 17, in update
+    go.update()
+  File "D:/Lectures/2024_2/2dgp/git/src/w04/boy.py", line 21, in update
+    if not go.bounced: continue
+AttributeError: 'Boy' object has no attribute 'bounced'
+'''
