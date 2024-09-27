@@ -12,17 +12,32 @@ class Fighter(gfw.Sprite):
     SPARK_INTERVAL = 0.05
     SPARK_OFFSET = 28
     MAX_ROLL = 0.4
+    IMAGE_RECTS = [
+        (  8, 0, 42, 80),
+        ( 76, 0, 42, 80),
+        (140, 0, 50, 80),
+        (205, 0, 56, 80),
+        (270, 0, 62, 80),
+        (334, 0, 70, 80),
+        (406, 0, 62, 80),
+        (477, 0, 56, 80),
+        (549, 0, 48, 80),
+        (621, 0, 42, 80),
+        (689, 0, 42, 80),
+    ]
 
     def __init__(self):
-        super().__init__('res/fighter.png', get_canvas_width() // 2, 80)
+        super().__init__('res/fighters.png', get_canvas_width() // 2, 80)
         self.dx = 0
         self.speed = 320 # 320 pixels per second
-        half_width = self.image.w // 2
+        half_width = 36 # self.image.w // 2
         self.min_x = half_width
         self.max_x = get_canvas_width() - half_width
         self.laser_time = 0
         self.spark_image = gfw.image.load('res/laser_0.png')
         self.roll_time = 0
+        self.src_rect = Fighter.IMAGE_RECTS[5] # 0~10 의 11 개 중 5번이 가운데이다.
+
     def handle_event(self, e):
         pair = (e.type, e.key)
         if pair in Fighter.KEY_MAP:
@@ -42,10 +57,11 @@ class Fighter(gfw.Sprite):
             self.roll_time = clamp(-Fighter.MAX_ROLL, self.roll_time, Fighter.MAX_ROLL)
 
         roll = int(self.roll_time * 5 / Fighter.MAX_ROLL)
-
+        self.src_rect = Fighter.IMAGE_RECTS[roll + 5] # [-5 ~ +5] 를 [0 ~ 10] 으로 변환한다.
         print(f'{roll=} {self.roll_time=:.2f}')
     def draw(self):
-        super().draw()
+        # super().draw()
+        self.image.clip_draw(*self.src_rect, self.x, self.y)
         if self.laser_time < Fighter.SPARK_INTERVAL:
             self.spark_image.draw(self.x, self.y + Fighter.SPARK_OFFSET)
     def fire(self):
