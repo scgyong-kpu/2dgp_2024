@@ -2,8 +2,9 @@ from pico2d import *
 import gfw
 
 from fighter import Fighter
+from enemy import EnemyGen
 
-world = gfw.World(['bg', 'fighter', 'bullet'])
+world = gfw.World(['bg', 'fighter', 'bullet', 'enemy', 'controller'])
 
 canvas_width = 500
 canvas_height = 800
@@ -12,6 +13,7 @@ def enter():
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
+    world.append(EnemyGen(), world.layer.controller)
 
 def exit():
     world.clear()
