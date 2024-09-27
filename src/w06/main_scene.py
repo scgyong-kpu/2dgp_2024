@@ -26,6 +26,7 @@ def resume():
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
+    fighter.handle_event(e)
 
 if __name__ == '__main__':
     gfw.start_main_module()
