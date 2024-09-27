@@ -40,7 +40,10 @@ class Fighter(gfw.Sprite):
         else:
             self.roll_time += self.dx * gfw.frame_time
             self.roll_time = clamp(-Fighter.MAX_ROLL, self.roll_time, Fighter.MAX_ROLL)
-        print(f'roll={self.roll_time:.2f}')
+
+        roll = int(self.roll_time * 5 / Fighter.MAX_ROLL)
+
+        print(f'{roll=} {self.roll_time=:.2f}')
     def draw(self):
         super().draw()
         if self.laser_time < Fighter.SPARK_INTERVAL:
