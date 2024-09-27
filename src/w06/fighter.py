@@ -3,5 +3,5 @@ import gfw
 
 class Fighter(gfw.Sprite):
     def __init__(self):
-        super().__init__('res/fighter.png', 100, 100)
+        super().__init__('res/fighter.png', get_canvas_width() // 2, 80)
 
