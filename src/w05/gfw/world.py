@@ -40,3 +40,9 @@ class World:
         objs = self.objects[layer_index]
         for i in range(len(objs) - 1, -1, -1):
             yield objs[i]
+
+    def count_at(self, layer_index):
+        return len(self.objects[layer_index])
+
+    def count(self):
+        return reduce(lambda sum, a: sum + len(a), self.objects, 0)
