@@ -23,6 +23,7 @@ class EnemyGen:
         self.time += gfw.frame_time
         if self.time < self.GEN_INTERVAL:
             return
-        gfw.top().world.append(Enemy(0))
+        for i in range(5):
+            gfw.top().world.append(Enemy(i))
         self.time -= self.GEN_INTERVAL
 
