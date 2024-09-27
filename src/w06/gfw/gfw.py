@@ -7,7 +7,12 @@ _stack = []
 
 def start(scene):
     import gfw
-    open_canvas(sync=True) # canvas 를 열어서 화면을 준비한다
+
+    w, h = 800, 600
+    if hasattr(scene, 'canvas_width'): w = scene.canvas_width
+    if hasattr(scene, 'canvas_height'): h = scene.canvas_height
+
+    open_canvas(w=w, h=h, sync=True) # canvas 를 열어서 화면을 준비한다
 
     push(scene)
 
