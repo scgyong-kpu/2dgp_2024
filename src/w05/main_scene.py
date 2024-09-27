@@ -2,15 +2,15 @@ from pico2d import *
 import gfw
 from boy import Boy
 
-world = gfw.World(['bg', 'player', 'ball'])
+world = gfw.World(['bg', 'fg', 'player', 'ball'])
 
 def enter():
     cw, ch = get_canvas_width(), get_canvas_height()
     cx, cy = cw // 2, ch // 2
     world.append(gfw.Sprite('sky.jpg', cx, cy), world.layer.bg)
-    world.append(gfw.Sprite('grass.png', cx, 30), world.layer.bg)
-    world.append(gfw.Sprite('sun.png', cw - 100, ch - 100), world.layer.bg)
-    world.append(gfw.AnimSprite('fireball.png', cx, cy, 8.3), world.layer.bg)
+    world.append(gfw.Sprite('grass.png', cx, 30), world.layer.fg)
+    world.append(gfw.Sprite('sun.png', cw - 100, ch - 100), world.layer.fg)
+    world.append(gfw.AnimSprite('fireball.png', cx, cy, 8.3), world.layer.fg)
     world.append(gfw.AnimSprite('ryu.png', 200, 95, 9), world.layer.player)
     global boy
     boy = Boy()
