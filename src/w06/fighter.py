@@ -20,6 +20,7 @@ class Fighter(gfw.Sprite):
         self.max_x = get_canvas_width() - half_width
         self.laser_time = 0
         self.spark_image = gfw.image.load('res/laser_0.png')
+        self.roll_time = 0
     def handle_event(self, e):
         pair = (e.type, e.key)
         if pair in Fighter.KEY_MAP:
@@ -30,13 +31,19 @@ class Fighter(gfw.Sprite):
         self.laser_time += gfw.frame_time
         if self.laser_time >= Fighter.LASER_INTERVAL:
             self.fire()
+        self.update_roll()
+    def update_roll(self):
+        if self.dx == 0:
+            self.roll_time = 0
+        else:
+            self.roll_time += self.dx * gfw.frame_time
+        print(f'roll={self.roll_time:.2f}')
     def draw(self):
         super().draw()
         if self.laser_time < Fighter.SPARK_INTERVAL:
             self.spark_image.draw(self.x, self.y + Fighter.SPARK_OFFSET)
     def fire(self):
         self.laser_time = 0
-        print('fire!')
         world = gfw.top().world
         world.append(Bullet(self.x, self.y), world.layer.bullet)
 
