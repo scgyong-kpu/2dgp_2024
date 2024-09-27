@@ -44,5 +44,9 @@ class Bullet(gfw.Sprite):
     def __init__(self, x, y):
         super().__init__('res/laser_1.png', x, y)
         self.speed = 400 # 400 pixels per second
+        self.max_y = get_canvas_height() + self.image.h
+        self.layer_index = gfw.top().world.layer.bullet
     def update(self):
         self.y += self.speed * gfw.frame_time
+        if self.y > self.max_y:
+            gfw.top().world.remove(self)
