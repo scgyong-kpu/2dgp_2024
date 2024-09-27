@@ -12,12 +12,15 @@ class Fighter(gfw.Sprite):
         super().__init__('res/fighter.png', get_canvas_width() // 2, 80)
         self.dx = 0
         self.speed = 320 # 320 pixels per second
+        half_width = self.image.w // 2
+        self.min_x = half_width
+        self.max_x = get_canvas_width() - half_width
     def handle_event(self, e):
         pair = (e.type, e.key)
         if pair in Fighter.KEY_MAP:
             self.dx += Fighter.KEY_MAP[pair]
     def update(self):
         self.x += self.dx * self.speed * gfw.frame_time
-        self.x = clamp(0, self.x, get_canvas_width())
+        self.x = clamp(self.min_x, self.x, self.max_x)
 
 
