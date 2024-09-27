@@ -1,10 +1,14 @@
 from pico2d import * 
 import gfw
 
-world = gfw.World(['bg'])
+from fighter import Fighter
+
+world = gfw.World(['bg', 'fighter'])
 
 def enter():
-    pass
+    global fighter
+    fighter = Fighter()
+    world.append(fighter, world.layer.fighter)
 
 def exit():
     world.clear()
