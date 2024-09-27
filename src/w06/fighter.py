@@ -11,6 +11,8 @@ class Fighter(gfw.Sprite):
     LASER_INTERVAL = 0.25
     SPARK_INTERVAL = 0.05
     SPARK_OFFSET = 28
+    MAX_ROLL = 0.4
+
     def __init__(self):
         super().__init__('res/fighter.png', get_canvas_width() // 2, 80)
         self.dx = 0
@@ -37,6 +39,7 @@ class Fighter(gfw.Sprite):
             self.roll_time = 0
         else:
             self.roll_time += self.dx * gfw.frame_time
+            self.roll_time = clamp(-Fighter.MAX_ROLL, self.roll_time, Fighter.MAX_ROLL)
         print(f'roll={self.roll_time:.2f}')
     def draw(self):
         super().draw()
