@@ -5,6 +5,9 @@ from fighter import Fighter
 
 world = gfw.World(['bg', 'fighter'])
 
+canvas_width = 500
+canvas_height = 800
+
 def enter():
     global fighter
     fighter = Fighter()
