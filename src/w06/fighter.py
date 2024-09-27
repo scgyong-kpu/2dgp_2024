@@ -37,3 +37,12 @@ class Fighter(gfw.Sprite):
     def fire(self):
         self.laser_time = 0
         print('fire!')
+        world = gfw.top().world
+        world.append(Bullet(self.x, self.y), world.layer.bullet)
+
+class Bullet(gfw.Sprite):
+    def __init__(self, x, y):
+        super().__init__('res/laser_1.png', x, y)
+        self.speed = 400 # 400 pixels per second
+    def update(self):
+        self.y += self.speed * gfw.frame_time

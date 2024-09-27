@@ -3,7 +3,7 @@ import gfw
 
 from fighter import Fighter
 
-world = gfw.World(['bg', 'fighter'])
+world = gfw.World(['bg', 'fighter', 'bullet'])
 
 canvas_width = 500
 canvas_height = 800
