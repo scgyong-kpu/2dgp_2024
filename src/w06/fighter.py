@@ -68,7 +68,6 @@ class Fighter(gfw.Sprite):
 
         roll = int(self.roll_time * 5 / Fighter.MAX_ROLL)
         self.src_rect = Fighter.IMAGE_RECTS[roll + 5] # [-5 ~ +5] 를 [0 ~ 10] 으로 변환한다.
-        print(f'{roll=} {self.roll_time=:.2f}')
     def draw(self):
         # super().draw()
         self.image.clip_draw(*self.src_rect, self.x, self.y)
