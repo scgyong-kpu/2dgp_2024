@@ -33,10 +33,10 @@ class World:
 
     def all_objects(self):
         for objs in self.objects:
-            for go in objs:
-                yield go 
-        # generator 를 사용하면 all_objs 같이 메모리를 할당하지 않아도 된다
+            for i in range(len(objs) - 1, -1, -1):
+                yield objs[i]
 
     def objects_at(self, layer_index):
-        for go in self.objects[layer_index]:
-            yield go 
+        objs = self.objects[layer_index]
+        for i in range(len(objs) - 1, -1, -1):
+            yield objs[i]
