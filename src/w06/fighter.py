@@ -50,11 +50,21 @@ class Fighter(gfw.Sprite):
             self.fire()
         self.update_roll()
     def update_roll(self):
-        if self.dx == 0:
-            self.roll_time = 0
-        else:
-            self.roll_time += self.dx * gfw.frame_time
-            self.roll_time = clamp(-Fighter.MAX_ROLL, self.roll_time, Fighter.MAX_ROLL)
+        roll_dir = self.dx
+        if roll_dir == 0: # 현재 비행기가 움직이고 있지 않은데
+            if self.roll_time > 0:   # roll 이 + 라면
+                roll_dir = -1        #  감소시킨다
+            elif self.roll_time < 0: # roll 이 - 라면
+                roll_dir = 1         #  증가시킨다
+
+        self.roll_time += roll_dir * gfw.frame_time
+        self.roll_time = clamp(-Fighter.MAX_ROLL, self.roll_time, Fighter.MAX_ROLL)
+
+        if self.dx == 0: # 현재 비행기가 움직이고 있지 않은데
+            if roll_dir < 0 and self.roll_time < 0: # roll 이 감소중이었고 0 을 지나쳤으면
+                self.roll_time = 0                  # 0 이 되게 한다
+            if roll_dir > 0 and self.roll_time > 0: # roll 이 증가중이었고 0 을 지나쳤으면
+                self.roll_time = 0                  # 0 이 되게 한다
 
         roll = int(self.roll_time * 5 / Fighter.MAX_ROLL)
         self.src_rect = Fighter.IMAGE_RECTS[roll + 5] # [-5 ~ +5] 를 [0 ~ 10] 으로 변환한다.
