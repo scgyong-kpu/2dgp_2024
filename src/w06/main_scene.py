@@ -4,7 +4,7 @@ import gfw
 from fighter import Fighter
 from enemy import EnemyGen
 
-world = gfw.World(['bg', 'fighter', 'bullet', 'enemy', 'controller'])
+world = gfw.World(['bg', 'fighter', 'bullet', 'enemy', 'ui', 'controller'])
 
 canvas_width = 500
 canvas_height = 800
@@ -14,6 +14,7 @@ def enter():
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
+    world.append(MainScenUI(), world.layer.ui)
     world.append(EnemyGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)
 
@@ -51,6 +52,13 @@ class CollisionChecker:
                 # decrease fighter HP here?
                 break
 
+class MainScenUI:
+    def __init__(self):
+        self.font = load_font('res/lucon.ttf', 30)
+        self.pos = (10, canvas_height - 50)
+    def update(self): pass
+    def draw(self):
+        self.font.draw(*self.pos, "Hello World")
 
 
 if __name__ == '__main__':
