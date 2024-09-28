@@ -46,3 +46,27 @@ class World:
 
     def count(self):
         return reduce(lambda sum, a: sum + len(a), self.objects, 0)
+
+def collides_box(a, b): # a or b is a Sprite
+    if hasattr(a, 'get_bb'):
+        la, ba, ra, ta = a.get_bb()
+    else:
+        la = a.x - a.width // 2
+        ba = a.y - a.height // 2
+        ra = a.x + a.width // 2
+        ta = a.y + a.height // 2
+
+    if hasattr(b, 'get_bb'):
+        lb, bb, rb, tb = b.get_bb()
+    else:
+        lb = b.x - b.width // 2
+        bb = b.y - b.height // 2
+        rb = b.x + b.width // 2
+        tb = b.y + b.height // 2
+
+    if la > rb: return False
+    if ra < lb: return False
+    if ba > tb: return False
+    if ta < bb: return False
+
+    return True
