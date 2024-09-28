@@ -27,6 +27,13 @@ class Sprite:
         self.image.draw(self.x, self.y)
     def update(self):
         pass
+    def get_bb(self):
+        l = self.x - self.width // 2
+        b = self.y - self.height // 2
+        r = self.x + self.width // 2
+        t = self.y + self.height // 2
+        return l, b, r, t
+
     def __repr__(self):
         return f'{type(self).__name__}({self.filename})'
 
