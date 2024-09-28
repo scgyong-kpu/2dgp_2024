@@ -30,6 +30,17 @@ def handle_event(e):
         print(world.objects)
     fighter.handle_event(e)
 
+class CollisionChecker:
+    def draw(self): pass
+    def update(self):
+        bullets = world.objects_at(world.layer.bullet)
+        for b in bullets: # reversed order
+            enemies = world.objects_at(world.layer.enemy)
+            for e in enemies: # reversed order
+                pass
+                # if b vs e collision check
+
+
 if __name__ == '__main__':
     gfw.start_main_module()
 
