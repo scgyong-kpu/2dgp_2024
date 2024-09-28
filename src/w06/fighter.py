@@ -30,7 +30,8 @@ class Fighter(gfw.Sprite):
         super().__init__('res/fighters.png', get_canvas_width() // 2, 80)
         self.dx = 0
         self.speed = 320 # 320 pixels per second
-        half_width = 36 # self.image.w // 2
+        self.width = 72
+        half_width = self.width // 2
         self.min_x = half_width
         self.max_x = get_canvas_width() - half_width
         self.laser_time = 0

@@ -45,6 +45,10 @@ class CollisionChecker:
                     collided = True
                     break
             if collided: break
+            if gfw.collides_box(fighter, e):
+                world.remove(e)
+                # decrease fighter HP here?
+                break
 
 
 
