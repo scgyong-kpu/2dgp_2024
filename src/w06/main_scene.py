@@ -55,10 +55,10 @@ class CollisionChecker:
 class MainScenUI:
     def __init__(self):
         self.font = load_font('res/lucon.ttf', 30)
-        self.pos = (10, canvas_height - 50)
+        self.pos = (10, canvas_height - 20)
     def update(self): pass
     def draw(self):
-        self.font.draw(*self.pos, "Hello World")
+        self.font.draw(*self.pos, str(list(map(len, world.objects))))
 
 
 if __name__ == '__main__':
