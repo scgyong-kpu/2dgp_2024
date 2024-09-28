@@ -14,6 +14,7 @@ def enter():
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
     world.append(EnemyGen(), world.layer.controller)
+    world.append(CollisionChecker(), world.layer.controller)
 
 def exit():
     world.clear()
@@ -35,10 +36,16 @@ class CollisionChecker:
     def update(self):
         bullets = world.objects_at(world.layer.bullet)
         for b in bullets: # reversed order
+            collided = False
             enemies = world.objects_at(world.layer.enemy)
             for e in enemies: # reversed order
-                pass
-                # if b vs e collision check
+                if gfw.collides_box(b, e):
+                    world.remove(e)
+                    world.remove(b)
+                    collided = True
+                    break
+            if collided: break
+
 
 
 if __name__ == '__main__':
