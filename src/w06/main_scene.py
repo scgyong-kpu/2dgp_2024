@@ -34,11 +34,11 @@ def handle_event(e):
 class CollisionChecker:
     def draw(self): pass
     def update(self):
-        bullets = world.objects_at(world.layer.bullet)
-        for b in bullets: # reversed order
+        enemies = world.objects_at(world.layer.enemy)
+        for e in enemies: # reversed order
             collided = False
-            enemies = world.objects_at(world.layer.enemy)
-            for e in enemies: # reversed order
+            bullets = world.objects_at(world.layer.bullet)
+            for b in bullets: # reversed order
                 if gfw.collides_box(b, e):
                     world.remove(e)
                     world.remove(b)
