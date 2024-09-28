@@ -13,6 +13,9 @@ class Enemy(gfw.AnimSprite):
         self.y += self.speed * gfw.frame_time
         if self.y < -self.WIDTH:
             gfw.top().world.remove(self)
+    def get_bb(self):
+        r = 42
+        return self.x - r, self.y - r, self.x + r, self.y + r
 
 class EnemyGen:
     GEN_INTERVAL = 5.0

@@ -79,6 +79,9 @@ class Fighter(gfw.Sprite):
         world = gfw.top().world
         world.append(Bullet(self.x, self.y), world.layer.bullet)
 
+    def get_bb(self):
+        return self.x - 30, self.y - 32, self.x + 30, self.y + 28
+
 class Bullet(gfw.Sprite):
     def __init__(self, x, y):
         super().__init__('res/laser_1.png', x, y)
