@@ -14,6 +14,8 @@ def start(scene):
 
     open_canvas(w=w, h=h, sync=True) # canvas 를 열어서 화면을 준비한다
 
+    gfw.shows_bounding_box = scene.shows_bounding_box if hasattr(scene, 'shows_bounding_box') else False
+
     push(scene)
 
     global frame_time

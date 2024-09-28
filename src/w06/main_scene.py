@@ -8,6 +8,7 @@ world = gfw.World(['bg', 'fighter', 'bullet', 'enemy', 'controller'])
 
 canvas_width = 500
 canvas_height = 800
+shows_bounding_box = True
 
 def enter():
     global fighter

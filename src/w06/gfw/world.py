@@ -30,6 +30,10 @@ class World:
     def draw(self):
         for go in self.all_objects():
             go.draw()
+        if not gfw.shows_bounding_box: return
+        for go in self.all_objects():
+            if not hasattr(go, 'get_bb'): continue
+            draw_rectangle(*go.get_bb())
 
     def all_objects(self):
         for objs in self.objects:
