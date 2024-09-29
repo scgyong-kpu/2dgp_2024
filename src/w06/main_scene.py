@@ -10,13 +10,18 @@ canvas_width = 500
 canvas_height = 800
 shows_bounding_box = True
 
+import sys
+self = sys.modules[__name__]
+
 def enter():
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
-    world.append(MainScenUI(), world.layer.ui)
     world.append(EnemyGen(), world.layer.controller)
-    world.append(CollisionChecker(), world.layer.controller)
+    world.append(self, world.layer.ui)
+
+    self.font = load_font('res/lucon.ttf', 30)
+    self.pos = (10, canvas_height - 20)
 
 def exit():
     world.clear()
@@ -33,9 +38,7 @@ def handle_event(e):
         print(world.objects)
     fighter.handle_event(e)
 
-class CollisionChecker:
-    def draw(self): pass
-    def update(self):
+def update():
         enemies = world.objects_at(world.layer.enemy)
         for e in enemies: # reversed order
             collided = False
@@ -52,12 +55,7 @@ class CollisionChecker:
                 # decrease fighter HP here?
                 break
 
-class MainScenUI:
-    def __init__(self):
-        self.font = load_font('res/lucon.ttf', 30)
-        self.pos = (10, canvas_height - 20)
-    def update(self): pass
-    def draw(self):
+def draw():
         self.font.draw(*self.pos, str(list(map(len, world.objects))))
 
 
