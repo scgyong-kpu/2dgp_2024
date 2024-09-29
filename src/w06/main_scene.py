@@ -9,12 +9,13 @@ world = gfw.World(['bg', 'fighter', 'bullet', 'enemy', 'ui', 'controller'])
 canvas_width = 500
 canvas_height = 800
 shows_bounding_box = True
+shows_object_count = True
 
 def enter():
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
-    world.append(MainScenUI(), world.layer.ui)
+    # world.append(MainScenUI(), world.layer.ui)
     world.append(EnemyGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)
 
@@ -59,7 +60,6 @@ class MainScenUI:
     def update(self): pass
     def draw(self):
         self.font.draw(*self.pos, str(list(map(len, world.objects))))
-
 
 if __name__ == '__main__':
     gfw.start_main_module()

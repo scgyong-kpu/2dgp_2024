@@ -15,6 +15,9 @@ def start(scene):
     open_canvas(w=w, h=h, sync=True) # canvas 를 열어서 화면을 준비한다
 
     gfw.shows_bounding_box = scene.shows_bounding_box if hasattr(scene, 'shows_bounding_box') else False
+    gfw.shows_object_count = scene.shows_object_count if hasattr(scene, 'shows_object_count') else False
+    if gfw.shows_object_count: 
+        _load_system_font()
 
     push(scene)
 
@@ -91,3 +94,17 @@ def quit():
 
 def top():
     return _stack[-1]
+
+def _load_system_font():
+    import gfw
+    gfw._system_font = None
+    paths = [ 'lucon.ttf', 'res/lucon.ttf', 'C:/Windows/Fonts/lucon.ttf' ]
+    for path in paths:
+        try:
+            font = load_font(path, 20)
+            print(f'System Font Loaded: {path}')
+            gfw._system_font = font
+            # print(f'{gfw.shows_object_count=} and {gfw._system_font=}')
+            break
+        except:
+            pass

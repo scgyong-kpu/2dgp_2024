@@ -1,5 +1,6 @@
 from pico2d import *
 import gfw
+from functools import reduce
 
 class World:
     def __init__(self, layer_count=1):
@@ -30,10 +31,12 @@ class World:
     def draw(self):
         for go in self.all_objects():
             go.draw()
-        if not gfw.shows_bounding_box: return
-        for go in self.all_objects():
-            if not hasattr(go, 'get_bb'): continue
-            draw_rectangle(*go.get_bb())
+        if gfw.shows_bounding_box:
+            for go in self.all_objects():
+                if not hasattr(go, 'get_bb'): continue
+                draw_rectangle(*go.get_bb())
+        if gfw.shows_object_count and gfw._system_font is not None:
+            gfw._system_font.draw(10, 20, str(list(map(len, self.objects))) + ' ' + str(self.count()))
 
     def all_objects(self):
         for objs in self.objects:
