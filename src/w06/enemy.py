@@ -19,8 +19,9 @@ class Enemy(gfw.AnimSprite):
 
 class EnemyGen:
     GEN_INTERVAL = 5.0
+    GEN_INIT = 1.0
     def __init__(self):
-        self.time = 0
+        self.time = self.GEN_INTERVAL - self.GEN_INIT
     def draw(self): pass
     def update(self):
         self.time += gfw.frame_time
