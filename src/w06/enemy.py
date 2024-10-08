@@ -1,4 +1,5 @@
 from pico2d import *
+import random
 import gfw
 
 class Enemy(gfw.AnimSprite):
@@ -31,12 +32,12 @@ class EnemyGen:
         self.wave_index = 0
     def draw(self): pass
     def update(self):
-        self.time += gfw.frame_time
+        self.time += gfw.frame_time * 5
         if self.time < self.GEN_INTERVAL:
             return
         for i in range(5):
-            level = self.wave_index + i + 1
-            if level > Enemy.MAX_LEVEL: level = Enemy.MAX_LEVEL
+            level = (self.wave_index + 18) // 10 - random.randrange(3)
+            level = clamp(1, level, Enemy.MAX_LEVEL)
             gfw.top().world.append(Enemy(i, level))
         self.time -= self.GEN_INTERVAL
         self.wave_index += 1
