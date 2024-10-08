@@ -11,8 +11,18 @@ canvas_height = 800
 shows_bounding_box = True
 shows_object_count = True
 
+class Background(gfw.Sprite):
+    def __init__(self, filename):
+        cw, ch = get_canvas_width(), get_canvas_height()
+        super().__init__(filename, cw // 2, ch // 2)
+        self.width = cw
+        self.height = ch
+
+    def draw(self):
+        self.image.draw(self.x, self.y, self.width, self.height)
+
 def enter():
-    world.append(gfw.Sprite('res/bg_city.png', canvas_width // 2, canvas_height // 2), world.layer.bg)
+    world.append(Background('res/bg_city.png'), world.layer.bg)
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
