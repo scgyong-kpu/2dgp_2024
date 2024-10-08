@@ -15,6 +15,7 @@ class Enemy(gfw.AnimSprite):
         self.speed = -100 # 100 pixels per second
         self.max_life = level * 100
         self.life = self.max_life
+        self.score = self.max_life
         if Enemy.gauge == None:
             Enemy.gauge = gfw.Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
             print('Loading Gauge Only Once Here')

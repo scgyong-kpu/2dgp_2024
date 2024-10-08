@@ -19,6 +19,9 @@ def enter():
     world.append(EnemyGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)
 
+    global score
+    score = 0
+
 def exit():
     world.clear()
     print('[main.exit()]')
@@ -47,6 +50,9 @@ class CollisionChecker:
                     world.remove(b)
                     dead = e.decrease_life(b.power)
                     if dead:
+                        global score
+                        score += e.score
+                        print(f'+{e.score} ={score}')
                         world.remove(e)
                     break
             if collided: break
