@@ -22,21 +22,25 @@ class Background(gfw.Sprite):
         self.image.draw(self.x, self.y, self.width, self.height)
 
 class VertFillBackground(Background):
-    def __init__(self, filename):
+    def __init__(self, filename, speed=0):
         super().__init__(filename)
         self.dest_height = self.image.h * get_canvas_width() // self.image.w
+        self.speed = speed
+        self.scroll = 0
+    def update(self):
+        self.scroll += self.speed * gfw.frame_time
 
     def draw(self):
-        x = get_canvas_width() // 2
-        y = self.dest_height // 2
-        max_y = get_canvas_height() + self.dest_height // 2
+        y = self.scroll % self.dest_height
+        if y != 0: y -= self.dest_height
+        max_y = get_canvas_height()
         while y < max_y:
-            self.image.draw(x, y, self.width, self.dest_height)
+            self.image.draw_to_origin(0, y, self.width, self.dest_height)
             y += self.dest_height
 
 def enter():
-    world.append(VertFillBackground('res/clouds.png'), world.layer.bg)
-    world.append(VertFillBackground('res/bg_city.png'), world.layer.bg)
+    world.append(VertFillBackground('res/clouds.png', -60), world.layer.bg)
+    world.append(VertFillBackground('res/bg_city.png', -30), world.layer.bg)
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
