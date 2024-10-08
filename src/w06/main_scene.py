@@ -15,7 +15,10 @@ def enter():
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
-    world.append(MainScenUI(), world.layer.ui)
+    # world.append(MainScenUI(), world.layer.ui)
+    global score_sprite
+    score_sprite = ScoreSprite('res/number_24x32.png', canvas_width - 50, canvas_height - 50)
+    world.append(score_sprite, world.layer.ui)
     world.append(EnemyGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)
 
@@ -52,6 +55,7 @@ class CollisionChecker:
                     if dead:
                         global score
                         score += e.score
+                        score_sprite.score = score
                         # print(f'+{e.score} ={score}')
                         world.remove(e)
                     break
@@ -68,6 +72,23 @@ class MainScenUI:
     def update(self): pass
     def draw(self):
         self.font.draw(*self.pos, f'{score:10d}')
+
+class ScoreSprite(gfw.Sprite):
+    def __init__(self, img_file, right, y):
+        super().__init__(img_file, right, y)
+        self.digit_width = self.image.w // 10
+        self.width = self.digit_width
+        self.score = 0
+    def draw(self):
+        x = self.x
+        score = self.score
+        while score > 0:
+            digit = score % 10
+            sx = digit * self.digit_width
+            # print(type(sx), type(digit), type(self.digit_width))
+            self.image.clip_draw(sx, 0, self.digit_width, self.image.h, x, self.y)
+            x -= self.digit_width
+            score //= 10
 
 if __name__ == '__main__':
     gfw.start_main_module()
