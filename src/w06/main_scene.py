@@ -79,9 +79,10 @@ class ScoreSprite(gfw.Sprite):
         self.digit_width = self.image.w // 10
         self.width = self.digit_width
         self.score = 0
+        self.display = 0
     def draw(self):
         x = self.x
-        score = self.score
+        score = self.display
         while score > 0:
             digit = score % 10
             sx = digit * self.digit_width
@@ -89,6 +90,9 @@ class ScoreSprite(gfw.Sprite):
             self.image.clip_draw(sx, 0, self.digit_width, self.image.h, x, self.y)
             x -= self.digit_width
             score //= 10
+    def update(self):
+        if self.display < self.score:
+            self.display += 1
 
 if __name__ == '__main__':
     gfw.start_main_module()
