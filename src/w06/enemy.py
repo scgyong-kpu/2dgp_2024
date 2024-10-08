@@ -2,6 +2,20 @@ from pico2d import *
 import random
 import gfw
 
+class Gauge:
+    def __init__(self, fg_fname, bg_fname):
+        self.fg = gfw.image.load(fg_fname)
+        self.bg = gfw.image.load(bg_fname)
+    def draw(self, x, y, width, rate):
+        l = x - width // 2
+        b = y - self.bg.h // 2
+        self.draw_3(self.bg, l, b, width, 3)
+        self.draw_3(self.fg, l, b, round(width * rate), 3)
+    def draw_3(self, img, l, b, width, edge):
+        img.clip_draw_to_origin(0, 0, edge, img.h, l, b, edge, img.h)
+        img.clip_draw_to_origin(edge, 0, img.w - 2 * edge, img.h, l+edge, b, width - 2 * edge, img.h)
+        img.clip_draw_to_origin(img.w - edge, 0, edge, img.h, l+width-edge, b, edge, img.h)
+
 class Enemy(gfw.AnimSprite):
     WIDTH = 100
     MAX_LEVEL = 20
@@ -12,21 +26,28 @@ class Enemy(gfw.AnimSprite):
         # print(f'Creating Enemy Level {level}')
         super().__init__(f'res/enemy_{level:02d}.png', x, y, 10) # speed = 10fps
         self.speed = -100 # 100 pixels per second
-        self.life = level * 100
+        self.max_life = level * 100
+        self.life = self.max_life
+        self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
         self.layer_index = gfw.top().world.layer.enemy
     def update(self):
         self.y += self.speed * gfw.frame_time
         if self.y < -self.WIDTH:
             gfw.top().world.remove(self)
+    def draw(self):
+        super().draw()
+        gy = self.y - self.WIDTH // 2
+        rate = self.life / self.max_life
+        self.gauge.draw(self.x, gy, self.WIDTH - 10, rate)
     def decrease_life(self, power):
         self.life -= power
-        print(f'Hit({power}/{self.life})')
+        # print(f'Hit({power}/{self.life})')
         return self.life <= 0
     def get_bb(self):
         r = 42
         return self.x - r, self.y - r, self.x + r, self.y + r
     def __repr__(self):
-        return f'Enemy({self.level})'
+        return f'Enemy({self.level}/{self.life})'
 
 class EnemyGen:
     GEN_INTERVAL = 5.0
