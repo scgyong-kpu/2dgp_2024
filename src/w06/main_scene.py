@@ -91,8 +91,14 @@ class ScoreSprite(gfw.Sprite):
             x -= self.digit_width
             score //= 10
     def update(self):
-        if self.display < self.score:
+        diff = self.score - self.display;
+        if diff == 0: return
+        if -10 < diff and diff < 0:
+            self.display -= 1
+        elif 0 < diff and diff < 10:
             self.display += 1
+        else:
+            self.display += diff // 10
 
 if __name__ == '__main__':
     gfw.start_main_module()
