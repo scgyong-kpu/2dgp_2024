@@ -81,3 +81,31 @@ class ScoreSprite(Sprite):
             self.display += 1
         else:
             self.display += diff // 10
+
+class Background(Sprite):
+    def __init__(self, filename):
+        cw, ch = get_canvas_width(), get_canvas_height()
+        super().__init__(filename, cw // 2, ch // 2)
+        self.width = cw
+        self.height = ch
+
+    def draw(self):
+        self.image.draw(self.x, self.y, self.width, self.height)
+
+class VertFillBackground(Background):
+    def __init__(self, filename, speed=0):
+        super().__init__(filename)
+        self.dest_height = self.image.h * get_canvas_width() // self.image.w
+        self.speed = speed
+        self.scroll = 0
+    def update(self):
+        self.scroll += self.speed * gfw.frame_time
+
+    def draw(self):
+        y = self.scroll % self.dest_height
+        if y != 0: y -= self.dest_height
+        max_y = get_canvas_height()
+        while y < max_y:
+            self.image.draw_to_origin(0, y, self.width, self.dest_height)
+            y += self.dest_height
+
