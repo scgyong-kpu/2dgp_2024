@@ -15,7 +15,7 @@ def enter():
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
-    # world.append(MainScenUI(), world.layer.ui)
+    world.append(MainScenUI(), world.layer.ui)
     world.append(EnemyGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)
 
@@ -52,7 +52,7 @@ class CollisionChecker:
                     if dead:
                         global score
                         score += e.score
-                        print(f'+{e.score} ={score}')
+                        # print(f'+{e.score} ={score}')
                         world.remove(e)
                     break
             if collided: break
@@ -63,11 +63,11 @@ class CollisionChecker:
 
 class MainScenUI:
     def __init__(self):
-        self.font = load_font('res/lucon.ttf', 30)
-        self.pos = (10, canvas_height - 20)
+        self.font = load_font('res/lucon.ttf', 50)
+        self.pos = (canvas_width - 320, canvas_height - 40)
     def update(self): pass
     def draw(self):
-        self.font.draw(*self.pos, str(list(map(len, world.objects))))
+        self.font.draw(*self.pos, f'{score:10d}')
 
 if __name__ == '__main__':
     gfw.start_main_module()
