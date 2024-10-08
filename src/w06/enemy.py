@@ -3,12 +3,13 @@ import gfw
 
 class Enemy(gfw.AnimSprite):
     WIDTH = 100
+    MAX_LEVEL = 20
     def __init__(self, index, level):
         x = self.WIDTH * index + self.WIDTH // 2
         y = get_canvas_height() + self.WIDTH // 2
         self.level = level
         print(f'Creating Enemy Level {level}')
-        super().__init__('res/enemy_01.png', x, y, 10) # speed = 10fps
+        super().__init__(f'res/enemy_{level:02d}.png', x, y, 10) # speed = 10fps
         self.speed = -100 # 100 pixels per second
         self.layer_index = gfw.top().world.layer.enemy
     def update(self):
@@ -34,7 +35,8 @@ class EnemyGen:
         if self.time < self.GEN_INTERVAL:
             return
         for i in range(5):
-            level = self.wave_index + i
+            level = self.wave_index + i + 1
+            if level > Enemy.MAX_LEVEL: level = Enemy.MAX_LEVEL
             gfw.top().world.append(Enemy(i, level))
         self.time -= self.GEN_INTERVAL
         self.wave_index += 1
