@@ -12,6 +12,7 @@ shows_bounding_box = True
 shows_object_count = True
 
 def enter():
+    world.append(gfw.Sprite('res/bg_city.png', canvas_width // 2, canvas_height // 2), world.layer.bg)
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
@@ -21,6 +22,7 @@ def enter():
     world.append(score_sprite, world.layer.ui)
     world.append(EnemyGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)
+
 
     global score
     score = 0
