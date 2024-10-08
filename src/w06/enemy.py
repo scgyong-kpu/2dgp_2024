@@ -19,6 +19,7 @@ class Gauge:
 class Enemy(gfw.AnimSprite):
     WIDTH = 100
     MAX_LEVEL = 20
+    gauge = None
     def __init__(self, index, level):
         x = self.WIDTH * index + self.WIDTH // 2
         y = get_canvas_height() + self.WIDTH // 2
@@ -28,7 +29,9 @@ class Enemy(gfw.AnimSprite):
         self.speed = -100 # 100 pixels per second
         self.max_life = level * 100
         self.life = self.max_life
-        self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
+        if Enemy.gauge == None:
+            Enemy.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
+            print('Loading Gauge Only Once Here')
         self.layer_index = gfw.top().world.layer.enemy
     def update(self):
         self.y += self.speed * gfw.frame_time
