@@ -48,7 +48,7 @@ class EnemyGen:
         self.wave_index = 0
     def draw(self): pass
     def update(self):
-        self.time += gfw.frame_time * 5
+        self.time += gfw.frame_time
         if self.time < self.GEN_INTERVAL:
             return
         for i in range(5):
