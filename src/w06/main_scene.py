@@ -22,6 +22,7 @@ class Background(gfw.Sprite):
         self.image.draw(self.x, self.y, self.width, self.height)
 
 def enter():
+    world.append(Background('res/clouds.png'), world.layer.bg)
     world.append(Background('res/bg_city.png'), world.layer.bg)
     global fighter
     fighter = Fighter()
