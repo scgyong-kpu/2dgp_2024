@@ -43,9 +43,11 @@ class CollisionChecker:
             bullets = world.objects_at(world.layer.bullet)
             for b in bullets: # reversed order
                 if gfw.collides_box(b, e):
-                    world.remove(e)
-                    world.remove(b)
                     collided = True
+                    world.remove(b)
+                    dead = e.decrease_life(b.power)
+                    if dead:
+                        world.remove(e)
                     break
             if collided: break
             if gfw.collides_box(fighter, e):

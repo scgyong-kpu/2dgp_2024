@@ -12,11 +12,16 @@ class Enemy(gfw.AnimSprite):
         # print(f'Creating Enemy Level {level}')
         super().__init__(f'res/enemy_{level:02d}.png', x, y, 10) # speed = 10fps
         self.speed = -100 # 100 pixels per second
+        self.life = level * 100
         self.layer_index = gfw.top().world.layer.enemy
     def update(self):
         self.y += self.speed * gfw.frame_time
         if self.y < -self.WIDTH:
             gfw.top().world.remove(self)
+    def decrease_life(self, power):
+        self.life -= power
+        print(f'Hit({power}/{self.life})')
+        return self.life <= 0
     def get_bb(self):
         r = 42
         return self.x - r, self.y - r, self.x + r, self.y + r
