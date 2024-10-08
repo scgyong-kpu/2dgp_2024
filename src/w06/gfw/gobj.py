@@ -55,3 +55,29 @@ class AnimSprite(Sprite):
         index = round(elpased * self.fps) % self.frame_count
         self.image.clip_draw(index * self.width, 0, self.width, self.height, self.x, self.y)
 
+class ScoreSprite(Sprite):
+    def __init__(self, img_file, right, y):
+        super().__init__(img_file, right, y)
+        self.digit_width = self.image.w // 10
+        self.width = self.digit_width
+        self.score = 0
+        self.display = 0
+    def draw(self):
+        x = self.x
+        score = self.display
+        while score > 0:
+            digit = score % 10
+            sx = digit * self.digit_width
+            # print(type(sx), type(digit), type(self.digit_width))
+            self.image.clip_draw(sx, 0, self.digit_width, self.image.h, x, self.y)
+            x -= self.digit_width
+            score //= 10
+    def update(self):
+        diff = self.score - self.display;
+        if diff == 0: return
+        if -10 < diff and diff < 0:
+            self.display -= 1
+        elif 0 < diff and diff < 10:
+            self.display += 1
+        else:
+            self.display += diff // 10
