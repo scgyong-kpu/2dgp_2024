@@ -13,7 +13,7 @@ shows_object_count = True
 
 def enter():
     global bg
-    bg = InfiniteScrollBackground('res/kpu_1280x960.png')
+    bg = InfiniteScrollBackground('res/kpu_1280x960.png', margin=100)
     world.append(bg, world.layer.bg)
 
     global boy
@@ -80,8 +80,19 @@ class InfiniteScrollBackground(ScrollBackground):
     def scrollTo(self, x, y):
         self.x, self.y = x, y
     def show(self, x, y):
-        self.x = x - get_canvas_width() // 2
-        self.y = y - get_canvas_height() // 2
+        cw, ch = get_canvas_width(), get_canvas_height()
+        if self.margin > 0:
+            if x < self.x + self.margin:
+                self.x = x - self.margin
+            elif x > self.x + cw - self.margin:
+                self.x = x - cw + self.margin
+            if y < self.y + self.margin:
+                self.y = y - self.margin
+            elif y > self.y + ch - self.margin:
+                self.y = y - ch + self.margin
+            return
+        self.x = x - cw // 2
+        self.y = y - ch // 2
 
     def draw(self):
         cw, ch = get_canvas_width(), get_canvas_height()
