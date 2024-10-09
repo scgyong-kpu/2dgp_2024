@@ -17,7 +17,8 @@ def enter():
     bg = InfiniteScrollBackground('res/kpu_1280x960.png', margin=100)
     world.append(bg, world.layer.bg)
 
-    world.append(Zombie(), world.layer.zombie)
+    for i in range(10):
+        world.append(Zombie(), world.layer.zombie)
 
     global boy
     boy = Boy()
