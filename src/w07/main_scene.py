@@ -18,6 +18,7 @@ def enter():
 
     global boy
     boy = Boy()
+    boy.bg = bg
     world.append(boy, world.layer.player)
 
 def exit():
@@ -44,6 +45,8 @@ def handle_event(e):
 class ScrollBackground(Sprite):
     def __init__(self, filename):
         super().__init__(filename, 0, 0)
+        self.max_scroll_x = self.width - get_canvas_width()
+        self.max_scroll_y = self.height - get_canvas_height()
 
     def draw(self):
         self.image.draw_to_origin(-self.x, -self.y)
@@ -52,8 +55,8 @@ class ScrollBackground(Sprite):
         self.scrollTo(self.x + dx, self.y + dy)
 
     def scrollTo(self, x, y):
-        self.x = clamp(0, x, self.width - get_canvas_width())
-        self.y = clamp(0, y, self.height - get_canvas_height())
+        self.x = clamp(0, x, self.max_scroll_x)
+        self.y = clamp(0, y, self.max_scroll_y)
 
     def get_bb(self):
         return 0, 0, self.width, self.height

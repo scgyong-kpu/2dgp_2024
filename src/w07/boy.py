@@ -21,8 +21,9 @@ class Boy:
         self.time += gfw.frame_time
         fps, frame_count = 10, 8
         self.frame = round(self.time * fps) % frame_count
-        self.x += self.dx * self.speed * gfw.frame_time
-        self.y += self.dy * self.speed * gfw.frame_time
+        scroll_x = self.bg.x + self.dx * self.speed * gfw.frame_time
+        scroll_y = self.bg.y + self.dy * self.speed * gfw.frame_time
+        self.bg.scrollTo(scroll_x, scroll_y)
 
     def handle_event(self, e):
         dx, dy = self.dx, self.dy
