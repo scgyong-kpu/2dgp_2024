@@ -20,6 +20,14 @@ class Zombie(AnimSprite):
         index = round(elpased * self.fps) % self.frame_count
         image = self.images[index]
         image.composite_draw(0, self.flip, self.x, self.y, self.width // self.SCALE, self.height // self.SCALE)
+    def get_bb(self):
+        half_width  = round(0.4 * self.width / self.SCALE)
+        half_height = round(0.4 * self.height / self.SCALE)
+        l = self.x - half_width
+        b = self.y - half_height
+        r = self.x + half_width
+        t = self.y + half_width
+        return l, b, r, t
 
 def load_image_series(fmt):
     images = []
