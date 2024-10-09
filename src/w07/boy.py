@@ -11,6 +11,7 @@ class Boy:
         self.dx, self.dy = 0, 0
         self.speed = 200
         self.action = 3 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
+        self.mag = 1
 
     def draw(self):
         x = self.frame * 100
@@ -22,8 +23,8 @@ class Boy:
         self.time += gfw.frame_time
         fps, frame_count = 10, 8
         self.frame = round(self.time * fps) % frame_count
-        self.x += self.dx * self.speed * gfw.frame_time
-        self.y += self.dy * self.speed * gfw.frame_time
+        self.x += self.dx * self.speed * self.mag * gfw.frame_time
+        self.y += self.dy * self.speed * self.mag * gfw.frame_time
         self.bg.show(self.x, self.y)
 
     def handle_event(self, e):
@@ -37,6 +38,8 @@ class Boy:
                 self.dy -= 1
             elif e.key == SDLK_UP:
                 self.dy += 1
+            elif e.key == SDLK_LSHIFT:
+                self.mag *= 2
 
         elif e.type == SDL_KEYUP:
             if e.key == SDLK_LEFT:
@@ -47,6 +50,8 @@ class Boy:
                 self.dy += 1
             elif e.key == SDLK_UP:
                 self.dy -= 1
+            elif e.key == SDLK_LSHIFT:
+                self.mag //= 2
 
         if (dx, dy) != (self.dx, self.dy):
             if self.dx > 0:
