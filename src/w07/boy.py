@@ -15,7 +15,8 @@ class Boy:
     def draw(self):
         x = self.frame * 100
         y = self.action * 100
-        self.image.clip_draw(x, y, 100, 100, self.x - self.bg.x, self.y - self.bg.y)
+        screen_pos = self.bg.to_screen(self.x, self.y)
+        self.image.clip_draw(x, y, 100, 100, *screen_pos)
 
     def update(self):
         self.time += gfw.frame_time

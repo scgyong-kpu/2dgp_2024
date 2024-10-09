@@ -64,6 +64,12 @@ class ScrollBackground(Sprite):
         self.x = clamp(0, x - hw, self.max_scroll_x)
         self.y = clamp(0, y - hh, self.max_scroll_y)
 
+    def to_screen(self, x, y):
+        return x - self.x, y - self.y
+
+    def from_screen(self, x, y):
+        return x + self.x, y + self.y
+
     def get_bb(self):
         return 0, 0, self.width, self.height
 
