@@ -1,7 +1,8 @@
 from pico2d import * 
 from gfw import *
+from boy import Boy
 
-world = World(['bg'])
+world = World(['bg', 'player'])
 
 canvas_width = 1024
 canvas_height = 768
@@ -14,7 +15,10 @@ def enter():
     global bg
     bg = ScrollBackground('res/kpu_1280x960.png')
     world.append(bg, world.layer.bg)
-    pass
+
+    global boy
+    boy = Boy()
+    world.append(boy, world.layer.player)
 
 def exit():
     world.clear()
@@ -29,11 +33,13 @@ def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
 
-    if e.type == SDL_KEYDOWN:
-        if e.key == SDLK_LEFT:
-            bg.scroll(-10, 0)
-        if e.key == SDLK_RIGHT:
-            bg.scroll(10, 0)
+    # if e.type == SDL_KEYDOWN:
+    #     if e.key == SDLK_LEFT:
+    #         bg.scroll(-10, 0)
+    #     if e.key == SDLK_RIGHT:
+    #         bg.scroll(10, 0)
+
+    boy.handle_event(e)
 
 class ScrollBackground(Sprite):
     def __init__(self, filename):
