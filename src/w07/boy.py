@@ -15,7 +15,7 @@ class Boy:
     def draw(self):
         x = self.frame * 100
         y = self.action * 100
-        self.image.clip_draw(x, y, 100, 100, self.x, self.y)
+        self.image.clip_draw(x, y, 100, 100, self.x - self.bg.x, self.y - self.bg.y)
 
     def update(self):
         self.time += gfw.frame_time
@@ -24,6 +24,8 @@ class Boy:
         dx = self.dx * self.speed * gfw.frame_time
         dy = self.dy * self.speed * gfw.frame_time
         self.bg.scroll(dx, dy)
+        self.x += dx
+        self.y += dy
 
     def handle_event(self, e):
         dx, dy = self.dx, self.dy
