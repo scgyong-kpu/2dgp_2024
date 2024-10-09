@@ -1,7 +1,7 @@
 from pico2d import * 
-import gfw
+from gfw import *
 
-world = gfw.World(['bg'])
+world = World(['bg'])
 
 canvas_width = 1024
 canvas_height = 768
@@ -9,6 +9,7 @@ shows_bounding_box = True
 shows_object_count = True
 
 def enter():
+    world.append(Sprite('res/kpu_1280x960.png', canvas_width // 2, canvas_height // 2), world.layer.bg)
     pass
 
 def exit():
