@@ -5,11 +5,14 @@ world = World(['bg'])
 
 canvas_width = 1024
 canvas_height = 768
+# canvas_width = 1280
+# canvas_height = 960
 shows_bounding_box = True
 shows_object_count = True
 
 def enter():
-    world.append(Sprite('res/kpu_1280x960.png', canvas_width // 2, canvas_height // 2), world.layer.bg)
+    # world.append(Sprite('res/kpu_1280x960.png', canvas_width // 2, canvas_height // 2), world.layer.bg)
+    world.append(Background('res/kpu_1280x960.png'), world.layer.bg)
     pass
 
 def exit():
