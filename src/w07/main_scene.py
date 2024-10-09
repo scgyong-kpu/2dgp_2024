@@ -13,7 +13,7 @@ shows_object_count = True
 
 def enter():
     global bg
-    bg = ScrollBackground('res/kpu_1280x960.png')
+    bg = InfiniteScrollBackground('res/kpu_1280x960.png')
     world.append(bg, world.layer.bg)
 
     global boy
@@ -72,6 +72,35 @@ class ScrollBackground(Sprite):
 
     def get_bb(self):
         return 0, 0, self.width, self.height
+
+class InfiniteScrollBackground(ScrollBackground):
+    def __init__(self, filename, margin=0):
+        super().__init__(filename)
+        self.margin = margin
+    def scrollTo(self, x, y):
+        self.x, self.y = x, y
+    def show(self, x, y):
+        self.x = x - get_canvas_width() // 2
+        self.y = y - get_canvas_height() // 2
+
+    def draw(self):
+        cw, ch = get_canvas_width(), get_canvas_height()
+
+        # quadrant 3
+        q3l = round(self.x) % self.width
+        q3b = round(self.y) % self.height
+        q3w = clamp(0, self.width - q3l, self.width)
+        q3h = clamp(0, self.height - q3b, self.height)
+        self.image.clip_draw_to_origin(q3l, q3b, q3w, q3h, 0, 0)
+
+        # quadrant 2
+        self.image.clip_draw_to_origin(q3l, 0, q3w, ch - q3h, 0, q3h)
+
+        # quadrant 4
+        self.image.clip_draw_to_origin(0, q3b, cw - q3w, q3h, q3w, 0)
+
+        # quadrant 1
+        self.image.clip_draw_to_origin(0, 0, cw - q3w, ch - q3h, q3w, q3h)
 
 if __name__ == '__main__':
     gfw.start_main_module()
