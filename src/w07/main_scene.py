@@ -13,7 +13,7 @@ shows_object_count = True
 
 def enter():
     global bg
-    bg = InfiniteScrollBackground('res/kpu_1280x960.png', margin=100)
+    bg = InfiniteScrollBackground('res/game_bg.png', margin=100)
     world.append(bg, world.layer.bg)
 
     global boy
