@@ -1,8 +1,9 @@
 from pico2d import * 
 from gfw import *
 from boy import Boy
+from zombie import Zombie
 
-world = World(['bg', 'player'])
+world = World(['bg', 'zombie', 'player'])
 
 canvas_width = 1024
 canvas_height = 768
@@ -15,6 +16,8 @@ def enter():
     global bg
     bg = InfiniteScrollBackground('res/kpu_1280x960.png', margin=100)
     world.append(bg, world.layer.bg)
+
+    world.append(Zombie(), world.layer.zombie)
 
     global boy
     boy = Boy()
