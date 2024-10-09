@@ -49,7 +49,8 @@ class ScrollBackground(Sprite):
         self.max_scroll_y = self.height - get_canvas_height()
 
     def draw(self):
-        self.image.draw_to_origin(-self.x, -self.y)
+        x, y = round(self.x), round(self.y)
+        self.image.clip_draw_to_origin(x, y, get_canvas_width(), get_canvas_height(), 0, 0)
 
     def scroll(self, dx, dy):
         self.scrollTo(self.x + dx, self.y + dy)
