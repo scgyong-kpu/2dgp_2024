@@ -31,16 +31,23 @@ def handle_event(e):
 
     if e.type == SDL_KEYDOWN:
         if e.key == SDLK_LEFT:
-            bg.x -= 10
+            bg.scroll(-10, 0)
         if e.key == SDLK_RIGHT:
-            bg.x += 10
+            bg.scroll(10, 0)
 
 class ScrollBackground(Sprite):
     def __init__(self, filename):
         super().__init__(filename, 0, 0)
 
     def draw(self):
-        self.image.draw_to_origin(self.x, self.y)
+        self.image.draw_to_origin(-self.x, -self.y)
+
+    def scroll(self, dx, dy):
+        self.scrollTo(self.x + dx, self.y + dy)
+
+    def scrollTo(self, x, y):
+        self.x = clamp(0, x, self.width - get_canvas_width())
+        self.y = clamp(0, y, self.height - get_canvas_height())
 
     def get_bb(self):
         return 0, 0, self.width, self.height
