@@ -48,7 +48,7 @@ class Boy:
         tx, ty = self.bg.from_screen(mx, my)
         if self.x == tx and self.y == ty:
             self.target = None
-            self.dx, self.dy = 0
+            self.dx, self.dy = 0, 0
             return
         self.target = tx, ty
         rad = math.atan2(ty - self.y, tx - self.x)
