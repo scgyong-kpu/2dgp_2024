@@ -34,7 +34,11 @@ class World:
         if gfw.shows_bounding_box:
             for go in self.all_objects():
                 if not hasattr(go, 'get_bb'): continue
-                draw_rectangle(*go.get_bb())
+                l,b,r,t = go.get_bb()
+                if hasattr(self, 'bg'):
+                  l,b = self.bg.to_screen(l,b)
+                  r,t = self.bg.to_screen(r,t)
+                draw_rectangle(l,b,r,t)
         if gfw.shows_object_count and gfw._system_font is not None:
             gfw._system_font.draw(10, 20, str(list(map(len, self.objects))) + ' ' + str(self.count()))
 

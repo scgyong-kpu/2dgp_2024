@@ -20,11 +20,11 @@ class Zombie(AnimSprite):
         self.flip = random.choice(['', 'h'])
     def draw(self):
         main_scene = gfw.top()
-        print(main_scene.bg)
+        screen_pos = main_scene.bg.to_screen(self.x, self.y)
         elpased = time.time() - self.created_on
         index = round(elpased * self.fps) % self.frame_count
         image = self.images[index]
-        image.composite_draw(0, self.flip, self.x, self.y, self.width, self.height)
+        image.composite_draw(0, self.flip, *screen_pos, self.width, self.height)
     def get_bb(self):
         half_width  = self.width * 9 // 20
         half_height = self.height * 9 // 20
