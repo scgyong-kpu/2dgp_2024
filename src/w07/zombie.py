@@ -19,8 +19,7 @@ class Zombie(AnimSprite):
         self.frame_count = len(self.images)
         self.flip = random.choice(['', 'h'])
     def draw(self):
-        main_scene = gfw.top()
-        print(main_scene.bg)
+        print(self.bg)
         elpased = time.time() - self.created_on
         index = round(elpased * self.fps) % self.frame_count
         image = self.images[index]

@@ -25,6 +25,8 @@ def enter():
     boy.bg = bg
     world.append(boy, world.layer.player)
 
+    Zombie.bg = bg
+
 def exit():
     world.clear()
 
