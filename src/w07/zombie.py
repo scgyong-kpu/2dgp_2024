@@ -22,16 +22,29 @@ class Attack:
     def __init__(self):
         self.name = 'Attack'
     def update(self, zombie):
-        pass
+        zombie.x += random.uniform(-30, 30) * gfw.frame_time
+        zombie.y += random.uniform(-30, 30) * gfw.frame_time
+        # return False
     def draw(self, zombie):
         pass
 class Dead:
     def __init__(self):
         self.name = 'Dead'
+    def enter(self, zombie):
+        zombie.time = 0
     def update(self, zombie):
-        pass
+        zombie.time += gfw.frame_time
+        if zombie.time > 2:
+            world = gfw.top().world
+            world.remove(zombie, world.layer.zombie)
+        return True
     def draw(self, zombie):
-        pass
+        main_scene = gfw.top()
+        screen_pos = main_scene.bg.to_screen(zombie.x, zombie.y)
+        index = min(round(zombie.time * zombie.fps), len(zombie.images) - 1)
+        image = zombie.images[index]
+        image.composite_draw(0, zombie.flip, *screen_pos, zombie.width, zombie.height)
+        return True
 
 class Zombie(AnimSprite):
     FPS = 12
@@ -55,7 +68,11 @@ class Zombie(AnimSprite):
         self.state = self.STATES[state_index]
         self.action = self.state.name
         self.load_images()
+        if hasattr(self.state, 'enter'):
+            self.state.enter(self)
     def draw(self):
+        if self.state.draw(self):
+            return
         main_scene = gfw.top()
         screen_pos = main_scene.bg.to_screen(self.x, self.y)
         elpased = time.time() - self.created_on
@@ -63,6 +80,8 @@ class Zombie(AnimSprite):
         image = self.images[index]
         image.composite_draw(0, self.flip, *screen_pos, self.width, self.height)
     def update(self):
+        if self.state.update(self):
+            return
         self.time -= gfw.frame_time
         if self.time <= 0:
             self.time = random.uniform(2, 10)
