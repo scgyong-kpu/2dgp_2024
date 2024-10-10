@@ -19,9 +19,13 @@ class Gauge:
 class Sprite:
     def __init__(self, filename, x, y):
         self.filename = filename
-        self.image = gfw.image.load(filename)
+        if filename is None:
+          self.image = None
+          self.width, self.height = 0, 0
+        else:
+          self.image = gfw.image.load(filename)
+          self.width, self.height = self.image.w, self.image.h
         self.x, self.y = x, y
-        self.width, self.height = self.image.w, self.image.h
     def draw(self):
         self.image.draw(self.x, self.y)
     def update(self):
@@ -43,7 +47,8 @@ class AnimSprite(Sprite):
         if frame_count == 0: # 정사각형인 경우 0 을 주면 알아서 갯수를 세도록 한다
             frame_count = self.image.w // self.image.h
 
-        self.width = self.image.w // frame_count
+        if self.image is not None:
+          self.width = self.image.w // frame_count
         self.frame_count = frame_count
         self.created_on = time.time()
 

@@ -7,22 +7,25 @@ from gfw import *
 class Zombie(AnimSprite):
     FPS = 12
     SCALE = 4
+    ACTIONS = ['Attack', 'Dead', 'Idle', 'Walk']
     def __init__(self):
         x, y = random.randrange(get_canvas_width()), random.randrange(get_canvas_height())
-        super().__init__('res/zombiefiles/male/Idle (1).png', x, y, self.FPS, 1)
+        super().__init__(None, x, y, self.FPS, 1)
         gender = random.choice(['male', 'female'])
-        action = random.choice(['Idle', 'Walk', 'Attack', 'Dead'])
+        action = random.choice(self.ACTIONS)
         self.images = load_image_series(f'res/zombiefiles/{gender}/{action} (%d).png')
+        self.width = self.images[0].w // self.SCALE
+        self.height = self.images[0].h // self.SCALE
         self.frame_count = len(self.images)
         self.flip = random.choice(['', 'h'])
     def draw(self):
         elpased = time.time() - self.created_on
         index = round(elpased * self.fps) % self.frame_count
         image = self.images[index]
-        image.composite_draw(0, self.flip, self.x, self.y, self.width // self.SCALE, self.height // self.SCALE)
+        image.composite_draw(0, self.flip, self.x, self.y, self.width, self.height)
     def get_bb(self):
-        half_width  = round(0.4 * self.width / self.SCALE)
-        half_height = round(0.4 * self.height / self.SCALE)
+        half_width  = self.width * 9 // 20
+        half_height = self.height * 9 // 20
         l = self.x - half_width
         b = self.y - half_height
         r = self.x + half_width
