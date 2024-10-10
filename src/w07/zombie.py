@@ -3,6 +3,18 @@ import time
 import os
 from pico2d import *
 from gfw import *
+import main_scene
+
+'''
+Traceback (most recent call last):
+  File "D:/Lectures/2024_2/2dgp/git/src/w07/main_scene.py", line 4, in <module>
+    from zombie import Zombie
+  File "D:/Lectures/2024_2/2dgp/git/src/w07/zombie.py", line 6, in <module>
+    import main_scene
+  File "D:/Lectures/2024_2/2dgp/git/src/w07/main_scene.py", line 4, in <module>
+    from zombie import Zombie
+ImportError: cannot import name 'Zombie' from partially initialized module 'zombie' (most likely due to a circular import) (
+'''
 
 class Zombie(AnimSprite):
     FPS = 12
@@ -19,6 +31,7 @@ class Zombie(AnimSprite):
         self.frame_count = len(self.images)
         self.flip = random.choice(['', 'h'])
     def draw(self):
+        print(main_scene.bg)
         elpased = time.time() - self.created_on
         index = round(elpased * self.fps) % self.frame_count
         image = self.images[index]
