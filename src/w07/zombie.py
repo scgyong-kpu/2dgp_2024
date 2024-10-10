@@ -4,26 +4,56 @@ import os
 from pico2d import *
 from gfw import *
 
+class Idle:
+    def __init__(self):
+        self.name = 'Idle'
+    def update(self, zombie):
+        pass
+    def draw(self, zombie):
+        pass
+class Walk:
+    def __init__(self):
+        self.name = 'Walk'
+    def update(self, zombie):
+        pass
+    def draw(self, zombie):
+        pass
+class Attack:
+    def __init__(self):
+        self.name = 'Attack'
+    def update(self, zombie):
+        pass
+    def draw(self, zombie):
+        pass
+class Dead:
+    def __init__(self):
+        self.name = 'Dead'
+    def update(self, zombie):
+        pass
+    def draw(self, zombie):
+        pass
+
 class Zombie(AnimSprite):
     FPS = 12
     SCALE = 4
     GENDERS = ['male', 'female']
-    ACTIONS = ['Attack', 'Dead', 'Idle', 'Walk']
+    STATES = [Idle(), Walk(), Attack(), Dead()]
     def __init__(self):
         x, y = random.randrange(get_canvas_width()), random.randrange(get_canvas_height())
         super().__init__(None, x, y, self.FPS, 1)
         self.gender = random.choice(self.GENDERS)
-        self.set_action('Idle') # loads images
+        self.set_state(0) # loads images
         self.width = self.images[0].w // self.SCALE
         self.height = self.images[0].h // self.SCALE
         self.flip = random.choice(['', 'h'])
         self.time = 1
-        self.action_index = 2
     def load_images(self):
         self.images = load_image_series(f'res/zombiefiles/{self.gender}/{self.action} (%d).png')
         self.frame_count = len(self.images)
-    def set_action(self, action):
-        self.action = action
+    def set_state(self, state_index):
+        self.state_index = state_index
+        self.state = self.STATES[state_index]
+        self.action = self.state.name
         self.load_images()
     def draw(self):
         main_scene = gfw.top()
@@ -36,8 +66,7 @@ class Zombie(AnimSprite):
         self.time -= gfw.frame_time
         if self.time <= 0:
             self.time = random.uniform(2, 10)
-            self.action_index = (self.action_index + 1) % len(self.ACTIONS)
-            self.set_action(self.ACTIONS[self.action_index])
+            self.set_state((self.state_index + 1) % len(self.STATES))
 
     def get_bb(self):
         half_width  = self.width * 9 // 20
