@@ -95,5 +95,9 @@ class Boy:
                     if self.action < 2:
                         self.action += 2
 
+    def get_bb(self):
+        hw, hh = 20, 34
+        return self.x - hw, self.y - hh, self.x + hw, self.y + hh
+
     def __repr__(self):
         return 'Boy'

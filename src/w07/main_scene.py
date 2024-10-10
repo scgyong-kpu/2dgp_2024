@@ -18,7 +18,7 @@ def enter():
     world.append(bg, world.layer.bg)
     world.bg = bg
 
-    for i in range(10):
+    for i in range(1):
         world.append(Zombie(), world.layer.zombie)
 
     global boy
@@ -41,7 +41,7 @@ def handle_event(e):
 
     if e.type == SDL_MOUSEBUTTONDOWN:
         world.append(Zombie(), world.layer.zombie)
-        
+
     # if e.type == SDL_KEYDOWN:
     #     if e.key == SDLK_LEFT:
     #         bg.scroll(-10, 0)
