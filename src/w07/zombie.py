@@ -53,6 +53,7 @@ class Zombie(AnimSprite):
         self.height = self.images[0].h // self.SCALE
         self.flip = random.choice(['', 'h'])
         self.speed = random.uniform(50, 100)
+        self.powerful = random.choice([True, False])
     def set_action(self, action):
         self.action = action
         print(f'{self.action=}')
@@ -87,6 +88,7 @@ class Zombie(AnimSprite):
         return Node.RETURN
 
     def do_walk(self):
+        print(f'{self.action=} in do_walk()')
         if self.action != 'Walk':
             return None
         self.x += self.dx * self.speed * gfw.frame_time
@@ -129,6 +131,7 @@ class Zombie(AnimSprite):
         player = gfw.top().boy
         self.set_target(player.x, player.y)
         self.move_to_target()
+        return Node.RETURN
     def do_patrol(self):
         # print('do_patrol')
         self.do_walk()
