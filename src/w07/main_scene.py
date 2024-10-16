@@ -39,6 +39,9 @@ def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
 
+    if e.type == SDL_KEYDOWN and e.key == SDLK_s:
+        world.save('zombies.pickle')
+
     if e.type == SDL_MOUSEBUTTONDOWN:
         world.append(Zombie(), world.layer.zombie)
 
