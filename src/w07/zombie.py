@@ -63,6 +63,11 @@ class Zombie(AnimSprite):
     def update(self):
         self.time += gfw.frame_time
         self.bt.run()
+    def __getstate__(self):
+        dict = super().__getstate__()
+        del dict['images']
+        del dict['bt']
+        return dict
 
     def do_idle(self):
         if self.action != 'Idle': 

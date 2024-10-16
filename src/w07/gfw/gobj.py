@@ -36,6 +36,10 @@ class Sprite:
         r = self.x + self.width // 2
         t = self.y + self.height // 2
         return l, b, r, t
+    def __getstate__(self):
+        dict = self.__dict__.copy()
+        del dict['image']
+        return dict
 
     def __repr__(self):
         return f'{type(self).__name__}({self.filename})'

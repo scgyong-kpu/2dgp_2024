@@ -38,18 +38,14 @@ def resume():
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
+        return
 
     if e.type == SDL_KEYDOWN and e.key == SDLK_s:
         world.save('zombies.pickle')
+        return
 
     if e.type == SDL_MOUSEBUTTONDOWN:
         world.append(Zombie(), world.layer.zombie)
-
-    # if e.type == SDL_KEYDOWN:
-    #     if e.key == SDLK_LEFT:
-    #         bg.scroll(-10, 0)
-    #     if e.key == SDLK_RIGHT:
-    #         bg.scroll(10, 0)
 
     boy.handle_event(e)
 

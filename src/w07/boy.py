@@ -2,12 +2,11 @@ from pico2d import *
 import random
 import gfw
 
-class Boy:
+class Boy(gfw.Sprite):
     def __init__(self):
-        self.image = gfw.image.load('res/animation_sheet.png')
+        super().__init__('res/animation_sheet.png', get_canvas_width()//2, get_canvas_height()//2)
         self.time = 0 # age in seconds
         self.frame = 0
-        self.x, self.y = get_canvas_width()//2, get_canvas_height()//2
         self.dx, self.dy = 0, 0
         self.speed = 200
         self.action = 3 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
