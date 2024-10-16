@@ -4,37 +4,50 @@ import os
 from pico2d import *
 from gfw import *
 
-class Node:
-    BREAK, RETURN, RUNNING = range(3) # None for continue
-    def add_child(self, child):
-        self.children.append(child)
-    def add_children(self, *children):
-        for child in children:
-            self.children.append(child)
+BT_FAIL, BT_SUCCESS, BT_RUNNING = range(3)
 
-class LeafNode(Node):
+class LeafNode:
     def __init__(self, name, func):
         self.name = name
         self.func = func
     def run(self):
         return self.func()
 
-class BehaviorTree(Node):
-    def __init__(self, name, def_ret_val, children=[]):
-        self.children = children
+class BranchNode:
+    def __init__(self, name, children=[]):
         self.name = name
-        self.def_ret_val = def_ret_val
+        self.children = children
+        self.prev_running_pos = 0
+    def add_child(self, child):
+        self.children.append(child)
+    def add_children(self, *children):
+        for child in children:
+            self.children.append(child)
+    def run_children(self, ret_val_if, def_val):
+        for i in range(self.prev_running_pos, len(self.children)):
+            child = self.children[i]
+            value = child.run()
+            if value == BT_RUNNING:
+                self.prev_running_pos = i
+                return BT_RUNNING
+            if value == ret_val_if:
+                return ret_val_if
+        self.prev_running_pos = 0
+        return def_val
+
+class Selector(BranchNode):
     def run(self):
-        for pos in range(len(self.children)):
-            # print(f'{pos}.{self.children[pos].name}')
-            result = self.children[pos].run()
-            if result == Node.RETURN:
-                return Node.RETURN
-            if result == Node.RUNNING:
-                return Node.RUNNING
-            if result == Node.BREAK:
-                break
-        return self.def_ret_val
+        self.run_children(BT_SUCCESS, BT_FAIL)
+
+class Sequence(BranchNode):
+    def run(self):
+        self.run_children(BT_FAIL, BT_SUCCESS)
+
+class BehaviorTree:
+    def __init__(self, root):
+        self.root = root
+    def run(self):
+        self.root.run()
 
 class Zombie(AnimSprite):
     FPS = 12
@@ -54,6 +67,20 @@ class Zombie(AnimSprite):
         self.flip = random.choice(['', 'h'])
         self.speed = random.uniform(50, 100)
         self.powerful = random.choice([True, False])
+    def build_behavior_tree(self):
+        self.bt = BehaviorTree(
+            Selector('Root', [
+                LeafNode('Idle', self.do_idle),
+                LeafNode('Dead', self.do_dead),
+                Sequence('FollowPlayer', [
+                    LeafNode('CheckCollision', self.do_check_collision_with_player),
+                    LeafNode('FindPlayer', self.do_find_player),
+                    LeafNode('MoveToPlayer', self.do_move_to_player),
+                ]),
+                LeafNode('MoveToTarget', self.do_patrol),
+            ])
+        )
+
     def set_action(self, action):
         self.action = action
         print(f'{self.action=}')
@@ -78,38 +105,40 @@ class Zombie(AnimSprite):
 
     def do_idle(self):
         if self.action != 'Idle': 
-            return None
+            return BT_FAIL
         # print(f'{self.time}')
         if self.time < self.IDLE_INTERVAL:
-            return None
+            return BT_SUCCESS
         self.set_action('Walk')
         self.dx = 1 if self.flip == '' else -1
         self.dy = 0
-        return Node.RETURN
+        return BT_SUCCESS
 
     def do_walk(self):
-        print(f'{self.action=} in do_walk()')
+        # print(f'{self.action=} in do_walk()')
         if self.action != 'Walk':
-            return None
+            return BT_FAIL
         self.x += self.dx * self.speed * gfw.frame_time
         self.y += self.dy * self.speed * gfw.frame_time
         if (self.dx < 0 and self.x < 0) or (self.dx > 0 and self.x > get_canvas_width()):
             self.dx *= -1
             self.flip = '' if self.dx > 0 else 'h'
+        return BT_SUCCESS
+
     def do_dead(self):
         if self.action != 'Dead': 
-            return None
+            return BT_FAIL
         if self.time > self.DEAD_INTERVAL:
             world = gfw.top().world
             world.remove(self, world.layer.zombie)
-        return Node.RETURN
+        return BT_SUCCESS
     def do_check_collision_with_player(self):
         player = gfw.top().boy
         collides = gfw.collides_box(player, self)
         if collides:
             self.set_action('Dead')
-            return Node.RETURN
-        return None
+            return BT_FAIL # stop this sequence
+        return BT_SUCCESS # continue
     CHASE_DISTANCE_SQ = 250 ** 2
     def do_find_player(self):
         player = gfw.top().boy
@@ -118,12 +147,12 @@ class Zombie(AnimSprite):
         if dist_sq < self.CHASE_DISTANCE_SQ:
             if self.action != 'Attack':
                 self.set_action('Attack')
-            return None
+            return BT_SUCCESS # continue
         # print(f'{self.action=} in do_find_player()')
         if self.action == 'Attack':
             self.set_action('Idle')
             # self.dx, self.dy = 0, 0
-        return Node.BREAK
+        return BT_FAIL # stop this sequence
     def move_to_target(self):
         self.x += self.dx * self.speed * gfw.frame_time
         self.y += self.dy * self.speed * gfw.frame_time
@@ -131,10 +160,10 @@ class Zombie(AnimSprite):
         player = gfw.top().boy
         self.set_target(player.x, player.y)
         self.move_to_target()
-        return Node.RETURN
+        return BT_SUCCESS
     def do_patrol(self):
         # print('do_patrol')
-        self.do_walk()
+        return self.do_walk()
     def set_target(self, x, y):
         self.target = x, y
         dx, dy = x - self.x, y - self.y
@@ -153,20 +182,6 @@ class Zombie(AnimSprite):
         r = self.x + half_width
         t = self.y + half_width
         return l, b, r, t
-
-    def build_behavior_tree(self):
-        self.bt = BehaviorTree('Sequence', None, [
-            LeafNode('Idle', self.do_idle),
-            LeafNode('Dead', self.do_dead),
-            BehaviorTree('Move', None, [
-                BehaviorTree('FollowPlayer', None, [
-                    LeafNode('CheckCollision', self.do_check_collision_with_player),
-                    LeafNode('FindPlayer', self.do_find_player),
-                    LeafNode('MoveToPlayer', self.do_move_to_player),
-                ]),
-                LeafNode('MoveToTarget', self.do_patrol),
-            ])
-        ])
 
 def load_image_series(fmt):
     images = []
