@@ -18,7 +18,7 @@ def enter():
     world.append(bg, world.layer.bg)
     world.bg = bg
 
-    for i in range(5):
+    for i in range(1):
         world.append(Zombie(), world.layer.zombie)
 
     global boy

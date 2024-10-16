@@ -11,6 +11,10 @@ class Zombie(AnimSprite):
     GENDERS = ['male', 'female']
     IDLE_INTERVAL = 2.0
     DEAD_INTERVAL = 2.0
+    PAT_POSITIONS = [
+        (43, 210), (1118, 210), (1050, 430), (575, 740), 
+        (235, 927), (575, 740), (1050, 430), (1118, 210),
+    ]
     def __init__(self):
         x, y = random.randrange(get_canvas_width()), random.randrange(get_canvas_height())
         super().__init__(None, x, y, self.FPS, 1)
@@ -23,6 +27,7 @@ class Zombie(AnimSprite):
         self.flip = random.choice(['', 'h'])
         self.speed = random.uniform(50, 100)
         self.powerful = random.choice([True, False])
+        self.patrol_index = -1
     def build_behavior_tree(self):
         self.bt = BehaviorTree(
             Selector('Root', [
@@ -66,8 +71,7 @@ class Zombie(AnimSprite):
         if self.time < self.IDLE_INTERVAL:
             return BT_SUCCESS
         self.set_action('Walk')
-        self.dx = 1 if self.flip == '' else -1
-        self.dy = 0
+        self.patrol_index = -1
         return BT_SUCCESS
 
     def do_walk(self):
@@ -112,14 +116,44 @@ class Zombie(AnimSprite):
     def move_to_target(self):
         self.x += self.dx * self.speed * gfw.frame_time
         self.y += self.dy * self.speed * gfw.frame_time
+        tx, ty = self.target
+        if (self.dx > 0 and self.x > tx) or\
+            (self.dx < 0 and self.x < tx):
+            self.x, self.dx = tx, 0
+        if (self.dy > 0 and self.y > ty) or\
+            (self.dy < 0 and self.y < ty):
+            self.y, self.dy = ty, 0
+        return self.dx == 0 and self.dy == 0
     def do_move_to_player(self):
         player = gfw.top().boy
         self.set_target(player.x, player.y)
         self.move_to_target()
         return BT_SUCCESS
     def do_patrol(self):
-        # print('do_patrol')
-        return self.do_walk()
+        if self.action != 'Walk':
+            return BT_FAIL
+        if self.patrol_index < 0:
+            self.find_neareast_position()
+            pos = self.PAT_POSITIONS[self.patrol_index]
+            self.set_target(*pos)
+        done = self.move_to_target()
+        if done:
+            self.patrol_index = (self.patrol_index + 1) % len(self.PAT_POSITIONS)
+            pos = self.PAT_POSITIONS[self.patrol_index]
+            print(f' patrol position #{self.patrol_index}: {pos}')
+            self.set_target(*pos)
+    def find_neareast_position(self):
+        nearest = 0, float('inf')
+        print(f'({self.x=:.2f}, {self.y=:.2f})')
+        for i in range(len(self.PAT_POSITIONS)):
+            px, py = self.PAT_POSITIONS[i]
+            dsq = (self.x-px)**2 + (self.y-py)**2
+            print(f' patrol position #{i}: {(px, py)}, {dsq=:.2f} dist={math.sqrt(dsq):.2f}')
+            if nearest[1] > dsq:
+                nearest = i, dsq
+
+        print(f'nearest=#{nearest[0]}')
+        self.patrol_index = nearest[0]
     def set_target(self, x, y):
         self.target = x, y
         dx, dy = x - self.x, y - self.y
@@ -128,6 +162,7 @@ class Zombie(AnimSprite):
             self.dx, self.dy = 0, 0
         else:
             self.dx, self.dy = dx / dist, dy / dist
+        # print(f'{self.dx=}, {self.dy=}')
         self.flip = '' if self.dx > 0 else 'h'
 
     def get_bb(self):
