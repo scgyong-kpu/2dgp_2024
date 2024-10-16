@@ -13,7 +13,16 @@ shows_bounding_box = True
 shows_object_count = True
 
 def enter():
-    global bg
+    global bg, boy
+
+    loaded = world.load('zombies.pickle')
+    print(f'{loaded=} world object count={world.count()}')
+    if loaded: # world.count() > 0:
+        boy = list(world.objects_at(world.layer.player))[0]
+        bg = boy.bg
+        world.bg = bg
+        return
+
     bg = InfiniteScrollBackground('res/kpu_1280x960.png', margin=100)
     world.append(bg, world.layer.bg)
     world.bg = bg
@@ -21,7 +30,6 @@ def enter():
     for i in range(1):
         world.append(Zombie(), world.layer.zombie)
 
-    global boy
     boy = Boy()
     boy.bg = bg
     world.append(boy, world.layer.player)
@@ -42,6 +50,7 @@ def handle_event(e):
 
     if e.type == SDL_KEYDOWN and e.key == SDLK_s:
         world.save('zombies.pickle')
+        print('Saved !!')
         return
 
     if e.type == SDL_MOUSEBUTTONDOWN:

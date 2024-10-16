@@ -40,6 +40,10 @@ class Sprite:
         dict = self.__dict__.copy()
         del dict['image']
         return dict
+    def __setstate__(self, dict):
+        self.__dict__.update(dict)
+        # print(f'{self.filename=},')
+        Sprite.__init__(self, self.filename, self.x, self.y)
 
     def __repr__(self):
         return f'{type(self).__name__}({self.filename})'

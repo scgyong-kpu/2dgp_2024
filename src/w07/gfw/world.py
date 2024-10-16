@@ -2,6 +2,7 @@ from pico2d import *
 import gfw
 from functools import reduce
 import pickle
+import os
 
 class World:
     def __init__(self, layer_count=1):
@@ -64,24 +65,11 @@ class World:
             pickle.dump(self.objects, f)
 
     def load(self, fn='world.pickle'):
+        if not os.path.exists(fn):
+            return False
         with open(fn, 'rb') as f:
             self.objects = pickle.load(f)
-
-'''
-Traceback (most recent call last):
-  File "D:/Lectures/2024_2/2dgp/git/src/w07/main_scene.py", line 57, in <module>
-    gfw.start_main_module()
-  File "D:/Lectures/2024_2/2dgp/git/src/w07/gfw/gfw.py", line 63, in start_main_module
-    start(scene)
-  File "D:/Lectures/2024_2/2dgp/git/src/w07/gfw/gfw.py", line 44, in start
-    handled = _stack[-1].handle_event(e)
-  File "D:/Lectures/2024_2/2dgp/git/src/w07/main_scene.py", line 43, in handle_event
-    world.save('zombies.pickle')
-  File "D:/Lectures/2024_2/2dgp/git/src/w07/gfw/world.py", line 64, in save
-    pickle.dump(self.objects, f)
-ValueError: ctypes objects containing pointers cannot be pickled
-'''
-
+        return True
 
 def collides_box(a, b): # a or b is a Sprite
     la, ba, ra, ta = a.get_bb()

@@ -22,8 +22,6 @@ class Zombie(AnimSprite):
         self.build_behavior_tree()
         self.set_action('Idle')
         self.load_images()
-        self.width = self.images[0].w // self.SCALE
-        self.height = self.images[0].h // self.SCALE
         self.flip = random.choice(['', 'h'])
         self.speed = random.uniform(50, 100)
         self.powerful = random.choice([True, False])
@@ -44,12 +42,14 @@ class Zombie(AnimSprite):
 
     def set_action(self, action):
         self.action = action
-        print(f'{self.action=}')
+        # print(f'{self.action=}')
         self.load_images()
         self.time = 0
     def load_images(self):
         self.images = load_image_series(f'res/zombiefiles/{self.gender}/{self.action} (%d).png')
         self.frame_count = len(self.images)
+        self.width = self.images[0].w // self.SCALE
+        self.height = self.images[0].h // self.SCALE
     def draw(self):
         main_scene = gfw.top()
         screen_pos = main_scene.bg.to_screen(self.x, self.y)
@@ -59,6 +59,7 @@ class Zombie(AnimSprite):
         else:
             index = min(index, self.frame_count - 1)
         image = self.images[index]
+        # print(f'{index=}/{self.frame_count=} ({screen_pos[0]:.2f}, {screen_pos[1]:.2f})')
         image.composite_draw(0, self.flip, *screen_pos, self.width, self.height)
     def update(self):
         self.time += gfw.frame_time
@@ -68,6 +69,11 @@ class Zombie(AnimSprite):
         del dict['images']
         del dict['bt']
         return dict
+    def __setstate__(self, dict):
+        super().__setstate__(dict)
+        # print(self.__dict__)
+        self.build_behavior_tree()
+        self.load_images()
 
     def do_idle(self):
         if self.action != 'Idle': 
@@ -145,19 +151,19 @@ class Zombie(AnimSprite):
         if done:
             self.patrol_index = (self.patrol_index + 1) % len(self.PAT_POSITIONS)
             pos = self.PAT_POSITIONS[self.patrol_index]
-            print(f' patrol position #{self.patrol_index}: {pos}')
+            # print(f' patrol position #{self.patrol_index}: {pos}')
             self.set_target(*pos)
     def find_neareast_position(self):
         nearest = 0, float('inf')
-        print(f'({self.x=:.2f}, {self.y=:.2f})')
+        # print(f'({self.x=:.2f}, {self.y=:.2f})')
         for i in range(len(self.PAT_POSITIONS)):
             px, py = self.PAT_POSITIONS[i]
             dsq = (self.x-px)**2 + (self.y-py)**2
-            print(f' patrol position #{i}: {(px, py)}, {dsq=:.2f} dist={math.sqrt(dsq):.2f}')
+            # print(f' patrol position #{i}: {(px, py)}, {dsq=:.2f} dist={math.sqrt(dsq):.2f}')
             if nearest[1] > dsq:
                 nearest = i, dsq
 
-        print(f'nearest=#{nearest[0]}')
+        # print(f'nearest=#{nearest[0]}')
         self.patrol_index = nearest[0]
     def set_target(self, x, y):
         self.target = x, y
