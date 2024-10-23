@@ -29,6 +29,23 @@ class Floor(Sprite):
             world = gfw.top().world
             world.remove(self, world.layer.floor)
 
+class JellyItem(Sprite):
+    def __init__(self, index, left, top):
+        super().__init__('res/jelly.png', left + 33, top + 33)
+        self.width, self.height = 66, 66
+        x = round(2 + (index  % 30) * 68)
+        y = round(2 + (index // 30) * 68)
+        self.src_rect = x, y, self.width, self.height
+
+    def update(self):
+        self.x += SPEED * gfw.frame_time
+        if self.x < -self.width:
+            world = gfw.top().world
+            world.remove(self, world.layer.item)
+
+    def draw(self):
+        self.image.clip_draw(*self.src_rect, self.x, self.y)
+
 def init():
     global last_floor_right
     last_floor_right = 0
@@ -44,9 +61,13 @@ def update():
         # print(f'Appending {f} at f.left={f.x-f.width//2:.1f} {f.x=} {f.y=}')
         world = gfw.top().world
         world.append(f, world.layer.floor)
+
+        jelly = JellyItem(random.randrange(60), last_floor_right, random.randint(3,8)*UNIT)
+        # print(f'Appending {jelly} at jelly.left={jelly.x-jelly.width//2:.1f} {jelly.x=:.1f} {jelly.y=}')
+        world.append(jelly, world.layer.item)
+
         last_floor_right += f.width
     # if random.random() < 0.01:
     #     world = gfw.top().world
     #     world.append(Floor(Floor.TYPE_3x1, 15, random.randint(3, 8)), world.layer.floor)
 
-print(UNIT*16,UNIT*9)
