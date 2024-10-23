@@ -1,7 +1,7 @@
 from pico2d import * 
 from gfw import *
 
-world = World()
+world = World(['bg'])
 
 canvas_width = 1280
 canvas_height = 720
@@ -9,7 +9,7 @@ shows_bounding_box = True
 shows_object_count = True
 
 def enter():
-    pass
+    world.append(gfw.HorzFillBackground('res/cookie_run_bg_1.png', -60), world.layer.bg)
 
 def exit():
     world.clear()
