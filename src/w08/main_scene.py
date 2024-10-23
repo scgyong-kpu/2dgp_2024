@@ -5,8 +5,8 @@ import floor
 
 world = World(['bg', 'floor', 'player', 'controller'])
 
-canvas_width = 1280
-canvas_height = 720
+canvas_width = 1152 #1280
+canvas_height = 648 #720
 shows_bounding_box = True
 shows_object_count = True
 
