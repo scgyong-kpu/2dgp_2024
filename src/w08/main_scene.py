@@ -9,7 +9,9 @@ shows_bounding_box = True
 shows_object_count = True
 
 def enter():
-    world.append(gfw.HorzFillBackground('res/cookie_run_bg_1.png', -60), world.layer.bg)
+    world.append(gfw.HorzFillBackground('res/cookie_run_bg_1.png', -10), world.layer.bg)
+    world.append(gfw.HorzFillBackground('res/cookie_run_bg_2.png', -100), world.layer.bg)
+    world.append(gfw.HorzFillBackground('res/cookie_run_bg_3.png', -150), world.layer.bg)
 
 def exit():
     world.clear()
