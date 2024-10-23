@@ -1,7 +1,8 @@
 from pico2d import * 
 from gfw import *
+from player import Cookie
 
-world = World(['bg'])
+world = World(['bg', 'player'])
 
 canvas_width = 1280
 canvas_height = 720
@@ -9,9 +10,11 @@ shows_bounding_box = True
 shows_object_count = True
 
 def enter():
-    world.append(gfw.HorzFillBackground('res/cookie_run_bg_1.png', -10), world.layer.bg)
-    world.append(gfw.HorzFillBackground('res/cookie_run_bg_2.png', -100), world.layer.bg)
-    world.append(gfw.HorzFillBackground('res/cookie_run_bg_3.png', -150), world.layer.bg)
+    world.append(HorzFillBackground('res/cookie_run_bg_1.png', -10), world.layer.bg)
+    world.append(HorzFillBackground('res/cookie_run_bg_2.png', -100), world.layer.bg)
+    world.append(HorzFillBackground('res/cookie_run_bg_3.png', -150), world.layer.bg)
+
+    world.append(Sprite('res/cookie.png', 160, 160), world.layer.player)
 
 def exit():
     world.clear()
