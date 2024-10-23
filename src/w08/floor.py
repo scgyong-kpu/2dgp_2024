@@ -7,6 +7,7 @@ INFO = [
     ('res/cookierun_platform_120x40.png', (3, 1)),
 ]
 UNIT = 72
+SPEED = -300
 
 class Floor(Sprite):
     TYPE_20x2, TYPE_2x2, TYPE_3x1 = range(3)
@@ -21,5 +22,6 @@ class Floor(Sprite):
     def draw(self):
         self.image.draw(self.x, self.y, self.width, self.height)
 
-
+    def update(self):
+        self.x += SPEED * gfw.frame_time
 
