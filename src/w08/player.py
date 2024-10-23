@@ -34,16 +34,21 @@ class Cookie(SheetSprite):
 
     def update(self):
         self.y += self.dy * gfw.frame_time
-        if self.state == STATE_JUMP:
+        if self.state in (STATE_JUMP, STATE_DOUBLE_JUMP):
             self.dy -= self.GRAVITY * gfw.frame_time
             if self.dy < 0 and self.y <= self.floor_y:
                 self.y, self.dy = self.floor_y, 0
                 self.set_state(STATE_RUNNING)
 
     def jump(self):
-        if self.state != STATE_RUNNING: return
-        self.dy = self.JUMP_POWER
-        self.set_state(STATE_JUMP)
+        if self.state == STATE_RUNNING:
+            next_state = STATE_JUMP
+        elif self.state == STATE_JUMP:
+            next_state = STATE_DOUBLE_JUMP
+        else:
+            return
+        self.dy += self.JUMP_POWER
+        self.set_state(next_state)
 
     def set_state(self, state):
         self.state = state
