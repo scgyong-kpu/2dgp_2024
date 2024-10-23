@@ -41,7 +41,7 @@ class JellyItem(MapObject):
         x = round(2 + (index  % 30) * 68)
         y = round(2 + (index // 30) * 68)
         self.src_rect = x, y, 66, 66
-        self.width, self.height = 66, 66
+        self.width, self.height = 48, 48
         self.layer_index = gfw.top().world.layer.item
 
     def draw(self):
