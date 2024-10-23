@@ -17,18 +17,6 @@ STATES = [
 ]
 STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE, STATE_COUNT = range(5)
 
-class SheetSprite(AnimSprite):
-    def __init__(self, fname, x, y, fps):
-        super().__init__(fname, x, y, fps, 1)
-        self.src_rects = []
-
-    def draw(self):
-        elpased = time.time() - self.created_on
-        frame_count = len(self.src_rects)
-        index = round(elpased * self.fps) % frame_count
-        src_rect = self.src_rects[index]
-        self.image.clip_draw(*src_rect, self.x, self.y)
-
 class Cookie(SheetSprite):
     def __init__(self):
         super().__init__('res/cookie.png', 160, 240, 10)

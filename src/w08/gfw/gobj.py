@@ -68,6 +68,18 @@ class AnimSprite(Sprite):
         index = round(elpased * self.fps) % self.frame_count
         self.image.clip_draw(index * self.width, 0, self.width, self.height, self.x, self.y)
 
+class SheetSprite(AnimSprite):
+    def __init__(self, fname, x, y, fps):
+        super().__init__(fname, x, y, fps, 1)
+        self.src_rects = []
+
+    def draw(self):
+        elpased = time.time() - self.created_on
+        frame_count = len(self.src_rects)
+        index = round(elpased * self.fps) % frame_count
+        src_rect = self.src_rects[index]
+        self.image.clip_draw(*src_rect, self.x, self.y)
+
 class ScoreSprite(Sprite):
     def __init__(self, img_file, right, y):
         super().__init__(img_file, right, y)
