@@ -1,14 +1,19 @@
 from pico2d import * 
 from gfw import *
 
-class Cookie(AnimSprite):
+class Cookie(Sprite):
     def __init__(self):
-        super().__init__('res/cookie_run.png', 160, 160, 10)
+        super().__init__('res/cookie.png', 160, 160)
         self.running = True
+        self.width, self.height = 138, 138
+        self.src_rect = 69, 1090, 138, 138
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
             self.toggle_state()
+
+    def draw(self):
+        self.image.clip_draw(*self.src_rect, self.x, self.y)
 
     def toggle_state(self):
         self.running = not self.running
