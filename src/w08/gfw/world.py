@@ -28,7 +28,7 @@ class World:
         layer_count = len(self.objects)
         self.objects = [[] for i in range(layer_count)]
     def update(self):
-        for go in self.all_objects():
+        for go in self.all_objects_reversed():
             go.update()
     def draw(self):
         for go in self.all_objects():
@@ -45,6 +45,11 @@ class World:
             gfw._system_font.draw(10, 20, str(list(map(len, self.objects))) + ' ' + str(self.count()))
 
     def all_objects(self):
+        for objs in self.objects:
+            for obj in objs:
+                yield obj
+
+    def all_objects_reversed(self):
         for objs in self.objects:
             for i in range(len(objs) - 1, -1, -1):
                 yield objs[i]
