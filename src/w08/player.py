@@ -2,21 +2,22 @@ from pico2d import *
 from gfw import *
 import time
 
-class Cookie(AnimSprite):
-    def __init__(self):
-        super().__init__('res/cookie.png', 160, 160, 10, 1)
-        self.running = True
-        self.width, self.height = 138, 138
-        self.src_rects = [ 
-            ( 69, 1090, 138, 138), 
-            (341, 1090, 138, 138), 
-            (613, 1090, 138, 138), 
-            (885, 1090, 138, 138), 
-        ]
+RECTS_RUN = [ 
+    ( 69, 1090, 138, 138), 
+    (341, 1090, 138, 138), 
+    (613, 1090, 138, 138), 
+    (885, 1090, 138, 138), 
+]
 
-    def handle_event(self, e):
-        if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
-            self.toggle_state()
+RECTS_JUMP = [ 
+    (1973, 1362, 138, 138), 
+    (2245, 1362, 138, 138), 
+]
+
+class SheetSprite(AnimSprite):
+    def __init__(self, fname, x, y, fps):
+        super().__init__(fname, x, y, fps, 1)
+        self.src_rects = []
 
     def draw(self):
         elpased = time.time() - self.created_on
@@ -25,9 +26,18 @@ class Cookie(AnimSprite):
         src_rect = self.src_rects[index]
         self.image.clip_draw(*src_rect, self.x, self.y)
 
+class Cookie(SheetSprite):
+    def __init__(self):
+        super().__init__('res/cookie.png', 160, 160, 10)
+        self.running = True
+        self.width, self.height = 138, 138
+        self.src_rects = RECTS_RUN
+
+    def handle_event(self, e):
+        if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
+            self.toggle_state()
+
     def toggle_state(self):
         self.running = not self.running
-        fn = 'res/cookie_run.png' if self.running else 'res/cookie_jump.png'
-        self.image = load_image(fn)
-        self.frame_count = self.image.w // self.image.h
+        self.src_rects = RECTS_RUN if self.running else RECTS_JUMP
 
