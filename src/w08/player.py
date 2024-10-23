@@ -3,15 +3,15 @@ from gfw import *
 import time
 
 def make_rect(idx):
-    x, y = idx % 16, idx // 16
+    x, y = idx % 100, idx // 100
     return (x * 272 + 67, y * 272 + 2, 138, 138)
     # return (x * 272 + 2, y * 272 + 2, 270, 270)
 
 def make_rects(*idxs):
     return list(map(make_rect, idxs))
 
-RECTS_RUN = make_rects(0x40, 0x41, 0x42, 0x43)
-RECTS_JUMP = make_rects(0x57, 0x58)
+RECTS_RUN = make_rects(400, 401, 402, 403)
+RECTS_JUMP = make_rects(507, 508)
 
 class SheetSprite(AnimSprite):
     def __init__(self, fname, x, y, fps):
