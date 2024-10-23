@@ -14,7 +14,9 @@ def enter():
     world.append(HorzFillBackground('res/cookie_run_bg_2.png', -100), world.layer.bg)
     world.append(HorzFillBackground('res/cookie_run_bg_3.png', -150), world.layer.bg)
 
-    world.append(Cookie(), world.layer.player)
+    global cookie
+    cookie = Cookie()
+    world.append(cookie, world.layer.player)
 
 def exit():
     world.clear()
@@ -29,6 +31,8 @@ def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
         return
+
+    cookie.handle_event(e)
 
 if __name__ == '__main__':
     gfw.start_main_module()
