@@ -4,8 +4,7 @@ import time
 
 def make_rect(idx):
     x, y = idx % 100, idx // 100
-    return (x * 272 + 67, y * 272 + 2, 138, 138)
-    # return (x * 272 + 2, y * 272 + 2, 270, 270)
+    return (x * 272 + 2, y * 272 + 2, 270, 270)
 
 def make_rects(*idxs):
     return list(map(make_rect, idxs))
@@ -15,6 +14,9 @@ RECTS = [
     make_rects(507, 508),
     make_rects(501, 502, 503, 504),
     make_rects(509, 510),
+]
+SIZES = [
+    (120,136), (120, 115), (120, 115), (160,70), 
 ]
 STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE = range(4)
 
@@ -34,15 +36,25 @@ class Cookie(SheetSprite):
     def __init__(self):
         super().__init__('res/cookie.png', 160, 160, 10)
         self.running = True
-        self.width, self.height = 138, 138
-        self.state = STATE_RUNNING
-        self.src_rects = RECTS[self.state]
+        self.width, self.height = 270, 270
+        self.set_state(STATE_RUNNING)
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
             self.toggle_state()
 
     def toggle_state(self):
-        self.state = (self.state + 1) % len(RECTS)
+        self.set_state((self.state + 1) % len(RECTS))
+
+    def set_state(self, state):
+        self.state = state
         self.src_rects = RECTS[self.state]
+        self.width, self.height = SIZES[self.state]
+        foot = self.y - self.src_rects[0][3] // 2 # 높이의 절반이 발끝의 위치
+        half_width = self.width // 2
+        self.bounding_box = (self.x - half_width, foot, self.x + half_width, foot + self.height)
+
+    def get_bb(self):
+        return self.bounding_box
+
 
