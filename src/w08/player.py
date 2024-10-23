@@ -47,7 +47,7 @@ class Cookie(SheetSprite):
             next_state = STATE_DOUBLE_JUMP
         else:
             return
-        self.dy += self.JUMP_POWER
+        self.dy = self.JUMP_POWER
         self.set_state(next_state)
 
     def set_state(self, state):
