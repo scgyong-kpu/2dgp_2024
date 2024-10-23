@@ -25,3 +25,13 @@ class Floor(Sprite):
     def update(self):
         self.x += SPEED * gfw.frame_time
 
+def init():
+    world = gfw.top().world
+    world.append(Floor(Floor.TYPE_20x2, 0, 0), world.layer.floor)
+    world.append(Floor(Floor.TYPE_2x2, 20, 0), world.layer.floor)
+    world.append(Floor(Floor.TYPE_3x1, 5, 4), world.layer.floor)
+
+def draw():
+    pass
+def update():
+    pass

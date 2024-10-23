@@ -1,9 +1,9 @@
 from pico2d import * 
 from gfw import *
 from player import Cookie
-from floor import Floor
+import floor
 
-world = World(['bg', 'floor', 'player'])
+world = World(['bg', 'floor', 'player', 'controller'])
 
 canvas_width = 1280
 canvas_height = 720
@@ -15,9 +15,8 @@ def enter():
     world.append(HorzFillBackground('res/cookie_run_bg_2.png', -100), world.layer.bg)
     world.append(HorzFillBackground('res/cookie_run_bg_3.png', -150), world.layer.bg)
 
-    world.append(Floor(Floor.TYPE_20x2, 0, 0), world.layer.floor)
-    world.append(Floor(Floor.TYPE_2x2, 20, 0), world.layer.floor)
-    world.append(Floor(Floor.TYPE_3x1, 5, 4), world.layer.floor)
+    floor.init()
+    world.append(floor, world.layer.controller)
 
     global cookie
     cookie = Cookie()
