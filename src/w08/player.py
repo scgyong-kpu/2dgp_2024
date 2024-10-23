@@ -18,18 +18,32 @@ STATES = [
 STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE, STATE_COUNT = range(5)
 
 class Cookie(SheetSprite):
+    GRAVITY = 3000
+    JUMP_POWER = 1000
     def __init__(self):
         super().__init__('res/cookie.png', 160, 240, 10)
         self.running = True
         self.width, self.height = 270, 270
         self.set_state(STATE_RUNNING)
+        self.floor_y = self.y
+        self.dy = 0
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
-            self.toggle_state()
+            self.jump()
 
-    def toggle_state(self):
-        self.set_state((self.state + 1) % STATE_COUNT)
+    def update(self):
+        self.y += self.dy * gfw.frame_time
+        if self.state == STATE_JUMP:
+            self.dy -= self.GRAVITY * gfw.frame_time
+            if self.dy < 0 and self.y <= self.floor_y:
+                self.y, self.dy = self.floor_y, 0
+                self.set_state(STATE_RUNNING)
+
+    def jump(self):
+        if self.state != STATE_RUNNING: return
+        self.dy = self.JUMP_POWER
+        self.set_state(STATE_JUMP)
 
     def set_state(self, state):
         self.state = state
