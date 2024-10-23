@@ -21,7 +21,7 @@ class Cookie(SheetSprite):
     GRAVITY = 3000
     JUMP_POWER = 1000
     def __init__(self):
-        super().__init__('res/cookie.png', 160, 240, 10)
+        super().__init__('res/cookie.png', 160, 340, 10)
         self.running = True
         self.width, self.height = 270, 270
         self.set_state(STATE_RUNNING)

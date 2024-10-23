@@ -15,9 +15,9 @@ def enter():
     world.append(HorzFillBackground('res/cookie_run_bg_2.png', -100), world.layer.bg)
     world.append(HorzFillBackground('res/cookie_run_bg_3.png', -150), world.layer.bg)
 
-    world.append(Floor(Floor.TYPE_20x2, 400, 80), world.layer.floor)
-    world.append(Floor(Floor.TYPE_2x2, 720, 80), world.layer.floor)
-    world.append(Floor(Floor.TYPE_3x1, 520, 240), world.layer.floor)
+    world.append(Floor(Floor.TYPE_20x2, 0, 0), world.layer.floor)
+    world.append(Floor(Floor.TYPE_2x2, 10, 0), world.layer.floor)
+    world.append(Floor(Floor.TYPE_3x1, 5, 4), world.layer.floor)
 
     global cookie
     cookie = Cookie()
