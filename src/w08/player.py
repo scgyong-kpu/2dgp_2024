@@ -9,16 +9,13 @@ def make_rect(idx):
 def make_rects(*idxs):
     return list(map(make_rect, idxs))
 
-RECTS = [
-    make_rects(400, 401, 402, 403),
-    make_rects(507, 508),
-    make_rects(501, 502, 503, 504),
-    make_rects(509, 510),
+STATES = [
+    (make_rects(400, 401, 402, 403), (120,136)),
+    (make_rects(507, 508), (120, 115)),
+    (make_rects(501, 502, 503, 504), (120, 115)),
+    (make_rects(509, 510), (160,70)),
 ]
-SIZES = [
-    (120,136), (120, 115), (120, 115), (160,70), 
-]
-STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE = range(4)
+STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE, STATE_COUNT = range(5)
 
 class SheetSprite(AnimSprite):
     def __init__(self, fname, x, y, fps):
@@ -44,12 +41,11 @@ class Cookie(SheetSprite):
             self.toggle_state()
 
     def toggle_state(self):
-        self.set_state((self.state + 1) % len(RECTS))
+        self.set_state((self.state + 1) % STATE_COUNT)
 
     def set_state(self, state):
         self.state = state
-        self.src_rects = RECTS[self.state]
-        self.width, self.height = SIZES[self.state]
+        self.src_rects, (self.width, self.height) = STATES[self.state]
         foot = self.y - self.src_rects[0][3] // 2 # 높이의 절반이 발끝의 위치
         half_width = self.width // 2
         self.bounding_box = (self.x - half_width, foot, self.x + half_width, foot + self.height)
