@@ -14,7 +14,7 @@ def enter():
     world.append(HorzFillBackground('res/cookie_run_bg_2.png', -100), world.layer.bg)
     world.append(HorzFillBackground('res/cookie_run_bg_3.png', -150), world.layer.bg)
 
-    world.append(Sprite('res/cookie.png', 160, 160), world.layer.player)
+    world.append(Cookie(), world.layer.player)
 
 def exit():
     world.clear()
