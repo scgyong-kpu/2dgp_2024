@@ -2,17 +2,16 @@ from pico2d import *
 from gfw import *
 import time
 
-RECTS_RUN = [ 
-    ( 69, 1090, 138, 138), 
-    (341, 1090, 138, 138), 
-    (613, 1090, 138, 138), 
-    (885, 1090, 138, 138), 
-]
+def make_rect(idx):
+    x, y = idx % 16, idx // 16
+    return (x * 272 + 67, y * 272 + 2, 138, 138)
+    # return (x * 272 + 2, y * 272 + 2, 270, 270)
 
-RECTS_JUMP = [ 
-    (1973, 1362, 138, 138), 
-    (2245, 1362, 138, 138), 
-]
+def make_rects(*idxs):
+    return list(map(make_rect, idxs))
+
+RECTS_RUN = make_rects(0x40, 0x41, 0x42, 0x43)
+RECTS_JUMP = make_rects(0x57, 0x58)
 
 class SheetSprite(AnimSprite):
     def __init__(self, fname, x, y, fps):
