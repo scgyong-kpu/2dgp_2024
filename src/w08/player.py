@@ -10,8 +10,13 @@ def make_rect(idx):
 def make_rects(*idxs):
     return list(map(make_rect, idxs))
 
-RECTS_RUN = make_rects(400, 401, 402, 403)
-RECTS_JUMP = make_rects(507, 508)
+RECTS = [
+    make_rects(400, 401, 402, 403),
+    make_rects(507, 508),
+    make_rects(501, 502, 503, 504),
+    make_rects(509, 510),
+]
+STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE = range(4)
 
 class SheetSprite(AnimSprite):
     def __init__(self, fname, x, y, fps):
@@ -30,13 +35,14 @@ class Cookie(SheetSprite):
         super().__init__('res/cookie.png', 160, 160, 10)
         self.running = True
         self.width, self.height = 138, 138
-        self.src_rects = RECTS_RUN
+        self.state = STATE_RUNNING
+        self.src_rects = RECTS[self.state]
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
             self.toggle_state()
 
     def toggle_state(self):
-        self.running = not self.running
-        self.src_rects = RECTS_RUN if self.running else RECTS_JUMP
+        self.state = (self.state + 1) % len(RECTS)
+        self.src_rects = RECTS[self.state]
 
