@@ -1,5 +1,6 @@
 from pico2d import * 
 from gfw import *
+import random
 
 INFO = [
     ('res/cookierun_platform_480x48.png', (20, 2)),
@@ -27,11 +28,16 @@ class Floor(Sprite):
 
 def init():
     world = gfw.top().world
-    world.append(Floor(Floor.TYPE_20x2, 0, 0), world.layer.floor)
-    world.append(Floor(Floor.TYPE_2x2, 20, 0), world.layer.floor)
-    world.append(Floor(Floor.TYPE_3x1, 5, 4), world.layer.floor)
+    x = 0
+    while x < 1000:
+        t = Floor.TYPE_20x2 if random.random() < 0.5 else Floor.TYPE_2x2
+        w = 20 if t == Floor.TYPE_20x2 else 2
+        world.append(Floor(t, x, 0), world.layer.floor)
+        x += w
 
 def draw():
     pass
 def update():
-    pass
+    if random.random() < 0.01:
+        world = gfw.top().world
+        world.append(Floor(Floor.TYPE_3x1, 15, random.randint(3, 8)), world.layer.floor)
