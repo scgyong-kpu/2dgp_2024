@@ -48,11 +48,10 @@ class Cookie(SheetSprite):
     def set_state(self, state):
         self.state = state
         self.src_rects, (self.width, self.height) = STATES[self.state]
-        foot = self.y - self.src_rects[0][3] // 2 # 높이의 절반이 발끝의 위치
-        half_width = self.width // 2
-        self.bounding_box = (self.x - half_width, foot, self.x + half_width, foot + self.height)
 
     def get_bb(self):
-        return self.bounding_box
+        foot = self.y - self.src_rects[0][3] // 2 # 높이의 절반이 발끝의 위치
+        half_width = self.width // 2
+        return (self.x - half_width, foot, self.x + half_width, foot + self.height)
 
 
