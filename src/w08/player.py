@@ -14,8 +14,9 @@ STATES = [
     (make_rects(507, 508), (120, 115)),
     (make_rects(501, 502, 503, 504), (120, 115)),
     (make_rects(509, 510), (160,70)),
+    (make_rects(500), (110,126)),
 ]
-STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE, STATE_COUNT = range(5)
+STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE, STATE_FALLING, STATE_COUNT = range(6)
 
 class Cookie(SheetSprite):
     GRAVITY = 3000
@@ -34,7 +35,7 @@ class Cookie(SheetSprite):
 
     def update(self):
         self.y += self.dy * gfw.frame_time
-        if self.state in (STATE_JUMP, STATE_DOUBLE_JUMP):
+        if self.state in (STATE_JUMP, STATE_DOUBLE_JUMP, STATE_FALLING):
             self.dy -= self.GRAVITY * gfw.frame_time
             # if self.dy < 0 and self.y <= self.floor_y:
             #     self.y, self.dy = self.floor_y, 0
@@ -46,7 +47,7 @@ class Cookie(SheetSprite):
             l,b,r,t = floor.get_bb()
             if self.state == STATE_RUNNING:
                 if foot > t:
-                    self.set_state(STATE_JUMP)
+                    self.set_state(STATE_FALLING)
                     self.dy = 0
             else:
                 # print('falling', t, foot)
