@@ -58,11 +58,14 @@ def mapobject_factory_create(tile, left, bottom):
     return None
 
 def tile_at(x, y):
-    col = x % UNIT_PER_LINE
-    row = x // UNIT_PER_LINE * map_height + map_height - 1 - y
-    # print(f'{row=} {col=} {len(lines)=}')
-    # print(f'{lines[row]=} {len(lines[row])=}')
-    return lines[row][col]
+    try:
+        col = x % UNIT_PER_LINE
+        row = x // UNIT_PER_LINE * map_height + map_height - 1 - y
+        # print(f'{row=} {col=} {len(lines)=}')
+        # print(f'{lines[row]=} {len(lines[row])=}')
+        return lines[row][col]
+    except:
+        return ''
 
 map_height = 10
 UNIT_PER_LINE = 100
@@ -77,8 +80,8 @@ def init():
     world = gfw.top().world
     last_floor_right = 0
     map_x = 0
-    for y in range(map_height - 1, -1, -1):
-        print(f'tile_at(0,{y})={tile_at(0,y)}')
+    map_width = len(lines) // map_height * UNIT_PER_LINE
+    print(f'{map_width=}')
 
 def draw():
     pass
