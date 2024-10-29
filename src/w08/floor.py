@@ -10,6 +10,7 @@ INFO = [
 ]
 UNIT = 72
 SPEED = -300
+lines = []
 
 class MapObject(Sprite):
     def __init__(self, fname, left, top, unit_width, unit_height):
@@ -49,26 +50,36 @@ class JellyItem(MapObject):
         self.image.clip_draw(*self.src_rect, self.x, self.y)
 
 def mapobject_factory_create(tile, left, bottom):
-    if tile >= 1 and tile <= 60:
-        return JellyItem(tile - 1, left, bottom)
-    if tile == 91 or tile == 101 or tile == 73:
-        type = Floor.TYPE_10x2 if tile == 91 else Floor.TYPE_2x2 if tile == 101 else Floor.TYPE_3x1
+    if tile >= '1' and tile <= '9':
+        return JellyItem(ord(tile) - ord('1'), left, bottom)
+    if tile == 'O' or tile == 'P' or tile == 'Q':
+        type = Floor.TYPE_10x2 if tile == 'O' else Floor.TYPE_2x2 if tile == 'P' else Floor.TYPE_3x1
         return Floor(type, left, bottom)
     return None
 
+def tile_at(x, y):
+    col = x % UNIT_PER_LINE
+    row = x // UNIT_PER_LINE * map_height + map_height - 1 - y
+    # print(f'{row=} {col=} {len(lines)=}')
+    # print(f'{lines[row]=} {len(lines[row])=}')
+    return lines[row][col]
+
+map_height = 10
+UNIT_PER_LINE = 100
+
 def init():
-    with open('res/stage_01.tmj') as f:
-        tmj = json.load(f)
-        # print(tmj)
+    global lines
+    with open('res/stage_01.txt') as f:
+        lines = f.readlines()
 
     global map_width, map_height, map_data
     global last_floor_right, map_x
     world = gfw.top().world
-    map_width = tmj['width']
-    map_height = tmj['height']
-    map_data = tmj['layers'][0]['data']
     last_floor_right = 0
     map_x = 0
+    for y in range(map_height - 1, -1, -1):
+        print(f'tile_at(0,{y})={tile_at(0,y)}')
+
 def draw():
     pass
 def update():
@@ -78,8 +89,8 @@ def update():
 
     while last_floor_right < 17 * UNIT:
         bottom = 0
-        for y in range(map_height - 1, -1, -1):
-            tile = map_data[y * map_width + map_x]
+        for y in range(map_height):
+            tile = tile_at(map_x, y)
             obj = mapobject_factory_create(tile, last_floor_right, bottom)
             if obj is not None:
                 # print(f'@({map_x}, {y}) {obj} ({obj.x},{obj.y}) [{obj.x - obj.width//2} ~ {obj.x + obj.width//2}]')
@@ -88,5 +99,5 @@ def update():
             bottom += UNIT
         map_x += 1
         last_floor_right += UNIT
-        print(f'{map_x=} / {map_width=}')
+        # print(f'{map_x=} / {map_width=}')
 
