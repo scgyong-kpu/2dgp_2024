@@ -21,7 +21,7 @@ class Cookie(SheetSprite):
     GRAVITY = 3000
     JUMP_POWER = 1000
     def __init__(self):
-        super().__init__('res/cookie.png', 160, 340, 10)
+        super().__init__('res/cookie.png', 160, 500, 10)
         self.running = True
         self.width, self.height = 270, 270
         self.set_state(STATE_RUNNING)
@@ -36,9 +36,39 @@ class Cookie(SheetSprite):
         self.y += self.dy * gfw.frame_time
         if self.state in (STATE_JUMP, STATE_DOUBLE_JUMP):
             self.dy -= self.GRAVITY * gfw.frame_time
-            if self.dy < 0 and self.y <= self.floor_y:
-                self.y, self.dy = self.floor_y, 0
-                self.set_state(STATE_RUNNING)
+            # if self.dy < 0 and self.y <= self.floor_y:
+            #     self.y, self.dy = self.floor_y, 0
+            #     self.set_state(STATE_RUNNING)
+
+        _,foot,_,_ = self.get_bb()
+        floor = self.get_floor(foot)
+        if floor is not None:
+            l,b,r,t = floor.get_bb()
+            if self.state == STATE_RUNNING:
+                if foot > t:
+                    self.set_state(STATE_JUMP)
+                    self.dy = 0
+            else:
+                # print('falling', t, foot)
+                if self.dy < 0 and int(foot) <= t:
+                    self.y += t - foot
+                    self.set_state(STATE_RUNNING)
+                    self.dy = 0
+
+    def get_floor(self, foot):
+        selected = None
+        sel_top = 0
+        x, y = self.x, self.y
+        world = gfw.top().world
+        for floor in world.objects_at(world.layer.floor):
+            l,b,r,t = floor.get_bb()
+            if x < l or x > r: continue
+            mid = (b + t) // 2
+            if foot < mid: continue
+            if t > sel_top:
+                selected = floor
+                sel_top = t
+        return selected
 
     def jump(self):
         if self.state == STATE_RUNNING:
