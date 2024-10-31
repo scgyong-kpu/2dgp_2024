@@ -29,6 +29,7 @@ class Cookie(SheetSprite):
         self.floor_y = self.y
         self.dy = 0
         self.mag = 1
+        self.mag_speed = 0
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:
@@ -53,12 +54,26 @@ class Cookie(SheetSprite):
                 self.set_state(STATE_RUNNING)
 
     def toggle_mag(self):
+        self.mag_speed = 1 if self.mag == 1 else -1
+
+    def update_mag(self):
+        if self.mag_speed == 0: return
         _,foot1,_,_ = self.get_bb()
-        self.mag = 1 if self.mag > 1 else 2
+
+        self.mag += self.mag_speed * gfw.frame_time
+        if self.mag > 2:
+            self.mag = 2
+            self.mag_speed = 0
+        elif self.mag < 1:
+            self.mag = 1
+            self.mag_speed = 0
+
         _,foot2,_,_ = self.get_bb()
         self.y += foot1 - foot2
 
     def update(self):
+        self.update_mag()
+
         _,foot,_,_ = self.get_bb()
         floor = self.get_floor(foot)
         t = 0 if floor is None else floor.get_bb()[3]
