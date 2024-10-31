@@ -64,7 +64,7 @@ class Cookie(SheetSprite):
             else:
                 self.y += self.dy * gfw.frame_time
 
-        if self.state == STATE_RUNNING:
+        if self.state in (STATE_RUNNING, STATE_SLIDE):
             if foot > t:
                 # print(f'{foot=:.1f} {t=}')
                 self.set_state(STATE_FALLING)
