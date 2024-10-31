@@ -3,7 +3,7 @@ from gfw import *
 from player import Cookie
 import floor
 
-world = World(['bg', 'floor', 'item', 'player', 'controller'])
+world = World(['bg', 'floor', 'item', 'obstacle', 'player', 'controller'])
 
 canvas_width = 1152 #1280
 canvas_height = 648 #720

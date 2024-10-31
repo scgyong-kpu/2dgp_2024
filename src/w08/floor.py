@@ -13,9 +13,9 @@ SPEED = -300
 lines = []
 
 class MapObject(Sprite):
-    def __init__(self, fname, left, top, unit_width, unit_height):
+    def __init__(self, fname, left, bottom, unit_width, unit_height):
         x = left + unit_width * UNIT // 2
-        y = top + unit_height * UNIT // 2
+        y = bottom + unit_height * UNIT // 2
         super().__init__(fname, x, y)
         self.width = unit_width * UNIT
         self.height = unit_height * UNIT
@@ -31,17 +31,17 @@ class MapObject(Sprite):
 
 class Floor(MapObject):
     TYPE_10x2, TYPE_2x2, TYPE_3x1 = range(3)
-    def __init__(self, type, left, top):
+    def __init__(self, type, left, bottom):
         fname, (w, h) = INFO[type]
-        super().__init__(fname, left, top, w, h)
+        super().__init__(fname, left, bottom, w, h)
         self.type = type
         self.layer_index = gfw.top().world.layer.floor
     def canPassThrough(self):
         return not self.type in (Floor.TYPE_10x2, Floor.TYPE_2x2)
 
 class JellyItem(MapObject):
-    def __init__(self, index, left, top):
-        super().__init__('res/jelly.png', left, top, 1, 1)
+    def __init__(self, index, left, bottom):
+        super().__init__('res/jelly.png', left, bottom, 1, 1)
         x = round(2 + (index  % 30) * 68)
         y = round(2 + (1 - index // 30) * 68)
         self.src_rect = x, y, 66, 66
@@ -51,12 +51,24 @@ class JellyItem(MapObject):
     def draw(self):
         self.image.clip_draw(*self.src_rect, self.x, self.y)
 
+class Obstacle(MapObject):
+    def __init__(self, left, bottom):
+        super().__init__('res/witchs_oven/epN01_tm01_jp1A.png', left, bottom, 1, 1)
+        self.width = self.image.w
+        bottom = self.y + self.height / 2
+        self.height = self.image.h
+        self.y = bottom + self.height / 2
+
+        self.layer_index = gfw.top().world.layer.obstacle
+
 def mapobject_factory_create(tile, left, bottom):
     if tile >= '1' and tile <= '9':
         return JellyItem(ord(tile) - ord('1'), left, bottom)
     if tile == 'O' or tile == 'P' or tile == 'Q':
         type = Floor.TYPE_10x2 if tile == 'O' else Floor.TYPE_2x2 if tile == 'P' else Floor.TYPE_3x1
         return Floor(type, left, bottom)
+    if tile == 'X':
+        return Obstacle(left, bottom)
     return None
 
 def tile_at(x, y):
