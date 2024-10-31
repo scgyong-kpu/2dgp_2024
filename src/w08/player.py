@@ -18,6 +18,8 @@ STATES = [
 ]
 STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE, STATE_FALLING, STATE_COUNT = range(6)
 
+RECTS_RUNNING_MAGNIFIED = make_rects(404, 405, 406, 407)
+
 class Cookie(SheetSprite):
     GRAVITY = 3000
     JUMP_POWER = 1000
@@ -25,11 +27,11 @@ class Cookie(SheetSprite):
         super().__init__('res/cookie.png', 160, 500, 10)
         self.running = True
         self.width, self.height = 270, 270
-        self.set_state(STATE_RUNNING)
         self.floor_y = self.y
         self.dy = 0
         self.mag = 1
         self.mag_speed = 0
+        self.set_state(STATE_RUNNING)
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:
@@ -55,6 +57,8 @@ class Cookie(SheetSprite):
 
     def toggle_mag(self):
         self.mag_speed = 1 if self.mag == 1 else -1
+        if self.state == STATE_RUNNING:
+            self.src_rects = RECTS_RUNNING_MAGNIFIED
 
     def update_mag(self):
         if self.mag_speed == 0: return
@@ -67,6 +71,8 @@ class Cookie(SheetSprite):
         elif self.mag < 1:
             self.mag = 1
             self.mag_speed = 0
+            if self.state == STATE_RUNNING:
+                self.src_rects = STATES[STATE_RUNNING][0]
 
         _,foot2,_,_ = self.get_bb()
         self.y += foot1 - foot2
@@ -141,6 +147,8 @@ class Cookie(SheetSprite):
         self.state = state
         self.src_rects, (self.width, self.height) = STATES[self.state]
         self.frame_count = len(self.src_rects)
+        if state == STATE_RUNNING and self.mag != 1:
+            self.src_rects = RECTS_RUNNING_MAGNIFIED
 
     def get_bb(self):
         foot = self.y - self.src_rects[0][3] // 2 * self.mag 
