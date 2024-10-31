@@ -116,7 +116,7 @@ class FallingObstacle(Obstacle):
         self.dy = -1800
         self.target_y = bottom + self.height // 2
         self.y = get_canvas_height() + self.height / 2 #-self.height / 2
-        print(f'{self.y=} {self.target_y=}, {bottom=}')
+        # print(f'{self.y=} {self.target_y=}, {bottom=}')
 
     def update(self):
         super().update()
@@ -124,7 +124,7 @@ class FallingObstacle(Obstacle):
             self.y += self.dy * gfw.frame_time
             self.dy -= 1000 * gfw.frame_time
             if self.dy < 0 and self.y < self.target_y:
-                self.dy *= -0.2
+                self.dy *= -0.3
                 if self.dy < 10: self.dy = 0
 
     def get_bb(self):
