@@ -1,3 +1,5 @@
 mkdir out
 curl 'https://www.spriters-resource.com/mobile/cookierun/' > out/cookierun.html
 
+py step1_make_cookie_list.py
+
