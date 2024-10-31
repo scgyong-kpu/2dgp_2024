@@ -3,3 +3,8 @@ curl 'https://www.spriters-resource.com/mobile/cookierun/' > out/cookierun.html
 
 py step1_make_cookie_list.py
 
+# (git) bash
+# python 실행 결과를 sh 에게 넘겨서 curl 명령어가 실행되도록 한다.
+py step2_download_cookie_image.py | sh
+
+# out/ 에 각종 *_sheet.png, *_icon.png 가 다운로드된다.
