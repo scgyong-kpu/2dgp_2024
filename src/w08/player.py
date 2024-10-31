@@ -30,31 +30,32 @@ class Cookie(SheetSprite):
         self.dy = 0
 
     def handle_event(self, e):
-        if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
-            self.jump()
+        if e.type == SDL_KEYDOWN:
+            if e.key == SDLK_SPACE:
+                self.jump()
+            elif e.key == SDLK_DOWN:
+                self.move_down_from_floor()
 
     def update(self):
-        self.y += self.dy * gfw.frame_time
-        if self.state in (STATE_JUMP, STATE_DOUBLE_JUMP, STATE_FALLING):
-            self.dy -= self.GRAVITY * gfw.frame_time
-            # if self.dy < 0 and self.y <= self.floor_y:
-            #     self.y, self.dy = self.floor_y, 0
-            #     self.set_state(STATE_RUNNING)
-
         _,foot,_,_ = self.get_bb()
         floor = self.get_floor(foot)
-        if floor is not None:
-            l,b,r,t = floor.get_bb()
-            if self.state == STATE_RUNNING:
-                if foot > t:
-                    self.set_state(STATE_FALLING)
-                    self.dy = 0
+        t = 0 if floor is None else floor.get_bb()[3]
+
+        if self.state in (STATE_JUMP, STATE_DOUBLE_JUMP, STATE_FALLING):
+            self.dy -= self.GRAVITY * gfw.frame_time
+            new_foot = foot + self.dy * gfw.frame_time
+            if self.dy < 0 and new_foot <= t:
+                self.y += t - foot # y 는 현재 foot 에서 도착지점 t 까지의 거리만 보정해주면 된다.
+                self.set_state(STATE_RUNNING)
+                self.dy = 0
             else:
-                # print('falling', t, foot)
-                if self.dy < 0 and int(foot) <= t:
-                    self.y += t - foot
-                    self.set_state(STATE_RUNNING)
-                    self.dy = 0
+                self.y += self.dy * gfw.frame_time
+
+        if self.state == STATE_RUNNING:
+            if foot > t:
+                print(f'{foot=:.1f} {t=}')
+                self.set_state(STATE_FALLING)
+                self.dy = 0
 
     def get_floor(self, foot):
         selected = None
@@ -64,12 +65,16 @@ class Cookie(SheetSprite):
         for floor in world.objects_at(world.layer.floor):
             l,b,r,t = floor.get_bb()
             if x < l or x > r: continue
-            mid = (b + t) // 2
-            if foot < mid: continue
+            # print(f"{foot=:.1f} {t=:.1f} {sel_top=:.1f} {floor}")
+            if foot < t: continue
             if t > sel_top:
                 selected = floor
                 sel_top = t
         return selected
+
+    def move_down_from_floor(self):
+        if self.state != STATE_RUNNING: return
+        self.y -= 1
 
     def jump(self):
         if self.state == STATE_RUNNING:
@@ -82,6 +87,7 @@ class Cookie(SheetSprite):
         self.set_state(next_state)
 
     def set_state(self, state):
+        print(f'{state=}')
         self.state = state
         self.src_rects, (self.width, self.height) = STATES[self.state]
 
