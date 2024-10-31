@@ -11,6 +11,7 @@ pat = re.compile(r'\s+<img src="/resources/sheet_icons/(\d+)/(\d+).png[^"]*" alt
   [^>]*  : 닫는 > 가 아닌 글자들. alt=".." 부터 > 까지 뭔가 글자가 있을수 있어서 부시하기 위해 쓴다
 '''
 
+chars = []
 with open('out/cookierun.html', 'r') as f:
     while True:
         str = f.readline()
@@ -20,6 +21,18 @@ with open('out/cookierun.html', 'r') as f:
         if not m: continue
         grade, number, name = m.groups()
         char = { "id": number, "name": name, "grade": grade }
-        print(char)
+        chars.append(char)
+
+print(chars)
 
 
+'''
+
+[
+  {'id': '107566', 'name': 'Brave Cookie', 'grade': '104'}, 
+  {'id': '107567', 'name': 'Bright Cookie', 'grade': '104'}, 
+  {'id': '107571', 'name': 'Buttercream Choco Cookie', 'grade': '104'}, 
+  ...
+]
+
+'''
