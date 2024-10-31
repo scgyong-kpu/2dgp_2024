@@ -53,7 +53,10 @@ class Cookie(SheetSprite):
                 self.set_state(STATE_RUNNING)
 
     def toggle_mag(self):
+        _,foot1,_,_ = self.get_bb()
         self.mag = 1 if self.mag > 1 else 2
+        _,foot2,_,_ = self.get_bb()
+        self.y += foot1 - foot2
 
     def update(self):
         _,foot,_,_ = self.get_bb()
