@@ -63,9 +63,13 @@ class AnimSprite(Sprite):
     # elapsed time 을 구하기 위해 update() 에서 gfw.frame_time 을 누적하지 않는다
     # 그렇게 해도 되긴 하지만, 간단한 반복 애니메이션은 정확한 시간 누적이 필요한게 아니다
     # 오히려 AnimSprite 를 상속하는 객체가 super().update() 를 호출해야만 하는 부담이 생긴다
+
+    def get_anim_index(self):
+        elapsed = time.time() - self.created_on
+        return round(elapsed * self.fps) % self.frame_count
+
     def draw(self):
-        elpased = time.time() - self.created_on
-        index = round(elpased * self.fps) % self.frame_count
+        index = self.get_anim_index()
         self.image.clip_draw(index * self.width, 0, self.width, self.height, self.x, self.y)
 
 class SheetSprite(AnimSprite):
@@ -74,9 +78,7 @@ class SheetSprite(AnimSprite):
         self.src_rects = []
 
     def draw(self):
-        elpased = time.time() - self.created_on
-        frame_count = len(self.src_rects)
-        index = round(elpased * self.fps) % frame_count
+        index = self.get_anim_index()
         src_rect = self.src_rects[index]
         self.image.clip_draw(*src_rect, self.x, self.y)
 

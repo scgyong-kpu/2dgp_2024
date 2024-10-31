@@ -28,6 +28,7 @@ class Cookie(SheetSprite):
         self.set_state(STATE_RUNNING)
         self.floor_y = self.y
         self.dy = 0
+        self.mag = 1
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:
@@ -37,6 +38,8 @@ class Cookie(SheetSprite):
                 self.move_down_from_floor()
             elif e.key == SDLK_RETURN:
                 self.slide(True)
+            elif e.key == SDLK_m:
+                self.toggle_mag()
         elif e.type == SDL_KEYUP:
             if e.key == SDLK_RETURN:
                 self.slide(False)
@@ -48,6 +51,9 @@ class Cookie(SheetSprite):
         else:
             if self.state == STATE_SLIDE:
                 self.set_state(STATE_RUNNING)
+
+    def toggle_mag(self):
+        self.mag = 1 if self.mag > 1 else 2
 
     def update(self):
         _,foot,_,_ = self.get_bb()
@@ -116,10 +122,15 @@ class Cookie(SheetSprite):
         # print(f'{state=}')
         self.state = state
         self.src_rects, (self.width, self.height) = STATES[self.state]
+        self.frame_count = len(self.src_rects)
 
     def get_bb(self):
         foot = self.y - self.src_rects[0][3] // 2 # 높이의 절반이 발끝의 위치
         half_width = self.width // 2
         return (self.x - half_width, foot, self.x + half_width, foot + self.height)
 
+    def draw(self):
+        index = self.get_anim_index()
+        l, b, w, h = self.src_rects[index]
+        self.image.clip_draw(l, b, w, h, self.x, self.y, self.mag * w, self.mag * h)
 
