@@ -35,6 +35,19 @@ class Cookie(SheetSprite):
                 self.jump()
             elif e.key == SDLK_DOWN:
                 self.move_down_from_floor()
+            elif e.key == SDLK_RETURN:
+                self.slide(True)
+        elif e.type == SDL_KEYUP:
+            if e.key == SDLK_RETURN:
+                self.slide(False)
+
+    def slide(self, starts):
+        if starts:
+            if self.state == STATE_RUNNING:
+                self.set_state(STATE_SLIDE)
+        else:
+            if self.state == STATE_SLIDE:
+                self.set_state(STATE_RUNNING)
 
     def update(self):
         _,foot,_,_ = self.get_bb()
