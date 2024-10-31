@@ -70,6 +70,8 @@ class Cookie(SheetSprite):
                 self.set_state(STATE_FALLING)
                 self.dy = 0
 
+        self.check_collision()
+
     def get_floor(self, foot):
         selected = None
         sel_top = 0
@@ -92,6 +94,13 @@ class Cookie(SheetSprite):
             return
         if self.state != STATE_RUNNING: return
         self.y -= 1
+
+    def check_collision(self):
+        world = gfw.top().world
+        items = world.objects_at(world.layer.item)
+        for item in items:
+            if collides_box(self, item):
+                world.remove(item)
 
     def jump(self):
         if self.state == STATE_RUNNING:
