@@ -61,18 +61,27 @@ class Obstacle(MapObject):
 
         self.layer_index = gfw.top().world.layer.obstacle
 
+    def get_bb(self):
+        foot = self.y - self.height // 2
+        (bb_size, _) = self.info
+        bb_half_width = self.width * bb_size[0] / 2
+        bb_height = self.height * bb_size[1]
+        return (self.x - bb_half_width, foot, self.x + bb_half_width, foot + bb_height)
+
+
 class SimpleObstacle(Obstacle):
     def __init__(self, left, bottom):
         super().__init__('res/witchs_oven/epN01_tm01_jp1A.png', left, bottom)
+        self.info = ( (0.5, 0.8), [] )
 
 ANIM_OBSTACLE_INFO = [
-    ( (0.8, 0.5), [
+    ( (0.7, 0.5), [
         'res/witchs_oven/epN01_tm01_jp1up_01.png',
         'res/witchs_oven/epN01_tm01_jp1up_02.png',
         'res/witchs_oven/epN01_tm01_jp1up_03.png',
         'res/witchs_oven/epN01_tm01_jp1up_04.png',
     ] ),
-    ( (0.8, 0.6), [
+    ( (0.7, 0.6), [
         'res/witchs_oven/epN01_tm01_jp2up_01.png',
         'res/witchs_oven/epN01_tm01_jp2up_02.png',
         'res/witchs_oven/epN01_tm01_jp2up_03.png',
@@ -100,14 +109,6 @@ class AnimObstacle(Obstacle):
         index = round(self.time * self.fps)
         if index >= len(self.images): index = len(self.images) - 1
         self.images[index].draw(self.x, self.y, self.width, self.height)
-
-    def get_bb(self):
-        foot = self.y - self.height // 2
-        (bb_size, _) = self.info
-        bb_half_width = self.width * bb_size[0] / 2
-        bb_height = self.height * bb_size[1]
-        return (self.x - bb_half_width, foot, self.x + bb_half_width, foot + bb_height)
-
 
 def mapobject_factory_create(tile, left, bottom):
     if tile >= '1' and tile <= '9':
