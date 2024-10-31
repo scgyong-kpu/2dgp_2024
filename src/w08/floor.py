@@ -66,13 +66,13 @@ class SimpleObstacle(Obstacle):
         super().__init__('res/witchs_oven/epN01_tm01_jp1A.png', left, bottom)
 
 ANIM_OBSTACLE_INFO = [
-    ( [
+    ( (0.8, 0.5), [
         'res/witchs_oven/epN01_tm01_jp1up_01.png',
         'res/witchs_oven/epN01_tm01_jp1up_02.png',
         'res/witchs_oven/epN01_tm01_jp1up_03.png',
         'res/witchs_oven/epN01_tm01_jp1up_04.png',
     ] ),
-    ( [
+    ( (0.8, 0.6), [
         'res/witchs_oven/epN01_tm01_jp2up_01.png',
         'res/witchs_oven/epN01_tm01_jp2up_02.png',
         'res/witchs_oven/epN01_tm01_jp2up_03.png',
@@ -83,21 +83,30 @@ ANIM_OBSTACLE_INFO = [
 
 class AnimObstacle(Obstacle):
     def __init__(self, info, left, bottom):
-        (files) = info
+        (_, files) = info
         super().__init__(files[0], left, bottom)
+        self.info = info
         self.images = list(map(gfw.image.load, files))
-        self.fps = 2
+        self.fps = 6
         self.frame_count = len(self.images)
         self.time = 0
 
     def update(self):
         super().update()
-        self.time += gfw.frame_time
+        if (self.x < get_canvas_width() * 3 // 4):
+            self.time += gfw.frame_time
 
     def draw(self):
         index = round(self.time * self.fps)
         if index >= len(self.images): index = len(self.images) - 1
         self.images[index].draw(self.x, self.y, self.width, self.height)
+
+    def get_bb(self):
+        foot = self.y - self.height // 2
+        (bb_size, _) = self.info
+        bb_half_width = self.width * bb_size[0] / 2
+        bb_height = self.height * bb_size[1]
+        return (self.x - bb_half_width, foot, self.x + bb_half_width, foot + bb_height)
 
 
 def mapobject_factory_create(tile, left, bottom):
