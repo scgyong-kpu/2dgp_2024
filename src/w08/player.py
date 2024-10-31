@@ -96,7 +96,7 @@ class Cookie(SheetSprite):
     def move_down_from_floor(self):
         _,foot,_,_ = self.get_bb()
         floor = self.get_floor(foot)
-        if not floor.canPassThrough():
+        if floor is None or not floor.canPassThrough():
             return
         if self.state != STATE_RUNNING: return
         self.y -= 1
@@ -125,9 +125,9 @@ class Cookie(SheetSprite):
         self.frame_count = len(self.src_rects)
 
     def get_bb(self):
-        foot = self.y - self.src_rects[0][3] // 2 # 높이의 절반이 발끝의 위치
-        half_width = self.width // 2
-        return (self.x - half_width, foot, self.x + half_width, foot + self.height)
+        foot = self.y - self.src_rects[0][3] // 2 * self.mag 
+        half_width = self.width // 2 * self.mag
+        return (self.x - half_width, foot, self.x + half_width, foot + self.height * self.mag)
 
     def draw(self):
         index = self.get_anim_index()
