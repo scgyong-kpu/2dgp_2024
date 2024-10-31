@@ -65,15 +65,27 @@ class SimpleObstacle(Obstacle):
     def __init__(self, left, bottom):
         super().__init__('res/witchs_oven/epN01_tm01_jp1A.png', left, bottom)
 
+ANIM_OBSTACLE_INFO = [
+    ( [
+        'res/witchs_oven/epN01_tm01_jp1up_01.png',
+        'res/witchs_oven/epN01_tm01_jp1up_02.png',
+        'res/witchs_oven/epN01_tm01_jp1up_03.png',
+        'res/witchs_oven/epN01_tm01_jp1up_04.png',
+    ] ),
+    ( [
+        'res/witchs_oven/epN01_tm01_jp2up_01.png',
+        'res/witchs_oven/epN01_tm01_jp2up_02.png',
+        'res/witchs_oven/epN01_tm01_jp2up_03.png',
+        'res/witchs_oven/epN01_tm01_jp2up_04.png',
+        'res/witchs_oven/epN01_tm01_jp2up_05.png',
+    ] ),
+]
+
 class AnimObstacle(Obstacle):
-    def __init__(self, left, bottom):
-        super().__init__('res/witchs_oven/epN01_tm01_jp1up_01.png', left, bottom)
-        self.images = [
-            gfw.image.load('res/witchs_oven/epN01_tm01_jp1up_01.png'),
-            gfw.image.load('res/witchs_oven/epN01_tm01_jp1up_02.png'),
-            gfw.image.load('res/witchs_oven/epN01_tm01_jp1up_03.png'),
-            gfw.image.load('res/witchs_oven/epN01_tm01_jp1up_04.png'),
-        ]
+    def __init__(self, info, left, bottom):
+        (files) = info
+        super().__init__(files[0], left, bottom)
+        self.images = list(map(gfw.image.load, files))
         self.fps = 2
         self.frame_count = len(self.images)
         self.time = 0
@@ -97,7 +109,9 @@ def mapobject_factory_create(tile, left, bottom):
     if tile == 'X':
         return SimpleObstacle(left, bottom)
     if tile == 'Y':
-        return AnimObstacle(left, bottom)
+        return AnimObstacle(ANIM_OBSTACLE_INFO[0], left, bottom)
+    if tile == 'Z':
+        return AnimObstacle(ANIM_OBSTACLE_INFO[1], left, bottom)
     return None
 
 def tile_at(x, y):
