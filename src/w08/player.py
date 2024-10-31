@@ -73,6 +73,11 @@ class Cookie(SheetSprite):
         return selected
 
     def move_down_from_floor(self):
+        from floor import Floor
+        _,foot,_,_ = self.get_bb()
+        floor = self.get_floor(foot)
+        if floor.type in (Floor.TYPE_10x2, Floor.TYPE_2x2):
+            return
         if self.state != STATE_RUNNING: return
         self.y -= 1
 

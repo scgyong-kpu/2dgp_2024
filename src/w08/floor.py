@@ -34,6 +34,7 @@ class Floor(MapObject):
     def __init__(self, type, left, top):
         fname, (w, h) = INFO[type]
         super().__init__(fname, left, top, w, h)
+        self.type = type
         self.layer_index = gfw.top().world.layer.floor
 
 
