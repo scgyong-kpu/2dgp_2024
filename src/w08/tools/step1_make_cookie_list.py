@@ -1,4 +1,5 @@
 import re
+import json
 
 pat = re.compile(r'\s+<img src="/resources/sheet_icons/(\d+)/(\d+).png[^"]*" alt="([^"]+)"[^>]*>\s*$')
 '''
@@ -23,15 +24,22 @@ with open('out/cookierun.html', 'r') as f:
         char = { "id": number, "name": name, "grade": grade }
         chars.append(char)
 
-print(chars)
-
+with open('out/cookies.json', 'w') as f:
+    json.dump(chars, f, indent=2)
 
 '''
 
 [
-  {'id': '107566', 'name': 'Brave Cookie', 'grade': '104'}, 
-  {'id': '107567', 'name': 'Bright Cookie', 'grade': '104'}, 
-  {'id': '107571', 'name': 'Buttercream Choco Cookie', 'grade': '104'}, 
+  {
+    "id": "107566",
+    "name": "Brave Cookie",
+    "grade": "104"
+  },
+  {
+    "id": "107567",
+    "name": "Bright Cookie",
+    "grade": "104"
+  },
   ...
 ]
 
