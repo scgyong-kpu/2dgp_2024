@@ -55,7 +55,7 @@ class Obstacle(MapObject):
     def __init__(self, fname, left, bottom):
         super().__init__(fname, left, bottom, 1, 1)
         self.width = self.image.w
-        bottom = self.y + self.height / 2
+        bottom = self.y - self.height / 2
         self.height = self.image.h
         self.y = bottom + self.height / 2
 
