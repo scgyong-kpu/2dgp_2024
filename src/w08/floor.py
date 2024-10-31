@@ -52,14 +52,41 @@ class JellyItem(MapObject):
         self.image.clip_draw(*self.src_rect, self.x, self.y)
 
 class Obstacle(MapObject):
-    def __init__(self, left, bottom):
-        super().__init__('res/witchs_oven/epN01_tm01_jp1A.png', left, bottom, 1, 1)
+    def __init__(self, fname, left, bottom):
+        super().__init__(fname, left, bottom, 1, 1)
         self.width = self.image.w
         bottom = self.y + self.height / 2
         self.height = self.image.h
         self.y = bottom + self.height / 2
 
         self.layer_index = gfw.top().world.layer.obstacle
+
+class SimpleObstacle(Obstacle):
+    def __init__(self, left, bottom):
+        super().__init__('res/witchs_oven/epN01_tm01_jp1A.png', left, bottom)
+
+class AnimObstacle(Obstacle):
+    def __init__(self, left, bottom):
+        super().__init__('res/witchs_oven/epN01_tm01_jp1up_01.png', left, bottom)
+        self.images = [
+            gfw.image.load('res/witchs_oven/epN01_tm01_jp1up_01.png'),
+            gfw.image.load('res/witchs_oven/epN01_tm01_jp1up_02.png'),
+            gfw.image.load('res/witchs_oven/epN01_tm01_jp1up_03.png'),
+            gfw.image.load('res/witchs_oven/epN01_tm01_jp1up_04.png'),
+        ]
+        self.fps = 2
+        self.frame_count = len(self.images)
+        self.time = 0
+
+    def update(self):
+        super().update()
+        self.time += gfw.frame_time
+
+    def draw(self):
+        index = round(self.time * self.fps)
+        if index >= len(self.images): index = len(self.images) - 1
+        self.images[index].draw(self.x, self.y, self.width, self.height)
+
 
 def mapobject_factory_create(tile, left, bottom):
     if tile >= '1' and tile <= '9':
@@ -68,7 +95,9 @@ def mapobject_factory_create(tile, left, bottom):
         type = Floor.TYPE_10x2 if tile == 'O' else Floor.TYPE_2x2 if tile == 'P' else Floor.TYPE_3x1
         return Floor(type, left, bottom)
     if tile == 'X':
-        return Obstacle(left, bottom)
+        return SimpleObstacle(left, bottom)
+    if tile == 'Y':
+        return AnimObstacle(left, bottom)
     return None
 
 def tile_at(x, y):
