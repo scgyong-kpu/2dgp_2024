@@ -15,14 +15,16 @@ STATES = [
     (make_rects(501, 502, 503, 504), (120, 115)),
     (make_rects(509, 510), (160,70)),
     (make_rects(500), (110,126)),
+    (make_rects(3, 4), (90, 160)),
 ]
-STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE, STATE_FALLING, STATE_COUNT = range(6)
+STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE, STATE_FALLING, STATE_HURT, STATE_COUNT = range(7)
 
 RECTS_RUNNING_MAGNIFIED = make_rects(404, 405, 406, 407)
 
 class Cookie(SheetSprite):
     GRAVITY = 3000
     JUMP_POWER = 1000
+    HURT_DURATION = 0.5
     def __init__(self):
         super().__init__('res/cookie.png', 160, 500, 10)
         self.running = True
@@ -84,7 +86,12 @@ class Cookie(SheetSprite):
         floor = self.get_floor(foot)
         t = 0 if floor is None else floor.get_bb()[3]
 
-        if self.state in (STATE_JUMP, STATE_DOUBLE_JUMP, STATE_FALLING):
+        if self.state == STATE_HURT:
+            self.time += gfw.frame_time
+            if self.time >= Cookie.HURT_DURATION:
+                self.set_state(STATE_RUNNING)
+
+        elif self.state in (STATE_JUMP, STATE_DOUBLE_JUMP, STATE_FALLING):
             self.dy -= self.GRAVITY * gfw.frame_time
             new_foot = foot + self.dy * gfw.frame_time
             if self.dy < 0 and new_foot <= t:
@@ -94,7 +101,7 @@ class Cookie(SheetSprite):
             else:
                 self.y += self.dy * gfw.frame_time
 
-        if self.state in (STATE_RUNNING, STATE_SLIDE):
+        elif self.state in (STATE_RUNNING, STATE_SLIDE):
             if foot > t:
                 # print(f'{foot=:.1f} {t=}')
                 self.set_state(STATE_FALLING)
@@ -132,6 +139,12 @@ class Cookie(SheetSprite):
             if collides_box(self, item):
                 world.remove(item)
 
+        obs = world.objects_at(world.layer.obstacle)
+        for ob in obs:
+            if collides_box(self, ob):
+                print(f'hit to {ob}')
+                self.hurt()
+
     def jump(self):
         if self.state == STATE_RUNNING:
             next_state = STATE_JUMP
@@ -141,6 +154,10 @@ class Cookie(SheetSprite):
             return
         self.dy = self.JUMP_POWER
         self.set_state(next_state)
+
+    def hurt(self):
+        self.time = 0
+        self.set_state(STATE_HURT)
 
     def set_state(self, state):
         # print(f'{state=}')
