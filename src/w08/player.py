@@ -31,7 +31,7 @@ class Cookie(SheetSprite):
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:
-            if e.key == SDLK_SPACE:
+            if e.key == SDLK_SPACE or e.key == SDLK_UP:
                 self.jump()
             elif e.key == SDLK_DOWN:
                 self.move_down_from_floor()
@@ -53,7 +53,7 @@ class Cookie(SheetSprite):
 
         if self.state == STATE_RUNNING:
             if foot > t:
-                print(f'{foot=:.1f} {t=}')
+                # print(f'{foot=:.1f} {t=}')
                 self.set_state(STATE_FALLING)
                 self.dy = 0
 
@@ -87,7 +87,7 @@ class Cookie(SheetSprite):
         self.set_state(next_state)
 
     def set_state(self, state):
-        print(f'{state=}')
+        # print(f'{state=}')
         self.state = state
         self.src_rects, (self.width, self.height) = STATES[self.state]
 
