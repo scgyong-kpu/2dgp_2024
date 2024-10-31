@@ -34,8 +34,10 @@ class Floor(MapObject):
     def __init__(self, type, left, top):
         fname, (w, h) = INFO[type]
         super().__init__(fname, left, top, w, h)
+        self.type = type
         self.layer_index = gfw.top().world.layer.floor
-
+    def canPassThrough(self):
+        return not self.type in (Floor.TYPE_10x2, Floor.TYPE_2x2)
 
 class JellyItem(MapObject):
     def __init__(self, index, left, top):
