@@ -58,6 +58,7 @@ class Obstacle(MapObject):
         bottom = self.y - self.height / 2
         self.height = self.image.h
         self.y = bottom + self.height / 2
+        self.hit = False
 
         self.layer_index = gfw.top().world.layer.obstacle
 

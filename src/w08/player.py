@@ -142,8 +142,10 @@ class Cookie(SheetSprite):
         obs = world.objects_at(world.layer.obstacle)
         for ob in obs:
             if collides_box(self, ob):
+                if ob.hit: continue
                 print(f'hit to {ob}')
                 self.hurt()
+                ob.hit = True
 
     def jump(self):
         if self.state == STATE_RUNNING:
