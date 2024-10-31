@@ -110,6 +110,26 @@ class AnimObstacle(Obstacle):
         if index >= len(self.images): index = len(self.images) - 1
         self.images[index].draw(self.x, self.y, self.width, self.height)
 
+class FallingObstacle(Obstacle):
+    def __init__(self, left, bottom):
+        super().__init__('res/witchs_oven/epN01_tm01_sdA.png', left, bottom)
+        self.dy = -1800
+        self.target_y = bottom + self.height // 2
+        self.y = get_canvas_height() + self.height / 2 #-self.height / 2
+        print(f'{self.y=} {self.target_y=}, {bottom=}')
+
+    def update(self):
+        super().update()
+        if (self.x < get_canvas_width() * 3 // 4):
+            self.y += self.dy * gfw.frame_time
+            self.dy -= 1000 * gfw.frame_time
+            if self.dy < 0 and self.y < self.target_y:
+                self.dy *= -0.2
+                if self.dy < 10: self.dy = 0
+
+    def get_bb(self):
+        return Sprite.get_bb(self)
+
 def mapobject_factory_create(tile, left, bottom):
     if tile >= '1' and tile <= '9':
         return JellyItem(ord(tile) - ord('1'), left, bottom)
@@ -122,6 +142,8 @@ def mapobject_factory_create(tile, left, bottom):
         return AnimObstacle(ANIM_OBSTACLE_INFO[0], left, bottom)
     if tile == 'Z':
         return AnimObstacle(ANIM_OBSTACLE_INFO[1], left, bottom)
+    if tile == 'T':
+        return FallingObstacle(left, bottom)
     return None
 
 def tile_at(x, y):
