@@ -10,6 +10,13 @@ canvas_height = 648 #720
 shows_bounding_box = True
 shows_object_count = True
 
+cookie_info = {
+  "id": "107816",
+  "name": "Cocoa Cookie",
+  "type": "15x7",
+  "size": 365
+}
+
 def enter():
     world.append(HorzFillBackground('res/cookie_run_bg_1.png', -10), world.layer.bg)
     world.append(HorzFillBackground('res/cookie_run_bg_2.png', -100), world.layer.bg)
@@ -19,12 +26,6 @@ def enter():
     world.append(floor, world.layer.controller)
 
     global cookie
-    cookie_info = {
-      "id": "107816",
-      "name": "Cocoa Cookie",
-      "type": "15x7",
-      "size": 365
-    }
     cookie = Cookie(cookie_info)
     world.append(cookie, world.layer.player)
 
