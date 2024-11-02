@@ -20,10 +20,10 @@ def enter():
 
     global cookie
     cookie_info = {
-      "id": "107566",
-      "name": "Brave Cookie",
+      "id": "107567",
+      "name": "Bright Cookie",
       "type": "11x6",
-      "size": 270
+      "size": 288
     }
     cookie = Cookie(cookie_info)
     world.append(cookie, world.layer.player)
