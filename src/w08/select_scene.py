@@ -66,7 +66,10 @@ def handle_event(e):
             set_cookie_index((cookie_index + 1) % len(cookies))
         if e.key == SDLK_RETURN:
             main_scene.cookie_info = cookies[cookie_index]
-            gfw.change(main_scene)
+            gfw.push(main_scene)
+
+def pause(): pass
+def resume(): pass
 
 def get_text_extent(font, text):
     w, h = c_int(), c_int()
