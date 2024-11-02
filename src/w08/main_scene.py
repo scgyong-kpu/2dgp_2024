@@ -19,7 +19,13 @@ def enter():
     world.append(floor, world.layer.controller)
 
     global cookie
-    cookie = Cookie()
+    cookie_info = {
+      "id": "107566",
+      "name": "Brave Cookie",
+      "type": "11x6",
+      "size": 270
+    }
+    cookie = Cookie(cookie_info)
     world.append(cookie, world.layer.player)
 
 def exit():

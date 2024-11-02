@@ -2,33 +2,50 @@ from pico2d import *
 from gfw import *
 import time
 
-def make_rect(idx):
+def make_rect(size, idx):
     x, y = idx % 100, idx // 100
-    return (x * 272 + 2, y * 272 + 2, 270, 270)
+    return (x * (size + 2) + 2, y * (size + 2) + 2, size, size)
 
-def make_rects(*idxs):
-    return list(map(make_rect, idxs))
+def make_rects(size, idxs):
+    return list(map(lambda idx: make_rect(size, idx), idxs))
 
-STATES = [
-    (make_rects(400, 401, 402, 403), (120,136)),
-    (make_rects(507, 508), (120, 115)),
-    (make_rects(501, 502, 503, 504), (120, 115)),
-    (make_rects(509, 510), (160,70)),
-    (make_rects(500), (110,126)),
-    (make_rects(3, 4), (90, 160)),
-]
+# STATES = [
+#     (make_rects(400, 401, 402, 403), (120,136)),
+#     (make_rects(507, 508), (120, 115)),
+#     (make_rects(501, 502, 503, 504), (120, 115)),
+#     (make_rects(509, 510), (160,70)),
+#     (make_rects(500), (110,126)),
+#     (make_rects(3, 4), (90, 160)),
+# ]
 STATE_RUNNING, STATE_JUMP, STATE_DOUBLE_JUMP, STATE_SLIDE, STATE_FALLING, STATE_HURT, STATE_COUNT = range(7)
 
-RECTS_RUNNING_MAGNIFIED = make_rects(404, 405, 406, 407)
+# RECTS_RUNNING_MAGNIFIED = make_rects(404, 405, 406, 407)
+
+types = {}
+
+def build_states(info):
+    global types
+    states = []
+    if not types:
+        import json
+        with open('res/cookie_types.json', 'r') as f:
+            types = json.load(f)
+    type = types[info["type"]] if info["type"] in types else types["11x6"]
+    for st in type["states"]:
+        rects = make_rects(info["size"], st["rect"])
+        states.append((rects, st["size"]))
+    print(states)
+    return states
 
 class Cookie(SheetSprite):
     GRAVITY = 3000
     JUMP_POWER = 1000
     HURT_DURATION = 0.5
-    def __init__(self):
-        super().__init__('res/cookie.png', 160, 500, 10)
+    def __init__(self, info):
+        super().__init__(f'res/cookies/{info["id"]}_sheet.png', 160, 500, 10)
+        self.states = build_states(info)
         self.running = True
-        self.width, self.height = 270, 270
+        self.width, self.height = info["size"], info["size"]
         self.floor_y = self.y
         self.dy = 0
         self.mag = 1
@@ -59,8 +76,8 @@ class Cookie(SheetSprite):
 
     def toggle_mag(self):
         self.mag_speed = 1 if self.mag == 1 else -1
-        if self.state == STATE_RUNNING:
-            self.src_rects = RECTS_RUNNING_MAGNIFIED
+        # if self.state == STATE_RUNNING:
+        #     self.src_rects = RECTS_RUNNING_MAGNIFIED
 
     def update_mag(self):
         if self.mag_speed == 0: return
@@ -74,7 +91,7 @@ class Cookie(SheetSprite):
             self.mag = 1
             self.mag_speed = 0
             if self.state == STATE_RUNNING:
-                self.src_rects = STATES[STATE_RUNNING][0]
+                self.src_rects = self.states[STATE_RUNNING][0]
 
         _,foot2,_,_ = self.get_bb()
         self.y += foot1 - foot2
@@ -164,10 +181,10 @@ class Cookie(SheetSprite):
     def set_state(self, state):
         # print(f'{state=}')
         self.state = state
-        self.src_rects, (self.width, self.height) = STATES[self.state]
+        self.src_rects, (self.width, self.height) = self.states[self.state]
         self.frame_count = len(self.src_rects)
-        if state == STATE_RUNNING and self.mag != 1:
-            self.src_rects = RECTS_RUNNING_MAGNIFIED
+        # if state == STATE_RUNNING and self.mag != 1:
+        #     self.src_rects = RECTS_RUNNING_MAGNIFIED
 
     def get_bb(self):
         foot = self.y - self.src_rects[0][3] // 2 * self.mag 
@@ -178,4 +195,16 @@ class Cookie(SheetSprite):
         index = self.get_anim_index()
         l, b, w, h = self.src_rects[index]
         self.image.clip_draw(l, b, w, h, self.x, self.y, self.mag * w, self.mag * h)
+
+
+if __name__ == '__main__':
+    open_canvas()
+    cookie_info = {
+      "id": "107566",
+      "name": "Brave Cookie",
+      "type": "11x6",
+      "size": 270
+    }
+    cookie = Cookie(cookie_info)
+    close_canvas()
 
