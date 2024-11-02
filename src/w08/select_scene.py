@@ -56,7 +56,7 @@ def update():
 
 def draw():
     image.draw(center_x, cookie_y + 20)
-    font.draw(center_x - 200, cookie_y - 100, f'{cookie_name:^50}')
+    draw_centered_text(font, cookie_name, center_x, cookie_y - 50)
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN:
@@ -64,6 +64,17 @@ def handle_event(e):
             set_cookie_index((cookie_index - 1) % len(cookies))
         if e.key == SDLK_RIGHT:
             set_cookie_index((cookie_index + 1) % len(cookies))
+
+def get_text_extent(font, text):
+    w, h = c_int(), c_int()
+    TTF_SizeText(font.font, text.encode('utf-8'), ctypes.byref(w), ctypes.byref(h))
+    return w.value, h.value
+
+def draw_centered_text(font, text, x, y):
+    tw, th = get_text_extent(font, text)
+    tx = x - tw // 2
+    ty = y - th // 2
+    font.draw(tx, ty, text)
 
 if __name__ == '__main__':
     gfw.start_main_module()
