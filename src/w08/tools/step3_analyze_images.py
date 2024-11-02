@@ -6,7 +6,16 @@ with open('out/cookies.json', 'r') as f:
 
 pico2d.open_canvas()
 
-ratios = dict()
+# 1.666, 1.333 = pet. 2.000 = 14x7
+sizes = [
+  (11, 6), (13, 6), (15, 7), (15, 6), (15, 5)
+]
+
+# for cx,cy in sizes:
+#   print(f'ratio = {cx/cy:.3f}')
+# exit()
+
+cookie_chars = []
 
 for cookie in cookies:
     cid = cookie['id']
@@ -14,35 +23,51 @@ for cookie in cookies:
     try:
         image = pico2d.load_image(fname)
         ratio = (image.w - 2) / (image.h - 2)
-        if ratio in ratios:
-            ratios[ratio] += 1
-        else:
-            ratios[ratio] = 1
-        print(f'{fname=}, w={image.w}, h={image.h} {ratio=:.3f} count={ratios[ratio]}')
-        del image
+
     except:
-        pass # ignore error files
+        continue # ignore error files
+
+    for cx, cy in sizes:
+        if ratio == cx / cy:
+            break
+    else:
+        print(f'Not processing: {cookie["name"]} id={cid} ratio={ratio:.3f}')
+        continue
+
+    sprite_type = f'{cx}x{cy}'
+    cell_size = (image.w - 2) // cx - 2
+    # print(f'{sprite_type=} {cell_size=}')
+    cookie["type"] = sprite_type
+    cookie["size"] = cell_size
+    del cookie["grade"]
+
+    print(cookie)
+
+    cookie_chars.append(cookie)
 
 pico2d.close_canvas()
 
-counts = list(ratios.items())
-counts.sort(key=lambda item: -item[1])
+with open('out/cookie_chars.json', 'w') as f:
+    json.dump(cookie_chars, f, indent=2)
 
-print(counts)
+
 
 '''
 
-Pico2d is prepared.
-fname='out/107566_sheet.png', w=2994, h=1634 ratio=1.833 count=1
-fname='out/107567_sheet.png', w=3192, h=1742 ratio=1.833 count=2
-fname='out/107571_sheet.png', w=3544, h=1934 ratio=1.833 count=3
-fname='out/107570_sheet.png', w=3544, h=1934 ratio=1.833 count=4
-fname='out/107569_sheet.png', w=5192, h=2078 ratio=2.500 count=1
-...
+[
+  {
+    "id": "107566",
+    "name": "Brave Cookie",
+    "type": "11x6",
+    "size": 270
+  },
+  {
+    "id": "107567",
+    "name": "Bright Cookie",
+    "type": "11x6",
+    "size": 288
+  },
 
-[(1.6, 48), (1.3333333333333333, 17), (2.5, 12), (1.8333333333333333, 10), (2.1666666666666665, 7),
- (3.0, 4), (2.142857142857143, 4), (1.1428571428571428, 4), (2.0, 3), (1.875, 3), 
- (2.3333333333333335, 2), (2.4, 2), (3.4, 2), (0.7152317880794702, 2),
 ...
 
 '''
