@@ -30,22 +30,11 @@ def handle_event(e):
         return True
 
 def draw():
-    draw_centered_text(font, 'Press ESC to Resume', center_x, center_y + 30)
-    draw_centered_text(font, 'Press Backspace to Exit', center_x, center_y - 20)
+    gfw.font.draw_centered_text(font, 'Press ESC to Resume',     center_x, center_y + 30, (63, 0, 0))
+    gfw.font.draw_centered_text(font, 'Press Backspace to Exit', center_x, center_y - 20, (0, 0, 63))
 
 def update():
     pass
-
-def get_text_extent(font, text):
-    w, h = c_int(), c_int()
-    TTF_SizeText(font.font, text.encode('utf-8'), ctypes.byref(w), ctypes.byref(h))
-    return w.value, h.value
-
-def draw_centered_text(font, text, x, y):
-    tw, th = get_text_extent(font, text)
-    tx = x - tw // 2
-    ty = y - th // 2
-    font.draw(tx, ty, text)
 
 if __name__ == '__main__':
     gfw.start_main_module()
