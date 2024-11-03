@@ -26,8 +26,8 @@ def exit():
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_BACKSPACE:
         gfw.pop()
-        e.key = SDLK_ESCAPE
-        return False # pop one more scene
+        gfw.pop()
+        return True
 
 def draw():
     draw_centered_text(font, 'Press ESC to Resume', center_x, center_y + 30)
