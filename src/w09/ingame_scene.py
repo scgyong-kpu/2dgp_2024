@@ -8,7 +8,11 @@ canvas_height = 540
 shows_bounding_box = True
 shows_object_count = True
 
+center_x = canvas_width // 2
+center_y = canvas_height // 2
+
 def enter():
+    world.append(Background('res/bg_andromeda.png'), 0)
     pass
 
 def exit():
