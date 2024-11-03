@@ -54,20 +54,23 @@ def pause():
 def resume():
     print('[main.resume()]')
 
-shown_card = None
-
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
         return
 
-    global shown_card
     if e.type == SDL_MOUSEBUTTONDOWN and e.button == SDL_BUTTON_LEFT:
         for card in world.objects_at(world.layer.card):
             if card.handle_mouse(*gfw.mouse_xy(e)):
-                if shown_card is not None:
-                    shown_card.show(False)
-                shown_card = card
+                open_card(card)
+
+shown_card = None
+
+def open_card(card):
+    global shown_card
+    if shown_card is not None:
+        shown_card.show(False)
+    shown_card = card
 
 if __name__ == '__main__':
     gfw.start_main_module()
