@@ -53,10 +53,11 @@ class MainUi:
 
 def enter():
     world.append(Background('res/bg_andromeda.png'), world.layer.bg)
+    indices = [ n for n in range(1, 11) ] * 2
     index = 0
     for y in range(4):
         for x in range(5):
-            world.append(Card(x, y, index // 2 + 1), world.layer.card)
+            world.append(Card(x, y, indices[index]), world.layer.card)
             index += 1
     global main_ui
     main_ui = MainUi()
