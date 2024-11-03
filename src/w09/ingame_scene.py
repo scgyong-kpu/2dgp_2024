@@ -1,5 +1,6 @@
 from pico2d import * 
 from gfw import *
+import random
 
 world = World(['bg', 'card', 'ui'])
 
@@ -54,6 +55,9 @@ class MainUi:
 def enter():
     world.append(Background('res/bg_andromeda.png'), world.layer.bg)
     indices = [ n for n in range(1, 11) ] * 2
+    print(f'Before: {indices=}')
+    random.shuffle(indices)
+    print(f'After : {indices=}')
     index = 0
     for y in range(4):
         for x in range(5):
