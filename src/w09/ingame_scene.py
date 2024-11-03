@@ -44,7 +44,7 @@ class MainUi:
         self.nine = NinePatch(self.bg, 24, 24, 24, 24)
     def update(self): pass
     def draw(self):
-        self.nine.draw(790, center_y, 300, 470)
+        self.nine.draw(790, center_y, 280, 460)
         self.font.draw(680, 450, ('Score: %5.1f' % 123.4))
 
 class NinePatch:
