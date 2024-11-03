@@ -48,7 +48,7 @@ def handle_event(e):
         return
     if e.type == SDL_MOUSEBUTTONDOWN and e.button == SDL_BUTTON_LEFT:
         for card in world.objects_at(world.layer.card):
-            card.handle_mouse(e.x, e.y)
+            card.handle_mouse(*gfw.mouse_xy(e))
 
 if __name__ == '__main__':
     gfw.start_main_module()

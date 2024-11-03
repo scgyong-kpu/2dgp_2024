@@ -86,3 +86,6 @@ def collides_box(a, b): # a or b is a Sprite
     if ta < bb: return False
 
     return True
+
+def mouse_xy(e):
+    return e.x, get_canvas_height() - e.y - 1
