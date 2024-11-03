@@ -34,7 +34,7 @@ def build_states(info):
     for st in type["states"]:
         rects = make_rects(info["size"], st["rect"])
         states.append((rects, st["size"]))
-    print(states)
+    # print(states)
     return states
 
 class Cookie(SheetSprite):

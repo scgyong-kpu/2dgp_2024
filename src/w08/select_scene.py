@@ -21,7 +21,7 @@ def enter():
     world.append(self, 1)
 
     global font
-    font = load_font('res/CookieRun Regular.ttf')
+    font = gfw.font.load('res/CookieRun Regular.ttf')
 
     import json
     global cookies
@@ -50,6 +50,8 @@ def set_cookie_index(idx):
 def exit():
     if filename is not None:
         gfw.image.unload(filename)
+
+    # gfw.font.unload(font)
 
 def update():
     pass

@@ -147,13 +147,11 @@ class FallingObstacle(Obstacle):
 
             if self.target_y is None:
                 return
-                
+
             self.y += self.dy * gfw.frame_time
             self.dy -= 1000 * gfw.frame_time
             if self.dy < 0 and self.y < self.target_y:
-                was = self.dy
                 self.dy *= -0.3
-                print(f'{was=:.2f} {self.dy=:.2f}')
                 gfw.sound.sfx('res/sounds/Platform_5_2_giraffe.mp3').play()
                 if self.dy < 50: 
                     self.dy = 0
