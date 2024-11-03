@@ -2,6 +2,7 @@ from pico2d import *
 from gfw import *
 from player import Cookie
 import floor
+import pause_scene
 
 world = World(['bg', 'floor', 'item', 'obstacle', 'player', 'controller'])
 
@@ -49,6 +50,10 @@ def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
         return
+
+    if e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE:
+        gfw.push(pause_scene)
+        return True
 
     cookie.handle_event(e)
 
