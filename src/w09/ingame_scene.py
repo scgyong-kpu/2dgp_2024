@@ -44,7 +44,8 @@ class MainUi:
         self.nine = gfw.image.NinePatch(self.bg, 24, 24, 24, 24)
         self.score = 0
     def update(self): 
-        self.score += gfw.frame_time
+        if world.count_at(world.layer.card) > 0:
+            self.score += gfw.frame_time
     def draw(self):
         self.nine.draw(790, center_y, 280, 460)
         self.font.draw(680, 450, ('Score: %5.1f' % self.score))
