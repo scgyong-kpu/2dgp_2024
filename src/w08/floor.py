@@ -39,6 +39,15 @@ class Floor(MapObject):
     def canPassThrough(self):
         return not self.type in (Floor.TYPE_10x2, Floor.TYPE_2x2)
 
+ITEM_SOUNDS = [
+    'res/sounds/jelly.wav',
+    'res/sounds/jelly_alphabet.wav',
+    'res/sounds/jelly_coin.wav',
+    'res/sounds/jelly_item.wav',
+    'res/sounds/jelly_big_coin.wav',
+    'res/sounds/jelly_gold.wav',
+]
+
 class JellyItem(MapObject):
     def __init__(self, index, left, bottom):
         super().__init__('res/jelly.png', left, bottom, 1, 1)
@@ -46,10 +55,14 @@ class JellyItem(MapObject):
         y = round(2 + (1 - index // 30) * 68)
         self.src_rect = x, y, 66, 66
         self.width, self.height = 48, 48
+        self.sfx_fname = ITEM_SOUNDS[index % len(ITEM_SOUNDS)]
         self.layer_index = gfw.top().world.layer.item
 
     def draw(self):
         self.image.clip_draw(*self.src_rect, self.x, self.y)
+
+    def play_sfx(self):
+        gfw.sound.sfx(self.sfx_fname).play()
 
 class Obstacle(MapObject):
     def __init__(self, fname, left, bottom):
