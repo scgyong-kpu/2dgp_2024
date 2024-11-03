@@ -93,10 +93,12 @@ def open_card(card):
             world.remove(card, world.layer.card)
             world.remove(shown_card, world.layer.card)
             shown_card = None
+            main_ui.score -= 10
             return
         shown_card.show(False)
 
     shown_card = card
+    main_ui.score += 5
 
 if __name__ == '__main__':
     gfw.start_main_module()
