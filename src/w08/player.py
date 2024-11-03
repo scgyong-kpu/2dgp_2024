@@ -154,6 +154,7 @@ class Cookie(SheetSprite):
         items = world.objects_at(world.layer.item)
         for item in items:
             if collides_box(self, item):
+                gfw.sound.sfx('res/sounds/jelly.wav').play()
                 world.remove(item)
 
         obs = world.objects_at(world.layer.obstacle)

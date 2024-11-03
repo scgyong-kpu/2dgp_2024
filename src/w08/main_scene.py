@@ -29,14 +29,21 @@ def enter():
     cookie = Cookie(cookie_info)
     world.append(cookie, world.layer.player)
 
+    global music
+    music = gfw.sound.music('res/sounds/main.mp3')
+    music.repeat_play()
+
 def exit():
+    music.stop()
     world.clear()
 
 def pause():
     print('[main.pause()]')
+    music.pause()
 
 def resume():
     print('[main.resume()]')
+    music.resume()
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
