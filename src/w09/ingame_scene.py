@@ -69,9 +69,29 @@ shown_card = None
 def open_card(card):
     global shown_card
     if shown_card is not None:
+        if card.index == shown_card.index:
+            world.remove(card, world.layer.card)
+            world.remove(shown_card, world.layer.card)
+            shown_card = None
+            return
         shown_card.show(False)
+
     shown_card = card
 
 if __name__ == '__main__':
     gfw.start_main_module()
 
+'''
+Traceback (most recent call last):
+  File "D:/Lectures/2024_2/2dgp/git/src/w09/ingame_scene.py", line 82, in <module>
+    gfw.start_main_module()
+  File "D:/Lectures/2024_2/2dgp/git/src/w09/gfw/gfw.py", line 70, in start_main_module
+    start(scene)
+  File "D:/Lectures/2024_2/2dgp/git/src/w09/gfw/gfw.py", line 44, in start
+    handled = _stack[-1].handle_event(e)
+  File "D:/Lectures/2024_2/2dgp/git/src/w09/ingame_scene.py", line 63, in handle_event
+    for card in world.objects_at(world.layer.card):
+  File "D:/Lectures/2024_2/2dgp/git/src/w09/gfw/world.py", line 60, in objects_at
+    yield objs[i]
+IndexError: list index out of range
+'''
