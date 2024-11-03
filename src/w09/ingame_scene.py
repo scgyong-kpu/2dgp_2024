@@ -16,14 +16,22 @@ def card_position(x, y):
 
 class Card(AnimSprite):
     def __init__(self, x, y, index):
-        super().__init__(f'res/f_{index:02d}.png', *card_position(x, y), 10)
+        super().__init__(f'res/back.png', *card_position(x, y), 10)
         self.index = index
+        self.up = False
 
     def handle_mouse(self, x, y):
         l, b, r, t = self.get_bb()
         if l <= x and x <= r and b <= y and y < t:
-            print(f"I'm hit. I am {self.index}, {self}")
-
+            self.toggle()
+    def toggle(self):
+        self.up = not self.up
+        if self.up:
+            self.image = gfw.image.load(f'res/f_{self.index:02d}.png')
+        else:
+            self.image = gfw.image.load(f'res/back.png')
+        self.width = self.image.h
+        self.frame_count = self.image.w // self.image.h
 
 def enter():
     world.append(Background('res/bg_andromeda.png'), world.layer.bg)
