@@ -21,11 +21,15 @@ class Card(AnimSprite):
         self.up = False
 
     def handle_mouse(self, x, y):
+        if self.up: return 
         l, b, r, t = self.get_bb()
         if l <= x and x <= r and b <= y and y < t:
-            self.toggle()
-    def toggle(self):
-        self.up = not self.up
+            self.show(True)
+            return True
+        return False
+
+    def show(self, shows):
+        self.up = shows
         if self.up:
             self.image = gfw.image.load(f'res/f_{self.index:02d}.png')
         else:
@@ -50,13 +54,20 @@ def pause():
 def resume():
     print('[main.resume()]')
 
+shown_card = None
+
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
         return
+
+    global shown_card
     if e.type == SDL_MOUSEBUTTONDOWN and e.button == SDL_BUTTON_LEFT:
         for card in world.objects_at(world.layer.card):
-            card.handle_mouse(*gfw.mouse_xy(e))
+            if card.handle_mouse(*gfw.mouse_xy(e)):
+                if shown_card is not None:
+                    shown_card.show(False)
+                shown_card = card
 
 if __name__ == '__main__':
     gfw.start_main_module()
