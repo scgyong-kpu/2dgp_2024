@@ -77,7 +77,7 @@ class Obstacle(MapObject):
 
     def get_bb(self):
         foot = self.y - self.height // 2
-        (bb_size, _) = self.info
+        (bb_size, _, _) = self.info
         bb_half_width = self.width * bb_size[0] / 2
         bb_height = self.height * bb_size[1]
         return (self.x - bb_half_width, foot, self.x + bb_half_width, foot + bb_height)
@@ -86,16 +86,16 @@ class Obstacle(MapObject):
 class SimpleObstacle(Obstacle):
     def __init__(self, left, bottom):
         super().__init__('res/witchs_oven/epN01_tm01_jp1A.png', left, bottom)
-        self.info = ( (0.5, 0.8), [] )
+        self.info = ( (0.5, 0.8), '', [] )
 
 ANIM_OBSTACLE_INFO = [
-    ( (0.7, 0.5), [
+    ( (0.7, 0.5), 'res/sounds/big_to_small.mp3', [
         'res/witchs_oven/epN01_tm01_jp1up_01.png',
         'res/witchs_oven/epN01_tm01_jp1up_02.png',
         'res/witchs_oven/epN01_tm01_jp1up_03.png',
         'res/witchs_oven/epN01_tm01_jp1up_04.png',
     ] ),
-    ( (0.7, 0.6), [
+    ( (0.7, 0.6), 'res/sounds/big_wheel.mp3', [
         'res/witchs_oven/epN01_tm01_jp2up_01.png',
         'res/witchs_oven/epN01_tm01_jp2up_02.png',
         'res/witchs_oven/epN01_tm01_jp2up_03.png',
@@ -106,18 +106,23 @@ ANIM_OBSTACLE_INFO = [
 
 class AnimObstacle(Obstacle):
     def __init__(self, info, left, bottom):
-        (_, files) = info
+        (_, _, files) = info
         super().__init__(files[0], left, bottom)
         self.info = info
         self.images = list(map(gfw.image.load, files))
         self.fps = 6
         self.frame_count = len(self.images)
         self.time = 0
+        self.played_sfx = False
 
     def update(self):
         super().update()
         if (self.x < get_canvas_width() * 3 // 4):
             self.time += gfw.frame_time
+            if not self.played_sfx:
+                _, sfx, _ = self.info
+                gfw.sound.sfx(sfx).play()
+                self.played_sfx = True
 
     def draw(self):
         index = round(self.time * self.fps)
@@ -130,16 +135,30 @@ class FallingObstacle(Obstacle):
         self.dy = -1800
         self.target_y = bottom + self.height // 2
         self.y = get_canvas_height() + self.height / 2 #-self.height / 2
+        self.played_sfx = False
         # print(f'{self.y=} {self.target_y=}, {bottom=}')
 
     def update(self):
         super().update()
         if (self.x < get_canvas_width() * 3 // 4):
+            if not self.played_sfx:
+                gfw.sound.sfx('res/sounds/SoundEff_Large_Energy.mp3').play()
+                self.played_sfx = True
+
+            if self.target_y is None:
+                return
+                
             self.y += self.dy * gfw.frame_time
             self.dy -= 1000 * gfw.frame_time
             if self.dy < 0 and self.y < self.target_y:
+                was = self.dy
                 self.dy *= -0.3
-                if self.dy < 10: self.dy = 0
+                print(f'{was=:.2f} {self.dy=:.2f}')
+                gfw.sound.sfx('res/sounds/Platform_5_2_giraffe.mp3').play()
+                if self.dy < 50: 
+                    self.dy = 0
+                    self.y = self.target_y
+                    self.target_y = None
 
     def get_bb(self):
         return Sprite.get_bb(self)

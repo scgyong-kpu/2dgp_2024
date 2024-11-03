@@ -11,10 +11,10 @@ shows_bounding_box = True
 shows_object_count = True
 
 cookie_info = {
-  "id": "107816",
-  "name": "Cocoa Cookie",
-  "type": "15x7",
-  "size": 365
+    "id": "107572",
+    "name": "Coffee Cookie",
+    "type": "13x6",
+    "size": 320
 }
 
 def enter():

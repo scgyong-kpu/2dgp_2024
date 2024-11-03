@@ -161,7 +161,8 @@ class Cookie(SheetSprite):
         for ob in obs:
             if collides_box(self, ob):
                 if ob.hit: continue
-                print(f'hit to {ob}')
+                # print(f'hit to {ob}')
+                gfw.sound.sfx('res/sounds/Soda_Wave_ObstacleBlowBack.wav').play()
                 self.hurt()
                 ob.hit = True
 
