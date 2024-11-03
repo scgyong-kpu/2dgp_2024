@@ -42,10 +42,12 @@ class MainUi:
         self.bg = gfw.image.load(f'res/round_rect_9.png')
         self.font = gfw.font.load(f'res/ENCR10B.TTF')
         self.nine = gfw.image.NinePatch(self.bg, 24, 24, 24, 24)
-    def update(self): pass
+        self.score = 0
+    def update(self): 
+        self.score += gfw.frame_time
     def draw(self):
         self.nine.draw(790, center_y, 280, 460)
-        self.font.draw(680, 450, ('Score: %5.1f' % 123.4))
+        self.font.draw(680, 450, ('Score: %5.1f' % self.score))
 
 
 def enter():
@@ -55,7 +57,9 @@ def enter():
         for x in range(5):
             world.append(Card(x, y, index // 2 + 1), world.layer.card)
             index += 1
-    world.append(MainUi(), world.layer.ui)
+    global main_ui
+    main_ui = MainUi()
+    world.append(main_ui, world.layer.ui)
 
 def exit():
     world.clear()
