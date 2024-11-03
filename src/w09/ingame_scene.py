@@ -19,6 +19,12 @@ class Card(AnimSprite):
         super().__init__(f'res/f_{index:02d}.png', *card_position(x, y), 10)
         self.index = index
 
+    def handle_mouse(self, x, y):
+        l, b, r, t = self.get_bb()
+        if l <= x and x <= r and b <= y and y < t:
+            print(f"I'm hit. I am {self.index}, {self}")
+
+
 def enter():
     world.append(Background('res/bg_andromeda.png'), world.layer.bg)
     index = 0
@@ -40,6 +46,9 @@ def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
         return
+    if e.type == SDL_MOUSEBUTTONDOWN and e.button == SDL_BUTTON_LEFT:
+        for card in world.objects_at(world.layer.card):
+            card.handle_mouse(e.x, e.y)
 
 if __name__ == '__main__':
     gfw.start_main_module()
