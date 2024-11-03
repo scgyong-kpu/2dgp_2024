@@ -60,9 +60,13 @@ def handle_event(e):
         return
 
     if e.type == SDL_MOUSEBUTTONDOWN and e.button == SDL_BUTTON_LEFT:
+        card_to_open = None
         for card in world.objects_at(world.layer.card):
             if card.handle_mouse(*gfw.mouse_xy(e)):
-                open_card(card)
+                card_to_open = card
+                break
+        if card_to_open is not None:
+            open_card(card)
 
 shown_card = None
 
@@ -81,17 +85,3 @@ def open_card(card):
 if __name__ == '__main__':
     gfw.start_main_module()
 
-'''
-Traceback (most recent call last):
-  File "D:/Lectures/2024_2/2dgp/git/src/w09/ingame_scene.py", line 82, in <module>
-    gfw.start_main_module()
-  File "D:/Lectures/2024_2/2dgp/git/src/w09/gfw/gfw.py", line 70, in start_main_module
-    start(scene)
-  File "D:/Lectures/2024_2/2dgp/git/src/w09/gfw/gfw.py", line 44, in start
-    handled = _stack[-1].handle_event(e)
-  File "D:/Lectures/2024_2/2dgp/git/src/w09/ingame_scene.py", line 63, in handle_event
-    for card in world.objects_at(world.layer.card):
-  File "D:/Lectures/2024_2/2dgp/git/src/w09/gfw/world.py", line 60, in objects_at
-    yield objs[i]
-IndexError: list index out of range
-'''
