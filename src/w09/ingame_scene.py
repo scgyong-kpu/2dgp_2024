@@ -1,7 +1,7 @@
 from pico2d import * 
 from gfw import *
 
-world = World(['bg', 'card'])
+world = World(['bg', 'card', 'ui'])
 
 canvas_width = 960
 canvas_height = 540
@@ -37,6 +37,16 @@ class Card(AnimSprite):
         self.width = self.image.h
         self.frame_count = self.image.w // self.image.h
 
+class MainUi:
+    def __init__(self):
+        self.bg = gfw.image.load(f'res/round_rect_9.png')
+        self.font = gfw.font.load(f'res/ENCR10B.TTF')
+    def update(self): pass
+    def draw(self):
+        self.bg.draw(790, center_y, 300, 470)
+        self.font.draw(680, 450, ('Score: %5.1f' % 123.4))
+
+
 def enter():
     world.append(Background('res/bg_andromeda.png'), world.layer.bg)
     index = 0
@@ -44,6 +54,7 @@ def enter():
         for x in range(5):
             world.append(Card(x, y, index // 2 + 1), world.layer.card)
             index += 1
+    world.append(MainUi(), world.layer.ui)
 
 def exit():
     world.clear()
