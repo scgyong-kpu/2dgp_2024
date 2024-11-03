@@ -36,7 +36,7 @@ def start(scene):
 
         # draw() 를 수행한다 (Rendering)
         clear_canvas()
-        _stack[-1].world.draw()
+        draw(len(_stack)-1)
         update_canvas()
 
         # event 를 처리한다
@@ -54,6 +54,13 @@ def start(scene):
         # scene 종료 전에 할 일이 있으면 할 수 있는 기회를 준다
 
     close_canvas() # Game Loop 를 빠져 나왔으므로 화면을 닫는다
+
+def draw(index):
+    scene = _stack[index]
+    if index > 0 and hasattr(scene, 'transparent') and scene.transparent:
+        draw(index - 1)
+
+    scene.world.draw()
 
 def start_main_module():
     import sys

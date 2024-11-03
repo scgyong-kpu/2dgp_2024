@@ -2,6 +2,7 @@ from pico2d import *
 from gfw import *
 
 world = World(2)
+transparent = True
 
 def enter():
     center_x = get_canvas_width() // 2
