@@ -56,7 +56,8 @@ class ThemeButton(Button):
         self.theme = theme
 
     def on_click(self):
-        print('Click:', self.theme)
+        ingame_scene.theme = self.theme
+        gfw.push(ingame_scene)
 
 def enter():
     world.append(Background('res/bg.png'), 0)
