@@ -26,16 +26,25 @@ themes = [
 ]
 
 class Button(Sprite):
-    def __init__(self, nine_patch, title, x, y, width, height):
+    def __init__(self, nine_patch, font, title, x, y, width, height):
         super().__init__(None, x, y)
         self.bg = nine_patch
         self.width, self.height = width, height
         self.title = title
-        self.font = gfw.font.load('res/ENCR10B.TTF', 30)
+        self.font = font
 
     def draw(self):
         self.bg.draw(self.x, self.y, self.width, self.height)
         gfw.font.draw_centered_text(self.font, self.title, self.x, self.y)
+
+class ThemeButton(Button):
+    @staticmethod
+    def load():
+        ThemeButton.nine_patch = gfw.image.NinePatch(gfw.image.load('res/round_rect_9.png'), 24, 24, 24, 24)
+        ThemeButton.font = gfw.font.load('res/ENCR10B.TTF', 30)
+
+    def __init__(self, title, x, y):
+        super().__init__(self.nine_patch, self.font, title, x, y, 400, 80)
 
 def enter():
     world.append(Background('res/bg.png'), 0)
@@ -43,8 +52,7 @@ def enter():
     # global font
     # font = gfw.font.load('res/ENCR10B.TTF', 30)
 
-    global nine_patch
-    nine_patch = gfw.image.NinePatch(gfw.image.load('res/round_rect_9.png'), 24, 24, 24, 24)
+    ThemeButton.load()
 
     import json
     global themes
@@ -53,7 +61,7 @@ def enter():
 
     y = start_y
     for theme in themes:
-        world.append(Button(nine_patch, theme["title"], center_x, y, 400, 80), 1)
+        world.append(ThemeButton(theme["title"], center_x, y), 1)
         y -= 100
 
 def exit():
