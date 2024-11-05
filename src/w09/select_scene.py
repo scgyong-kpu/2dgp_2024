@@ -10,9 +10,20 @@ canvas_height = ingame_scene.canvas_height
 
 center_x = canvas_width // 2
 center_y = canvas_height // 2
-cookie_y = center_y - 60
+start_y = canvas_height * 2 // 3
 
 world = World(2)
+
+themes = [
+    {
+        "title": "Enemy",
+        "folder": "enemy"
+    },
+    # {
+    #     "title": "Another Title",
+    #     "folder": "enemy"
+    # }
+]
 
 def enter():
     world.append(Background('res/bg.png'), 0)
@@ -29,8 +40,11 @@ def exit():
 
 def update(): pass
 def draw(): 
-    nine_patch.draw(center_x, center_y, 400, 80)
-    gfw.font.draw_centered_text(font, 'Enemy', center_x, center_y)
+    y = start_y
+    for theme in themes:
+        nine_patch.draw(center_x, y, 400, 80)
+        gfw.font.draw_centered_text(font, theme["title"], center_x, y)
+        y -= 100
 
 def handle_event(e): pass
 def pause(): pass
