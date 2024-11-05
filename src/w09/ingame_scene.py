@@ -59,6 +59,7 @@ class MainUi:
 
 
 def enter():
+    global folder
     folder = theme["folder"]
     world.append(Background(f'res/{folder}/bg.png'), world.layer.bg)
     indices = [ n for n in range(1, 11) ] * 2
@@ -75,21 +76,21 @@ def enter():
     world.append(main_ui, world.layer.ui)
 
     global bg_music
-    bg_music = gfw.sound.music('res/bg.mp3')
+    bg_music = gfw.sound.music(f'res/{folder}/bg.mp3')
     bg_music.set_volume(60)
     bg_music.repeat_play()
 
     global flip_wav
-    flip_wav = gfw.sound.sfx('res/pipe.wav')
+    flip_wav = gfw.sound.sfx(f'res/{folder}/flip.wav')
 
 def exit():
     global bg_music
     del bg_music
-    gfw.sound.unload('res/bg.mp3')
+    gfw.sound.unload(f'res/{folder}/bg.mp3')
 
     global flip_wav
     del flip_wav
-    gfw.sound.unload('res/pipe.wav')
+    gfw.sound.unload(f'res/{folder}/flip.wav')
 
     world.clear()
 
