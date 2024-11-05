@@ -35,6 +35,11 @@ def enter():
     global nine_patch
     nine_patch = gfw.image.NinePatch(gfw.image.load('res/round_rect_9.png'), 24, 24, 24, 24)
 
+    import json
+    global themes
+    with open('res/themes.json', 'r') as f:
+        themes = json.load(f)
+
 def exit():
     world.clear()
 

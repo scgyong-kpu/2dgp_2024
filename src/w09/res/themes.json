@@ -1,0 +1,14 @@
+[
+    {
+        "title": "Enemy",
+        "folder": "enemy"
+    },
+    {
+        "title": "Title from JSON",
+        "folder": "enemy"
+    },
+    {
+        "title": "Yet Another Title",
+        "folder": "enemy"
+    }
+]
