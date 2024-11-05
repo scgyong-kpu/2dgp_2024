@@ -52,7 +52,11 @@ class ThemeButton(Button):
         ThemeButton.font = gfw.font.load('res/ENCR10B.TTF', 30)
 
     def __init__(self, theme, x, y):
-        super().__init__(self.nine_patch, self.font, theme['title'], x, y, 400, 80, lambda: print('Clicked:', theme['title']))
+        super().__init__(self.nine_patch, self.font, theme['title'], x, y, 400, 80, self.on_click)
+        self.theme = theme
+
+    def on_click(self):
+        print('Click:', self.theme)
 
 def enter():
     world.append(Background('res/bg.png'), 0)
