@@ -67,13 +67,31 @@ def enter():
     main_ui = MainUi()
     world.append(main_ui, world.layer.ui)
 
+    global bg_music
+    bg_music = gfw.sound.music('res/bg.mp3')
+    bg_music.set_volume(60)
+    bg_music.repeat_play()
+
+    global flip_wav
+    flip_wav = gfw.sound.sfx('res/pipe.wav')
+
 def exit():
+    global bg_music
+    del bg_music
+    gfw.sound.unload('res/bg.mp3')
+
+    global flip_wav
+    del flip_wav
+    gfw.sound.unload('res/pipe.wav')
+
     world.clear()
 
 def pause():
     print('[main.pause()]')
+    bg_music.pause()
 
 def resume():
+    bg_music.resume()
     print('[main.resume()]')
 
 def handle_event(e):
@@ -93,6 +111,8 @@ def handle_event(e):
 shown_card = None
 
 def open_card(card):
+    flip_wav.play()
+
     global shown_card
     if shown_card is not None:
         if card.index == shown_card.index:
@@ -100,6 +120,8 @@ def open_card(card):
             world.remove(shown_card, world.layer.card)
             shown_card = None
             main_ui.score -= 10
+            if world.count_at(world.layer.card) == 0:
+                bg_music.stop()
             return
         shown_card.show(False)
 
