@@ -37,6 +37,13 @@ class Button(Sprite):
         self.bg.draw(self.x, self.y, self.width, self.height)
         gfw.font.draw_centered_text(self.font, self.title, self.x, self.y)
 
+    def handle_event(self, e):
+        if not self.contains_xy(*gfw.mouse_xy(e)): return False
+        print(e.type, self.title)
+        # if e.type == SDL_MOUSEMOTION:
+        #     print('MouseMotion')
+
+
 class ThemeButton(Button):
     @staticmethod
     def load():
@@ -69,7 +76,11 @@ def exit():
 
 def update(): pass
 def draw(): pass
-def handle_event(e): pass
+def handle_event(e): 
+    if e.type in [ SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP ]:
+        for btn in world.objects_at(1):
+            if btn.handle_event(e):
+                return True
 def pause(): pass
 def resume(): pass
 
