@@ -12,12 +12,18 @@ shows_object_count = True
 center_x = canvas_width // 2
 center_y = canvas_height // 2
 
+theme = {
+    "title": "Enemy",
+    "folder": "enemy"
+}
+
 def card_position(x, y):
     return (x + 1) * 120 - 30, (y + 1) * 120 - 28
 
 class Card(AnimSprite):
-    def __init__(self, x, y, index):
-        super().__init__(f'res/back.png', *card_position(x, y), 10)
+    def __init__(self, x, y, folder, index):
+        super().__init__(f'res/{folder}/back.png', *card_position(x, y), 10)
+        self.folder = folder
         self.index = index
         self.up = False
 
@@ -32,9 +38,9 @@ class Card(AnimSprite):
     def show(self, shows):
         self.up = shows
         if self.up:
-            self.image = gfw.image.load(f'res/f_{self.index:02d}.png')
+            self.image = gfw.image.load(f'res/{self.folder}/f_{self.index:02d}.png')
         else:
-            self.image = gfw.image.load(f'res/back.png')
+            self.image = gfw.image.load(f'res/{self.folder}/back.png')
         self.width = self.image.h
         self.frame_count = self.image.w // self.image.h
 
@@ -53,15 +59,16 @@ class MainUi:
 
 
 def enter():
-    world.append(Background('res/bg_andromeda.png'), world.layer.bg)
+    folder = theme["folder"]
+    world.append(Background(f'res/{folder}/bg.png'), world.layer.bg)
     indices = [ n for n in range(1, 11) ] * 2
-    print(f'Before: {indices=}')
+    # print(f'Before: {indices=}')
     random.shuffle(indices)
-    print(f'After : {indices=}')
+    # print(f'After : {indices=}')
     index = 0
     for y in range(4):
         for x in range(5):
-            world.append(Card(x, y, indices[index]), world.layer.card)
+            world.append(Card(x, y, folder, indices[index]), world.layer.card)
             index += 1
     global main_ui
     main_ui = MainUi()
