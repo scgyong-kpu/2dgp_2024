@@ -26,12 +26,13 @@ themes = [
 ]
 
 class Button(Sprite):
-    def __init__(self, nine_patch, font, title, x, y, width, height):
+    def __init__(self, nine_patch, font, title, x, y, width, height, on_click):
         super().__init__(None, x, y)
         self.bg = nine_patch
         self.width, self.height = width, height
         self.title = title
         self.font = font
+        self._on_click = on_click
 
     def draw(self):
         self.bg.draw(self.x, self.y, self.width, self.height)
@@ -39,9 +40,9 @@ class Button(Sprite):
 
     def handle_event(self, e):
         if not self.contains_xy(*gfw.mouse_xy(e)): return False
-        print(e.type, self.title)
-        # if e.type == SDL_MOUSEMOTION:
-        #     print('MouseMotion')
+        # print(e.type, self.title)
+        if e.type == SDL_MOUSEBUTTONDOWN and e.button == SDL_BUTTON_LEFT:
+            self._on_click()
 
 
 class ThemeButton(Button):
@@ -50,8 +51,8 @@ class ThemeButton(Button):
         ThemeButton.nine_patch = gfw.image.NinePatch(gfw.image.load('res/round_rect_9.png'), 24, 24, 24, 24)
         ThemeButton.font = gfw.font.load('res/ENCR10B.TTF', 30)
 
-    def __init__(self, title, x, y):
-        super().__init__(self.nine_patch, self.font, title, x, y, 400, 80)
+    def __init__(self, theme, x, y):
+        super().__init__(self.nine_patch, self.font, theme['title'], x, y, 400, 80, lambda: print('Clicked:', theme['title']))
 
 def enter():
     world.append(Background('res/bg.png'), 0)
@@ -68,7 +69,7 @@ def enter():
 
     y = start_y
     for theme in themes:
-        world.append(ThemeButton(theme["title"], center_x, y), 1)
+        world.append(ThemeButton(theme, center_x, y), 1)
         y -= 100
 
 def exit():
