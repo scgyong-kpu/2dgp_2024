@@ -27,6 +27,6 @@ def get_text_extent(font, text):
 def draw_centered_text(font, text, x, y, color=(0,0,0)):
     tw, th = get_text_extent(font, text)
     tx = x - tw // 2
-    ty = y - th // 2
+    ty = y #- th // 2
     font.draw(tx, ty, text, color)
 
