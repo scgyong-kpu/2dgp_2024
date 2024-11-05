@@ -36,6 +36,9 @@ class Sprite:
         r = self.x + self.width // 2
         t = self.y + self.height // 2
         return l, b, r, t
+    def contains_xy(self, x, y):
+        l,b,r,t = self.get_bb()
+        return l <= x < r and b <= y < t
     def __getstate__(self):
         dict = self.__dict__.copy()
         del dict['image']
