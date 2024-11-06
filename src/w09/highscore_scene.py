@@ -86,10 +86,11 @@ def handle_event(e):
         return
 
     if e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE:
+        global just_added
         gfw.pop()
-        count = gfw.stack_height()
-        print(f'stack {count=}')
-        if count > 0: gfw.pop()
+        if just_added is not None:
+            gfw.pop()
+        just_added = None
         return True
 
 if __name__ == '__main__':
