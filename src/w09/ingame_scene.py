@@ -1,6 +1,7 @@
 from pico2d import * 
 from gfw import *
 import random
+import highscore_scene
 
 world = World(['bg', 'card', 'ui'])
 
@@ -64,7 +65,7 @@ def enter():
     world.append(Background(f'res/{folder}/bg.png'), world.layer.bg)
     indices = [ n for n in range(1, 11) ] * 2
     # print(f'Before: {indices=}')
-    random.shuffle(indices)
+    # random.shuffle(indices)
     # print(f'After : {indices=}')
     index = 0
     for y in range(4):
@@ -130,6 +131,8 @@ def open_card(card):
             main_ui.score -= 10
             if world.count_at(world.layer.card) == 0:
                 bg_music.stop()
+                highscore_scene.add(main_ui.score)
+                gfw.push(highscore_scene)
             return
         shown_card.show(False)
 

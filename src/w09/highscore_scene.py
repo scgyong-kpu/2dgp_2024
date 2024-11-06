@@ -4,6 +4,9 @@ import pickle
 
 FILENAME = 'score.pickle'
 
+canvas_width = 960
+canvas_height = 540
+
 world = World(2)
 
 import sys
@@ -26,6 +29,19 @@ except:
     print("No highscore file")
     scores = [ Entry(score) for score in range(100, 200, 10) ]
 
+def add(score):
+    global scores
+    entry = Entry(score)
+    scores.append(entry)
+    scores.sort(key=lambda e:e.score)
+    scores = scores[:10]
+    try:
+        with open(FILENAME, "wb") as f:
+            pickle.dump(scores, f)
+    except:
+        pass
+
+
 def enter():
     global frame_9p
     frame_9p = gfw.image.NinePatch(gfw.image.load('res/hs_frame.png'), 30, 30, 30, 30)
@@ -41,12 +57,12 @@ def update():
 
 def draw():
     cw, ch = get_canvas_width(), get_canvas_height()
-    frame_9p.draw(cw // 2, ch // 2, cw - 100, ch - 100)
-    x, y = 150, ch - 120
+    frame_9p.draw(cw // 2, ch // 2, cw - 200, ch - 100)
+    x, y = 250, ch - 112
     for score in scores:
-        font.draw(x, y, f'{score.score:5d}')
+        font.draw(x, y, f'{score.score:5.1f}')
         font.draw(x + 200, y, score.timestr())
-        y -= 40
+        y -= 35
 
 def pause():
     print('[main.pause()]')
