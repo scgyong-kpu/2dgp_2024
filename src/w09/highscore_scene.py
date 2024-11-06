@@ -7,6 +7,8 @@ FILENAME = 'score.pickle'
 canvas_width = 960
 canvas_height = 540
 
+transparent = True
+
 world = World(2)
 
 import sys
@@ -29,9 +31,13 @@ except:
     print("No highscore file")
     scores = [ Entry(score) for score in range(100, 200, 10) ]
 
+just_added = None
 def add(score):
-    global scores
     entry = Entry(score)
+    global just_added
+    just_added = entry
+
+    global scores
     scores.append(entry)
     scores.sort(key=lambda e:e.score)
     scores = scores[:10]
@@ -55,13 +61,16 @@ def exit():
 def update():
     pass
 
+COLOR_NORMAL = (0, 0, 0)
+COLOR_ADDED = (0, 0, 63)
 def draw():
     cw, ch = get_canvas_width(), get_canvas_height()
     frame_9p.draw(cw // 2, ch // 2, cw - 200, ch - 100)
     x, y = 250, ch - 112
     for score in scores:
-        font.draw(x, y, f'{score.score:5.1f}')
-        font.draw(x + 200, y, score.timestr())
+        color = COLOR_ADDED if score == just_added else COLOR_NORMAL
+        font.draw(x, y, f'{score.score:5.1f}', color)
+        font.draw(x + 200, y, score.timestr(), color)
         y -= 35
 
 def pause():
