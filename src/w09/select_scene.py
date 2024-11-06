@@ -26,9 +26,11 @@ themes = [
 ]
 
 class Button(Sprite):
-    def __init__(self, nine_patch, font, title, x, y, width, height, on_click):
+    def __init__(self, np_normal, np_over, font, title, x, y, width, height, on_click):
         super().__init__(None, x, y)
-        self.bg = nine_patch
+        self.bg_n = np_normal
+        self.bg_o = np_over
+        self.bg = np_normal
         self.width, self.height = width, height
         self.title = title
         self.font = font
@@ -39,25 +41,31 @@ class Button(Sprite):
         gfw.font.draw_centered_text(self.font, self.title, self.x, self.y)
 
     def handle_event(self, e):
-        if not self.contains_xy(*gfw.mouse_xy(e)): return False
+        if not self.contains_xy(*gfw.mouse_xy(e)): 
+            self.bg = self.bg_n
+            return False
         # print(e.type, self.title)
         if e.type == SDL_MOUSEBUTTONDOWN and e.button == SDL_BUTTON_LEFT:
             self._on_click()
+        if e.type == SDL_MOUSEMOTION:
+            self.bg = self.bg_o
 
 
 class ThemeButton(Button):
     @staticmethod
     def load():
-        ThemeButton.nine_patch = gfw.image.NinePatch(gfw.image.load('res/round_rect_9.png'), 24, 24, 24, 24)
+        ThemeButton.np_normal = gfw.image.NinePatch(gfw.image.load('res/round_rect_9.png'), 24, 24, 24, 24)
+        ThemeButton.np_over = gfw.image.NinePatch(gfw.image.load('res/round_rect_over_9.png'), 24, 24, 24, 24)
         ThemeButton.font = gfw.font.load('res/ENCR10B.TTF', 30)
 
     def __init__(self, theme, x, y):
-        super().__init__(self.nine_patch, self.font, theme['title'], x, y, 400, 80, self.on_click)
+        super().__init__(self.np_normal, self.np_over, self.font, theme['title'], x, y, 400, 80, self.on_click)
         self.theme = theme
 
     def on_click(self):
         ingame_scene.theme = self.theme
         gfw.push(ingame_scene)
+        self.bg = self.bg_n
 
 def enter():
     world.append(Background('res/bg.png'), 0)
