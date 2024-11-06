@@ -15,9 +15,10 @@ import sys
 self = sys.modules[__name__]
 
 class Entry:
-    def __init__(self, score):
+    def __init__(self, score, theme_title):
         self.score = score
         self.time = time.localtime()
+        self.theme = theme_title
     def timestr(self):
         return time.strftime('%Y-%m-%d %H:%M:%S', self.time)
 
@@ -32,8 +33,8 @@ except:
     scores = [ Entry(score) for score in range(100, 200, 10) ]
 
 just_added = None
-def add(score):
-    entry = Entry(score)
+def add(score, theme_title):
+    entry = Entry(score, theme_title)
     global just_added
     just_added = entry
 
@@ -47,6 +48,7 @@ def add(score):
     except:
         pass
 
+add(53, 'Twice')
 
 def enter():
     global frame_9p
@@ -62,15 +64,16 @@ def update():
     pass
 
 COLOR_NORMAL = (0, 0, 0)
-COLOR_ADDED = (0, 0, 63)
+COLOR_ADDED = (0, 0, 192)
 def draw():
     cw, ch = get_canvas_width(), get_canvas_height()
-    frame_9p.draw(cw // 2, ch // 2, cw - 200, ch - 100)
-    x, y = 250, ch - 112
+    frame_9p.draw(cw // 2, ch // 2, cw - 100, ch - 100)
+    x, y = 150, ch - 112
     for score in scores:
         color = COLOR_ADDED if score == just_added else COLOR_NORMAL
         font.draw(x, y, f'{score.score:5.1f}', color)
-        font.draw(x + 200, y, score.timestr(), color)
+        gfw.font.draw_centered_text(font, score.theme, x + 250, y, color)
+        font.draw(x + 400, y, score.timestr(), color)
         y -= 35
 
 def pause():

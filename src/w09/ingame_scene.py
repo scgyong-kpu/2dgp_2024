@@ -131,7 +131,7 @@ def open_card(card):
             main_ui.score -= 10
             if world.count_at(world.layer.card) == 0:
                 bg_music.stop()
-                highscore_scene.add(main_ui.score)
+                highscore_scene.add(main_ui.score, theme['title'])
                 gfw.push(highscore_scene)
             return
         shown_card.show(False)
