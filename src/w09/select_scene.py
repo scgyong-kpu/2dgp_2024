@@ -1,6 +1,7 @@
 from gfw import *
 from pico2d import *
 import ingame_scene
+import highscore_scene
 
 import sys
 self = sys.modules[__name__]
@@ -84,6 +85,13 @@ def enter():
     for theme in themes:
         world.append(ThemeButton(theme, center_x, y), 1)
         y -= 100
+
+    hs_btn = Button(ThemeButton.np_normal, ThemeButton.np_over, 
+        ThemeButton.font, 'Highscore', 
+        canvas_width - 106, canvas_height - 30, 200, 50, 
+        lambda: gfw.push(highscore_scene)
+    )
+    world.append(hs_btn, 1)
 
 def exit():
     world.clear()
