@@ -87,7 +87,9 @@ def handle_event(e):
 
     if e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE:
         gfw.pop()
-        gfw.pop()
+        count = gfw.stack_height()
+        print(f'stack {count=}')
+        if count > 0: gfw.pop()
         return True
 
 if __name__ == '__main__':
