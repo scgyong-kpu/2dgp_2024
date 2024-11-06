@@ -1,18 +1,27 @@
 from pico2d import * 
 from gfw import *
 
-world = World()
+world = World(2)
 
-canvas_width = 960
-canvas_height = 540
-shows_bounding_box = True
-shows_object_count = True
+import sys
+self = sys.modules[__name__]
 
 def enter():
-    pass
+    global frame_9p
+    frame_9p = gfw.image.NinePatch(gfw.image.load('res/hs_frame.png'), 30, 30, 30, 30)
+    global font
+    font = gfw.font.load('res/ENCR10B.TTF', 30)
+    world.append(self, 1)
 
 def exit():
     world.clear()
+
+def update():
+    pass
+
+def draw():
+    cw, ch = get_canvas_width(), get_canvas_height()
+    frame_9p.draw(cw // 2, ch // 2, cw - 100, ch - 100)
 
 def pause():
     print('[main.pause()]')
