@@ -30,7 +30,7 @@ try:
     print("Scores:", scores)
 except:
     print("No highscore file")
-    scores = [ Entry(score) for score in range(100, 200, 10) ]
+    scores = [ ]
 
 just_added = None
 def add(score, theme_title):
@@ -47,8 +47,6 @@ def add(score, theme_title):
             pickle.dump(scores, f)
     except:
         pass
-
-add(53, 'Twice')
 
 def enter():
     global frame_9p
