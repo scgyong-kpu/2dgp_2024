@@ -102,6 +102,9 @@ def quit():
 def top():
     return _stack[-1]
 
+def stack_height():
+    return len(_stack)
+
 def _load_system_font():
     import gfw
     gfw._system_font = None
