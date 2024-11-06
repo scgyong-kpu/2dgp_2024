@@ -85,6 +85,11 @@ def handle_event(e):
         print(world.objects)
         return
 
+    if e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE:
+        gfw.pop()
+        gfw.pop()
+        return True
+
 if __name__ == '__main__':
     gfw.start_main_module()
 
