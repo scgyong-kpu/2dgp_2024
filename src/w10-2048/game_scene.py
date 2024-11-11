@@ -9,12 +9,18 @@ canvas_height = 600
 shows_bounding_box = True
 shows_object_count = True
 
+class NumBlock(AnimSprite):
+    def __init__(self, x, y, n):
+        fn = f'res/block_{n:05d}.png'
+        super().__init__(fn, x * 120 + 80, y * 120 + 80, 10) # 10fps
+        self.layer_index = world.layer.block
+
 def generate_block():
     gen = board.generate_block()
     if gen is None: return
 
-    x, y, n = gen
-    print(f'{x=} {y=} {n=}')
+    block = NumBlock(*gen)
+    world.append(block)
 
 def enter():
     world.append(Background('res/FF9F49.png'), world.layer.bg)
