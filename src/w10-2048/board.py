@@ -1,3 +1,4 @@
+import random
 
 CX_BLOCK = 4
 CY_BLOCK = 4
@@ -21,13 +22,27 @@ class Board:
                 line += txt
             print(line)
 
+    def generate_block(self):
+        positions = []
+        for y in range(CY_BLOCK):
+            for x in range(CX_BLOCK):
+                if self.get_block(x, y) is None:
+                    positions.append( (x, y) )
+        if len(positions) == 0:
+            print('No black space')
+            return False
+        block = random.choice([2, 4])
+        pos = random.choice(positions)
+        print(f'Generating {block} @{pos}')
+        self.set_block(*pos, block)
+        return True
+
+
 def test_board():
     board = Board()
-    board.set_block(2, 3, 16)
-    board.set_block(1, 2, 4)
-    board.set_block(0, 2, 8)
-    board.set_block(3, 0, 32)
-    board.print_blocks()
+    for i in range(16):
+        board.generate_block()
+        board.print_blocks()
 
 if __name__ == '__main__':
     test_board()
