@@ -17,6 +17,8 @@ class NumBlock(AnimSprite):
         self.layer_index = world.layer.block
 
 def generate_block():
+    if board.is_full(): return
+    
     block = random.choice([2, 4])
     x, y = board.generate_block(block)
 
