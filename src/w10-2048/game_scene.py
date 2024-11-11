@@ -62,6 +62,10 @@ def handle_event(e):
             board.move_left()
         elif e.key == SDLK_RIGHT:
             board.move_right()
+        elif e.key == SDLK_UP:
+            board.move_up()
+        elif e.key == SDLK_DOWN:
+            board.move_down()
         elif e.key == SDLK_BACKSPACE:
             board.clear()
 

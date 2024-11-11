@@ -1,26 +1,19 @@
 import random
 
-CX_BLOCK = 4
-CY_BLOCK = 4
-
-def convert_left(x, y):
-    return x, y
-
-def convert_right(x, y):
-    return 3-x, y
+BOARD_SIZE = 4
 
 class Board:
     def __init__(self):
-        self.blocks = [ [ None for _ in range(CX_BLOCK) ] for _ in range(CY_BLOCK) ]
+        self.blocks = [ [ None for _ in range(BOARD_SIZE) ] for _ in range(BOARD_SIZE) ]
 
     def clear(self):
-        for y in range(CY_BLOCK):
-            for x in range(CX_BLOCK):
+        for y in range(BOARD_SIZE):
+            for x in range(BOARD_SIZE):
                 block = self.get_block(x, y)
                 if block is not None:
                     block.remove()
 
-        self.blocks = [ [ None for _ in range(CX_BLOCK) ] for _ in range(CY_BLOCK) ]
+        self.blocks = [ [ None for _ in range(BOARD_SIZE) ] for _ in range(BOARD_SIZE) ]
 
     def get_block(self, x, y):
         return self.blocks[y][x]
@@ -29,9 +22,9 @@ class Board:
         self.blocks[y][x] = block
 
     def print_blocks(self):
-        for y in range(CY_BLOCK - 1, -1, -1):
+        for y in range(BOARD_SIZE - 1, -1, -1):
             line = ''
-            for x in range(CX_BLOCK):
+            for x in range(BOARD_SIZE):
                 b = self.get_block(x, y)
                 txt = '[      ] ' if b is None else f'[{b:^6d}] '
                 line += txt
@@ -39,8 +32,8 @@ class Board:
 
     def generate_block(self, block):
         positions = []
-        for y in range(CY_BLOCK):
-            for x in range(CX_BLOCK):
+        for y in range(BOARD_SIZE):
+            for x in range(BOARD_SIZE):
                 if self.get_block(x, y) is None:
                     positions.append( (x, y) )
         if len(positions) == 0:
@@ -52,26 +45,32 @@ class Board:
         return pos
 
     def is_full(self):
-        for y in range(CY_BLOCK):
-            for x in range(CX_BLOCK):
+        for y in range(BOARD_SIZE):
+            for x in range(BOARD_SIZE):
                 if self.get_block(x, y) is None:
                     return False
         return True
 
     def move_left(self):
-        self.move(convert_left)
+        self.move(lambda x,y: (x,y))
 
     def move_right(self):
-        self.move(convert_right)
+        self.move(lambda x,y: (BOARD_SIZE - x - 1, y))
+
+    def move_down(self):
+        self.move(lambda x,y: (y,x))
+
+    def move_up(self):
+        self.move(lambda x,y: (BOARD_SIZE - y - 1, BOARD_SIZE - x - 1))
 
     def move(self, converter):
         moved = False
-        for y in range(4):
-            for x in range(4):
+        for y in range(BOARD_SIZE):
+            for x in range(BOARD_SIZE):
                 ox, oy = converter(x, y)
                 b = self.get_block(ox, oy)
                 if b is None:
-                    for x2 in range(x + 1, 4):
+                    for x2 in range(x + 1, BOARD_SIZE):
                         ox2, oy2 = converter(x2, y)
                         b = self.get_block(ox2, oy2)
                         # v = self.blocks[y * 4 + x2].getValue()
