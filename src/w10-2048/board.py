@@ -51,6 +51,19 @@ class Board:
                     return False
         return True
 
+    def is_movable(self):
+        for y in range(BOARD_SIZE):
+            for x in range(BOARD_SIZE):
+                v = self.get_value(x, y)
+                if v == 0: continue
+                if x < BOARD_SIZE - 1 and v == self.get_value(x + 1, y): return True
+                if y < BOARD_SIZE - 1 and v == self.get_value(x, y + 1): return True
+        return False
+
+    def get_value(self, x, y):
+        block = self.get_block(x, y)
+        return block.value if block is not None else 0
+
     def move_left(self):
         return self.move(lambda x,y: (x,y))
 
