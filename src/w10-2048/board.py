@@ -67,6 +67,7 @@ class Board:
         moved = False
         for y in range(BOARD_SIZE):
             for x in range(BOARD_SIZE):
+                v = 0
                 ox, oy = converter(x, y)
                 b = self.get_block(ox, oy)
                 if b is None:
@@ -75,12 +76,29 @@ class Board:
                         b = self.get_block(ox2, oy2)
                         # v = self.blocks[y * 4 + x2].getValue()
                         if b is not None:
+                            v = b.value
                             self.set_block(ox, oy, b)
                             b.move_to(ox, oy)
                             self.set_block(ox2, oy2, None)
                             moved = True
                             break
                     if b is None:
+                        break
+                else:
+                    v = b.value
+                for x2 in range(x + 1, 4):
+                    ox2, oy2 = converter(x2, y)
+                    b2 = self.get_block(ox2, oy2)
+                    if b2 is not None:
+                        v2 = b2.value
+                        if v == v2:
+                            # score += 2 * v
+                            b.remove()
+                            self.set_block(ox, oy, b2)
+                            b2.double()
+                            b2.move_to(ox, oy)
+                            self.set_block(ox2, oy2, None)
+                            moved = True
                         break
 
 def test_board():

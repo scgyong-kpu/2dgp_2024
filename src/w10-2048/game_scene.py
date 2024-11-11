@@ -15,7 +15,13 @@ class NumBlock(AnimSprite):
     def __init__(self, n):
         fn = f'res/block_{n:05d}.png'
         super().__init__(fn, 0, 0, 10) # 10fps
+        self.value = n
         self.layer_index = world.layer.block
+
+    def double(self):
+        self.value *= 2
+        fn = f'res/block_{self.value:05d}.png'
+        self.image = gfw.image.load(fn)
 
     def move_to(self, x, y, animates=True):
         tx = x * 120 + 80
@@ -66,6 +72,7 @@ def enter():
     board = Board()
 
 def exit():
+    board.clear()
     world.clear()
 
 def pause():
