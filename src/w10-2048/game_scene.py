@@ -1,14 +1,15 @@
 from pico2d import * 
 from gfw import *
 
-world = World()
+world = World(['bg', 'block', 'ui'])
 
-canvas_width = 960
-canvas_height = 540
+canvas_width = 520
+canvas_height = 600
 shows_bounding_box = True
 shows_object_count = True
 
 def enter():
+    world.append(Background('res/FF9F49.png'), world.layer.bg)
     pass
 
 def exit():
