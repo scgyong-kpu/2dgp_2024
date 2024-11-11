@@ -18,10 +18,9 @@ class NumBlock(AnimSprite):
 
 def generate_block():
     block = random.choice([2, 4])
-    gen = board.generate_block(block)
-    if gen is None: return
+    x, y = board.generate_block(block)
 
-    block = NumBlock(*gen)
+    block = NumBlock(x, y, block)
     world.append(block)
 
 def enter():

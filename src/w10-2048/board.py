@@ -34,7 +34,7 @@ class Board:
         pos = random.choice(positions)
         print(f'Generating {block} @{pos}')
         self.set_block(*pos, block)
-        return *pos, block
+        return pos
 
     def is_full(self):
         for y in range(CY_BLOCK):
