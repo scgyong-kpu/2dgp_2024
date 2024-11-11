@@ -7,6 +7,15 @@ class Board:
     def __init__(self):
         self.blocks = [ [ None for _ in range(CX_BLOCK) ] for _ in range(CY_BLOCK) ]
 
+    def clear(self):
+        for y in range(CY_BLOCK):
+            for x in range(CX_BLOCK):
+                block = self.get_block(x, y)
+                if block is not None:
+                    block.remove()
+
+        self.blocks = [ [ None for _ in range(CX_BLOCK) ] for _ in range(CY_BLOCK) ]
+
     def get_block(self, x, y):
         return self.blocks[y][x]
 
@@ -43,6 +52,25 @@ class Board:
                     return False
         return True
 
+    def move_left(self):
+        moved = False
+        for y in range(4):
+            for x in range(4):
+                ox, oy = (x, y)
+                b = self.get_block(ox, oy)
+                if b is None:
+                    for x2 in range(x + 1, 4):
+                        ox2, oy2 = (x2, y)
+                        b = self.get_block(ox2, oy2)
+                        # v = self.blocks[y * 4 + x2].getValue()
+                        if b is not None:
+                            self.set_block(ox, oy, b)
+                            b.move_to(ox, oy)
+                            self.set_block(ox2, oy2, None)
+                            moved = True
+                            break
+                    if b is None:
+                        break
 
 def test_board():
     board = Board()

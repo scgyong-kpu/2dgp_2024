@@ -11,18 +11,28 @@ shows_bounding_box = True
 shows_object_count = True
 
 class NumBlock(AnimSprite):
-    def __init__(self, x, y, n):
+    def __init__(self, n):
         fn = f'res/block_{n:05d}.png'
-        super().__init__(fn, x * 120 + 80, y * 120 + 80, 10) # 10fps
+        super().__init__(fn, 0, 0, 10) # 10fps
         self.layer_index = world.layer.block
+
+    def move_to(self, x, y):
+        self.x = x * 120 + 80
+        self.y = y * 120 + 80
+
+    def remove(self):
+        world.remove(self)
+
+    def __del__(self):
+        print(f'Removing {self}')
 
 def generate_block():
     if board.is_full(): return
-    
-    block = random.choice([2, 4])
-    x, y = board.generate_block(block)
 
-    block = NumBlock(x, y, block)
+    block = NumBlock(random.choice([2, 4]))
+    x, y = board.generate_block(block)
+    block.move_to(x, y)
+
     world.append(block)
 
 def enter():
@@ -45,8 +55,13 @@ def handle_event(e):
         print(world.objects)
         return
 
-    if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
-        generate_block()
+    if e.type == SDL_KEYDOWN:
+        if e.key == SDLK_SPACE:
+            generate_block()
+        elif e.key == SDLK_LEFT:
+            board.move_left()
+        elif e.key == SDLK_BACKSPACE:
+            board.clear()
 
 if __name__ == '__main__':
     gfw.start_main_module()
