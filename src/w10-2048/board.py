@@ -40,7 +40,7 @@ class Board:
 
 def test_board():
     board = Board()
-    for i in range(16):
+    for i in range(17):
         board.generate_block()
         board.print_blocks()
 
