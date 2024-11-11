@@ -1,11 +1,11 @@
 
-blocks = [ None for _ in range(16) ]
+blocks = [ [ None for _ in range(4) ] for _ in range(4) ]
 
 def get_block(x, y):
-    return blocks[y * 4 + x]
+    return blocks[y][x]
 
 def set_block(x, y, block):
-    blocks[y * 4 + x] = block
+    blocks[y][x] = block
 
 def print_blocks():
     for y in range(3, -1, -1):
