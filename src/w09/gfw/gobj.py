@@ -226,3 +226,29 @@ class InfiniteScrollBackground(ScrollBackground):
 
         # quadrant 1
         self.image.clip_draw_to_origin(0, 0, cw - q3w, ch - q3h, q3w, q3h)
+
+class Button(Sprite):
+    def __init__(self, np_normal, np_over, font, title, x, y, width, height, on_click):
+        super().__init__(None, x, y)
+        self.bg_n = np_normal
+        self.bg_o = np_over
+        self.bg = np_normal
+        self.width, self.height = width, height
+        self.title = title
+        self.font = font
+        self._on_click = on_click
+
+    def draw(self):
+        self.bg.draw(self.x, self.y, self.width, self.height)
+        gfw.font.draw_centered_text(self.font, self.title, self.x, self.y)
+
+    def handle_event(self, e):
+        if not self.contains_xy(*gfw.mouse_xy(e)): 
+            self.bg = self.bg_n
+            return False
+        # print(e.type, self.title)
+        if e.type == SDL_MOUSEBUTTONDOWN and e.button == SDL_BUTTON_LEFT:
+            self._on_click()
+        if e.type == SDL_MOUSEMOTION:
+            self.bg = self.bg_o
+
