@@ -65,6 +65,7 @@ class Board:
 
     def move(self, converter):
         moved = False
+        score = 0
         for y in range(BOARD_SIZE):
             for x in range(BOARD_SIZE):
                 v = 0
@@ -92,7 +93,7 @@ class Board:
                     if b2 is not None:
                         v2 = b2.value
                         if v == v2:
-                            # score += 2 * v
+                            score += 2 * v
                             b.remove()
                             self.set_block(ox, oy, b2)
                             b2.double()
@@ -100,7 +101,7 @@ class Board:
                             self.set_block(ox2, oy2, None)
                             moved = True
                         break
-        return moved
+        return moved, score
 
 def test_board():
     board = Board()

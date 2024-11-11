@@ -86,6 +86,10 @@ def enter():
     board = Board()
     generate_block()
 
+    global score
+    score = ScoreSprite('res/number_24x32.png', canvas_width - 30, canvas_height - 50)
+    world.append(score, world.layer.ui)
+
 def exit():
     board.clear()
     world.clear()
@@ -102,23 +106,22 @@ def handle_event(e):
         return
 
     if e.type == SDL_KEYDOWN:
-        # if e.key == SDLK_SPACE:
-        #     generate_block()
-        # el
+        moved, score_inc = False, 0
         if e.key == SDLK_LEFT:
-            if board.move_left():
-                generate_block()
+            moved, score_inc = board.move_left()
         elif e.key == SDLK_RIGHT:
-            if board.move_right():
-                generate_block()
+            moved, score_inc = board.move_right()
         elif e.key == SDLK_UP:
-            if board.move_up():
-                generate_block()
+            moved, score_inc = board.move_up()
         elif e.key == SDLK_DOWN:
-            if board.move_down():
-                generate_block()
+            moved, score_inc = board.move_down()
         elif e.key == SDLK_BACKSPACE:
             board.clear()
+
+        if moved:
+            generate_block()
+        if score_inc != 0:
+            score.score += score_inc
 
 if __name__ == '__main__':
     gfw.start_main_module()
