@@ -30,12 +30,12 @@ class Board:
                     positions.append( (x, y) )
         if len(positions) == 0:
             print('No black space')
-            return False
+            return None
         block = random.choice([2, 4])
         pos = random.choice(positions)
         print(f'Generating {block} @{pos}')
         self.set_block(*pos, block)
-        return True
+        return *pos, block
 
     def is_full(self):
         for y in range(CY_BLOCK):
