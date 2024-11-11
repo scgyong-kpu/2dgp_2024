@@ -52,16 +52,16 @@ class Board:
         return True
 
     def move_left(self):
-        self.move(lambda x,y: (x,y))
+        return self.move(lambda x,y: (x,y))
 
     def move_right(self):
-        self.move(lambda x,y: (BOARD_SIZE - x - 1, y))
+        return self.move(lambda x,y: (BOARD_SIZE - x - 1, y))
 
     def move_down(self):
-        self.move(lambda x,y: (y,x))
+        return self.move(lambda x,y: (y,x))
 
     def move_up(self):
-        self.move(lambda x,y: (BOARD_SIZE - y - 1, BOARD_SIZE - x - 1))
+        return self.move(lambda x,y: (BOARD_SIZE - y - 1, BOARD_SIZE - x - 1))
 
     def move(self, converter):
         moved = False
@@ -100,6 +100,7 @@ class Board:
                             self.set_block(ox2, oy2, None)
                             moved = True
                         break
+        return moved
 
 def test_board():
     board = Board()
