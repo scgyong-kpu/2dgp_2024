@@ -3,6 +3,12 @@ import random
 CX_BLOCK = 4
 CY_BLOCK = 4
 
+def convert_left(x, y):
+    return x, y
+
+def convert_right(x, y):
+    return 3-x, y
+
 class Board:
     def __init__(self):
         self.blocks = [ [ None for _ in range(CX_BLOCK) ] for _ in range(CY_BLOCK) ]
@@ -53,14 +59,20 @@ class Board:
         return True
 
     def move_left(self):
+        self.move(convert_left)
+
+    def move_right(self):
+        self.move(convert_right)
+
+    def move(self, converter):
         moved = False
         for y in range(4):
             for x in range(4):
-                ox, oy = (x, y)
+                ox, oy = converter(x, y)
                 b = self.get_block(ox, oy)
                 if b is None:
                     for x2 in range(x + 1, 4):
-                        ox2, oy2 = (x2, y)
+                        ox2, oy2 = converter(x2, y)
                         b = self.get_block(ox2, oy2)
                         # v = self.blocks[y * 4 + x2].getValue()
                         if b is not None:

@@ -60,6 +60,8 @@ def handle_event(e):
             generate_block()
         elif e.key == SDLK_LEFT:
             board.move_left()
+        elif e.key == SDLK_RIGHT:
+            board.move_right()
         elif e.key == SDLK_BACKSPACE:
             board.clear()
 
