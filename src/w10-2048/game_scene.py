@@ -12,16 +12,24 @@ shows_object_count = True
 
 class NumBlock(AnimSprite):
     SPEED_PPS = 3000
+    MAG_SPEED = 0.15
     def __init__(self, n):
         fn = f'res/block_{n:05d}.png'
         super().__init__(fn, 0, 0, 10) # 10fps
         self.value = n
+        self.being_born = True
+        self.mag = 0
         self.layer_index = world.layer.block
 
     def double(self):
         self.value *= 2
         fn = f'res/block_{self.value:05d}.png'
         self.image = gfw.image.load(fn)
+
+    def draw(self):
+        index = self.get_anim_index()
+        size = self.width * self.mag, self.height * self.mag
+        self.image.clip_draw(index * self.width, 0, self.width, self.height, self.x, self.y, *size)
 
     def move_to(self, x, y, animates=True):
         tx = x * 120 + 80
@@ -33,6 +41,12 @@ class NumBlock(AnimSprite):
             self.tx, self.ty = None, None
 
     def update(self):
+        if self.being_born:
+            self.mag += (1.0/self.MAG_SPEED) * gfw.frame_time
+            if self.mag >= 1.0:
+                self.mag = 1.0
+                self.being_born = False
+
         if self.tx is None: return
         dist = self.SPEED_PPS * gfw.frame_time
         x, y = self.x, self.y
