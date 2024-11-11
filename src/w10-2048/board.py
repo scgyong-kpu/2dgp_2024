@@ -22,7 +22,7 @@ class Board:
                 line += txt
             print(line)
 
-    def generate_block(self):
+    def generate_block(self, block):
         positions = []
         for y in range(CY_BLOCK):
             for x in range(CX_BLOCK):
@@ -31,7 +31,6 @@ class Board:
         if len(positions) == 0:
             print('No black space')
             return None
-        block = random.choice([2, 4])
         pos = random.choice(positions)
         print(f'Generating {block} @{pos}')
         self.set_block(*pos, block)
@@ -48,7 +47,8 @@ class Board:
 def test_board():
     board = Board()
     for i in range(17):
-        board.generate_block()
+        block = random.choice([2, 4])
+        board.generate_block(block)
         print('full =', board.is_full())
         board.print_blocks()
 

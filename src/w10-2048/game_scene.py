@@ -1,3 +1,4 @@
+import random
 from pico2d import * 
 from gfw import *
 from board import Board
@@ -16,7 +17,8 @@ class NumBlock(AnimSprite):
         self.layer_index = world.layer.block
 
 def generate_block():
-    gen = board.generate_block()
+    block = random.choice([2, 4])
+    gen = board.generate_block(block)
     if gen is None: return
 
     block = NumBlock(*gen)
