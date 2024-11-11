@@ -70,6 +70,7 @@ def enter():
 
     global board
     board = Board()
+    generate_block()
 
 def exit():
     board.clear()
@@ -87,16 +88,21 @@ def handle_event(e):
         return
 
     if e.type == SDL_KEYDOWN:
-        if e.key == SDLK_SPACE:
-            generate_block()
-        elif e.key == SDLK_LEFT:
+        # if e.key == SDLK_SPACE:
+        #     generate_block()
+        # el
+        if e.key == SDLK_LEFT:
             board.move_left()
+            generate_block()
         elif e.key == SDLK_RIGHT:
             board.move_right()
+            generate_block()
         elif e.key == SDLK_UP:
             board.move_up()
+            generate_block()
         elif e.key == SDLK_DOWN:
             board.move_down()
+            generate_block()
         elif e.key == SDLK_BACKSPACE:
             board.clear()
 
