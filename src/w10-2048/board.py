@@ -37,11 +37,19 @@ class Board:
         self.set_block(*pos, block)
         return True
 
+    def is_full(self):
+        for y in range(CY_BLOCK):
+            for x in range(CX_BLOCK):
+                if self.get_block(x, y) is None:
+                    return False
+        return True
+
 
 def test_board():
     board = Board()
     for i in range(17):
         board.generate_block()
+        print('full =', board.is_full())
         board.print_blocks()
 
 if __name__ == '__main__':
