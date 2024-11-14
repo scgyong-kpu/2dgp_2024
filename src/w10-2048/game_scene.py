@@ -23,8 +23,8 @@ class NumBlock(AnimSprite):
 
     def double(self):
         self.value *= 2
-        fn = f'res/block_{self.value:05d}.png'
-        self.image = gfw.image.load(fn)
+        self.filename = f'res/block_{self.value:05d}.png'
+        self.image = gfw.image.load(self.filename)
 
     def draw(self):
         index = self.get_anim_index()
@@ -84,25 +84,32 @@ def enter():
 
     global board
     board = Board()
-    generate_block()
 
     global score
     score = ScoreSprite('res/number_24x32.png', canvas_width - 30, canvas_height - 50)
     world.append(score, world.layer.ui)
 
-def start_game():
-    obj = list(world.objects_at(world.layer.over))[0]
-    world.remove(obj, world.layer.over)
+    global game_over_sprite
+    game_over_sprite = Background('res/game_over.png')
+
+    start_game(False)
+
+def start_game(restarts=False):
+    if restarts:
+        world.remove(game_over_sprite, world.layer.over)
     board.clear()
     score.score = 0
     generate_block()
 
 def end_game():
-    world.append(Background('res/game_over.png'), world.layer.over)
+    world.append(game_over_sprite, world.layer.over)
 
 def exit():
+    global board, score, game_over_sprite
     board.clear()
     world.clear()
+
+    del board, score, game_over_sprite
 
 def pause():
     print('[main.pause()]')
@@ -127,7 +134,7 @@ def handle_event(e):
             moved, score_inc = board.move_down()
         elif e.key == SDLK_RETURN:
             if board.is_game_over():
-                start_game()
+                start_game(True)
         elif e.key == SDLK_BACKSPACE:
             board.clear()
         elif e.key == SDLK_2:
