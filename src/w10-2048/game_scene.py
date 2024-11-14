@@ -120,6 +120,17 @@ def handle_event(e):
             moved, score_inc = board.move_down()
         elif e.key == SDLK_BACKSPACE:
             board.clear()
+        elif e.key == SDLK_2:
+            num = 8
+            while not board.is_full():
+                block = NumBlock(num)
+                x, y = board.generate_block(block)
+                block.move_to(x, y, False)
+                world.append(block)
+                num = num * 2 if num < 10000 else 8
+            if board.is_game_over():
+                end_game()
+
 
         if score_inc != 0:
             score.score += score_inc
