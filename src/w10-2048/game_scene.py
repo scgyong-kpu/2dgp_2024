@@ -90,6 +90,13 @@ def enter():
     score = ScoreSprite('res/number_24x32.png', canvas_width - 30, canvas_height - 50)
     world.append(score, world.layer.ui)
 
+def start_game():
+    obj = list(world.objects_at(world.layer.over))[0]
+    world.remove(obj, world.layer.over)
+    board.clear()
+    score.score = 0
+    generate_block()
+
 def end_game():
     world.append(Background('res/game_over.png'), world.layer.over)
 
@@ -118,6 +125,9 @@ def handle_event(e):
             moved, score_inc = board.move_up()
         elif e.key == SDLK_DOWN:
             moved, score_inc = board.move_down()
+        elif e.key == SDLK_RETURN:
+            if board.is_game_over():
+                start_game()
         elif e.key == SDLK_BACKSPACE:
             board.clear()
         elif e.key == SDLK_2:
