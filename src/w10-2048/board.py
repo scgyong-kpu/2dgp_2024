@@ -60,6 +60,9 @@ class Board:
                 if y < BOARD_SIZE - 1 and v == self.get_value(x, y + 1): return True
         return False
 
+    def is_game_over(self):
+        return self.is_full() and not self.is_movable()
+
     def get_value(self, x, y):
         block = self.get_block(x, y)
         return block.value if block is not None else 0

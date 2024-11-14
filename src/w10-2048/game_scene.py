@@ -3,11 +3,11 @@ from pico2d import *
 from gfw import *
 from board import Board
 
-world = World(['bg', 'block', 'ui'])
+world = World(['bg', 'block', 'over', 'ui'])
 
 canvas_width = 520
 canvas_height = 600
-shows_bounding_box = True
+# shows_bounding_box = True
 shows_object_count = True
 
 class NumBlock(AnimSprite):
@@ -90,6 +90,9 @@ def enter():
     score = ScoreSprite('res/number_24x32.png', canvas_width - 30, canvas_height - 50)
     world.append(score, world.layer.ui)
 
+def end_game():
+    world.append(Background('res/game_over.png'), world.layer.over)
+
 def exit():
     board.clear()
     world.clear()
@@ -118,10 +121,12 @@ def handle_event(e):
         elif e.key == SDLK_BACKSPACE:
             board.clear()
 
-        if moved:
-            generate_block()
         if score_inc != 0:
             score.score += score_inc
+        if moved:
+            generate_block()
+            if board.is_game_over():
+                end_game()
 
 if __name__ == '__main__':
     gfw.start_main_module()
