@@ -2,6 +2,7 @@ import random
 from pico2d import * 
 from gfw import *
 from board import Board
+import highscore
 
 world = World(['bg', 'block', 'over', 'ui'])
 
@@ -80,6 +81,8 @@ def generate_block():
     world.append(block)
 
 def enter():
+    highscore.load()
+
     world.append(Background('res/FF9F49.png'), world.layer.bg)
 
     global board
@@ -92,17 +95,18 @@ def enter():
     global game_over_sprite
     game_over_sprite = Background('res/game_over.png')
 
-    start_game(False)
+    start_game()
 
-def start_game(restarts=False):
-    if restarts:
-        world.remove(game_over_sprite, world.layer.over)
+def start_game():
+    world.clear_at(world.layer.over)
     board.clear()
     score.score = 0
     generate_block()
 
 def end_game():
     world.append(game_over_sprite, world.layer.over)
+    world.append(highscore, world.layer.over)
+    highscore.add(score.score)
 
 def exit():
     global board, score, game_over_sprite
@@ -134,7 +138,7 @@ def handle_event(e):
             moved, score_inc = board.move_down()
         elif e.key == SDLK_RETURN:
             if board.is_game_over():
-                start_game(True)
+                start_game()
         elif e.key == SDLK_BACKSPACE:
             board.clear()
         elif e.key == SDLK_2:
