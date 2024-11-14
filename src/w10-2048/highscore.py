@@ -24,7 +24,7 @@ def load():
         f = open(FILENAME, "rb")
         scores = pickle.load(f)
         f.close()
-        print("Scores:", scores)
+        # print("Scores:", scores)
     except:
         print("No highscore file")
         scores = [ ]

@@ -104,6 +104,7 @@ def start_game():
     generate_block()
 
 def end_game():
+    board.slow_down()
     world.append(game_over_sprite, world.layer.over)
     world.append(highscore, world.layer.over)
     highscore.add(score.score)

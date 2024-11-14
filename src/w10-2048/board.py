@@ -63,6 +63,13 @@ class Board:
     def is_game_over(self):
         return self.is_full() and not self.is_movable()
 
+    def slow_down(self):
+        for y in range(BOARD_SIZE):
+            for x in range(BOARD_SIZE):
+                block = self.get_block(x, y)
+                if block is None: continue
+                block.fps = random.uniform(1.0, 2.0)
+
     def get_value(self, x, y):
         block = self.get_block(x, y)
         return block.value if block is not None else 0
