@@ -6,7 +6,8 @@ from gfw import *
 import sys
 self = sys.modules[__name__]
 
-FILENAME = 'score.pickle'
+FILENAME = os.path.expanduser('~/game2048.highscore')
+print(FILENAME)
 
 class Entry:
     def __init__(self, score):
