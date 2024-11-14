@@ -27,6 +27,8 @@ class World:
     def clear(self):
         layer_count = len(self.objects)
         self.objects = [[] for i in range(layer_count)]
+    def clear_at(self, layer_index):
+        self.objects[layer_index] = []
     def update(self):
         for go in self.all_objects_reversed():
             go.update()
@@ -58,6 +60,10 @@ class World:
         objs = self.objects[layer_index]
         for i in range(len(objs) - 1, -1, -1):
             yield objs[i]
+
+    def object_at(self, layer_index, object_index):
+        objs = self.objects[layer_index]
+        return objs[object_index]
 
     def count_at(self, layer_index):
         return len(self.objects[layer_index])
