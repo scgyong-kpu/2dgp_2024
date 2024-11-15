@@ -33,8 +33,10 @@ class MapBg:
         src_left = tileset.margin + sx * (tileset.tilewidth + tileset.spacing) # 타일은 이미지의 src_left 번째 픽셀부터 시작 = 소스 x 좌표
         src_botm = tileset.margin + (rows - sy - 1) * (tileset.tileheight + tileset.spacing) # 소스 y 좌표.
 
-        dst_left, dst_botm = 0, 0
-        tileset.tile_image.clip_draw_to_origin(src_left, src_botm, tileset.tilewidth, tileset.tileheight, dst_left, dst_botm, self.tilesize, self.tilesize)
+        dst_left, dst_botm = 0, get_canvas_height() - self.tilesize
+        tileset.tile_image.clip_draw_to_origin(
+            src_left, src_botm, tileset.tilewidth, tileset.tileheight, 
+            dst_left, dst_botm, self.tilesize, self.tilesize)
 
 
 class TestScene:
