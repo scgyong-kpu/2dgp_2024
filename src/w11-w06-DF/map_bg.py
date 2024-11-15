@@ -55,7 +55,7 @@ class MapBg:
 class TestScene:
     def enter(self):
         self.world = World()
-        self.map_bg = MapBg('res/earth.json', 50)
+        self.map_bg = MapBg('res/earth.json', 40)
         self.world.append(self.map_bg, 0)
     def exit(self): pass
     def handle_event(self, e): pass
