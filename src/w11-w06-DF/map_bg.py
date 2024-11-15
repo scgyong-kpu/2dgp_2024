@@ -25,7 +25,12 @@ class MapBg:
     def draw_layer(self, layer):
         tx, ty = 0, 0 # 0,0 위치의 타일을 그리겠다. map 의 0,0 은 좌상단이다.
         dst_left, dst_top = 0, get_canvas_height()
-        self.draw_tile(layer, tx, ty, dst_left, dst_top)
+        for ty in range(5):
+            left = dst_left
+            for tx in range(5):
+                self.draw_tile(layer, tx, ty, left, dst_top)
+                left += self.tilesize
+            dst_top -= self.tilesize
     def draw_tile(self, layer, tx, ty, dst_left, dst_top):
         tileset = self.tmap.tilesets[0] # first tileset only
         rows = math.ceil(tileset.tilecount / tileset.columns) # 타일셋의 세로방향 타일 갯수를 구한다. 
