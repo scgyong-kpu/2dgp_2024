@@ -56,7 +56,7 @@ class MapBg:
 class TestScene:
     def enter(self):
         self.world = World()
-        self.map_bg = MapBg('res/earth.json', 40)
+        self.map_bg = MapBg('res/earth.json', 6) # 6 까지는 괜찮은데 5는 에러가 난다.
         self.world.append(self.map_bg, 0)
     def exit(self): pass
     def handle_event(self, e): pass
