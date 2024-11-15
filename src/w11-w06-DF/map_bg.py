@@ -13,6 +13,8 @@ class MapBg:
         print(self.tmap.tilesets[0])
 
 if __name__ == '__main__':
+    mapbg = MapBg('res/earth.json')
+    print('-' * 60)
     mapbg = MapBg('res/desert.json')
 
 
