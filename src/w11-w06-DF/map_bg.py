@@ -25,7 +25,8 @@ class MapBg:
     def draw_layer(self, layer):
         startx, starty = 0, 0
         dst_left, dst_top = 0, get_canvas_height()
-        for ty in range(5):
+        ty = 0
+        while dst_top > 0:
             tx = startx
             left = dst_left
             while left < get_canvas_width():
@@ -33,6 +34,8 @@ class MapBg:
                 left += self.tilesize
                 tx += 1
             dst_top -= self.tilesize
+            ty += 1
+
     def draw_tile(self, layer, tx, ty, dst_left, dst_top):
         tileset = self.tmap.tilesets[0] # first tileset only
         rows = math.ceil(tileset.tilecount / tileset.columns) # 타일셋의 세로방향 타일 갯수를 구한다. 
