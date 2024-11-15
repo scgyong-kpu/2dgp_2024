@@ -33,6 +33,7 @@ class MapBg:
                 self.draw_tile(layer, tx, ty, left, dst_top)
                 left += self.tilesize
                 tx += 1
+                if tx >= self.tmap.width: break
             dst_top -= self.tilesize
             ty += 1
 
