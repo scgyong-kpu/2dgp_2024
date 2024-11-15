@@ -8,7 +8,7 @@ def get_folder(filename):
     return '.' if idx < 0 else filename[:idx]
 
 class MapBg:
-    def __init__(self, filename, tilesize):
+    def __init__(self, filename, tilesize, wraps=True):
         self.map_filename = filename
         self.folder = get_folder(filename)
         self.tilesize = tilesize
@@ -17,8 +17,8 @@ class MapBg:
         self.tmap = tiledmap.tiled_map_from_dict(mapjson)
         for ts in self.tmap.tilesets:
             ts.tile_image = gfw.image.load(f'{self.folder}/{ts.image}')
-            # print(ts.tile_image)
-        self.scroll_x, self.scroll_y = 150, 3220
+        self.wraps = wraps
+        self.scroll_x, self.scroll_y = 0, 0
     def update(self): 
         self.scroll_x += gfw.frame_time * 5
         self.scroll_y += gfw.frame_time * 20        
@@ -29,6 +29,16 @@ class MapBg:
         cw,ch = get_canvas_width(), get_canvas_height()
 
         sx, sy = round(self.scroll_x), round(self.scroll_y)
+        if self.wraps:
+            map_total_width = self.tmap.width * self.tmap.tilewidth
+            map_total_height = self.tmap.height * self.tmap.tileheight
+            sx %= map_total_width;
+            if sx < 0:
+                sx += map_total_width;
+            sy %= map_total_height;
+            if sy < 0:
+                sy += map_total_width;
+
         tile_x = sx // self.tilesize # 그려질 타일 크기 기준 어느 타일부터 시작할지
         tile_y = sy // self.tilesize
 
@@ -45,10 +55,14 @@ class MapBg:
                 self.draw_tile(layer, tx, ty, left, dst_top)
                 left += self.tilesize
                 tx += 1
-                if tx >= self.tmap.width: break
+                if tx >= self.tmap.width:
+                    if not self.wraps: break
+                    tx -= layer.width
             dst_top -= self.tilesize
             ty += 1
-            if ty >= self.tmap.height: break
+            if ty >= layer.height:
+                if not self.wraps: break
+                ty -= layer.height
 
     def draw_tile(self, layer, tx, ty, dst_left, dst_top):
         tileset = self.tmap.tilesets[0] # first tileset only
