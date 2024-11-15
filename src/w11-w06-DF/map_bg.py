@@ -18,20 +18,25 @@ class MapBg:
         for ts in self.tmap.tilesets:
             ts.tile_image = gfw.image.load(f'{self.folder}/{ts.image}')
         self.wraps = wraps
-        self.scroll_x, self.scroll_y = 0, 0
+        self.x, self.y = 0, 0
+        self.scroll_dx, self.scroll_dy = 0, 0
+        self.debug_str = ''
+    def set_scroll_speed(self, dx, dy):
+        self.scroll_dx, self.scroll_dy = dx, dy
     def update(self): 
-        self.scroll_x += gfw.frame_time * 5
-        self.scroll_y += gfw.frame_time * 20        
+        self.x += gfw.frame_time * self.scroll_dx
+        self.y += gfw.frame_time * self.scroll_dy
     def draw(self):
         for layer in self.tmap.layers:
             self.draw_layer(layer)
+        scene.font.draw(0, 100, self.debug_str)
     def draw_layer(self, layer):
         cw,ch = get_canvas_width(), get_canvas_height()
 
-        sx, sy = round(self.scroll_x), round(self.scroll_y)
+        sx, sy = round(self.x), round(self.y)
         if self.wraps:
-            map_total_width = self.tmap.width * self.tmap.tilewidth
-            map_total_height = self.tmap.height * self.tmap.tileheight
+            map_total_width = self.tmap.width * self.tilesize
+            map_total_height = self.tmap.height * self.tilesize
             sx %= map_total_width;
             if sx < 0:
                 sx += map_total_width;
@@ -45,6 +50,8 @@ class MapBg:
         beg_x = -(sx % self.tilesize);
         beg_y = -(sy % self.tilesize);
 
+        self.debug_str = f'{sx=} {sy=} {tile_x=} {tile_y=} {beg_x=} {beg_y=}'
+
 
         dst_left, dst_top = beg_x, ch - beg_y
         ty = tile_y
@@ -55,7 +62,7 @@ class MapBg:
                 self.draw_tile(layer, tx, ty, left, dst_top)
                 left += self.tilesize
                 tx += 1
-                if tx >= self.tmap.width:
+                if tx >= layer.width:
                     if not self.wraps: break
                     tx -= layer.width
             dst_top -= self.tilesize
@@ -85,8 +92,14 @@ class TestScene:
         self.world = World()
         self.map_bg = MapBg('res/earth.json', 40)
         self.world.append(self.map_bg, 0)
+        self.font = gfw.font.load('res/lucon.ttf')
     def exit(self): pass
-    def handle_event(self, e): pass
+    def handle_event(self, e):
+        if e.type == SDL_MOUSEMOTION:
+            dx = get_canvas_width() // 2 - e.x
+            dy = get_canvas_height() // 2 - e.y
+
+            self.map_bg.set_scroll_speed(dx, dy)
 
 if __name__ == '__main__':
     scene = TestScene()
