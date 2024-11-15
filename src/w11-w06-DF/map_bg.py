@@ -64,7 +64,20 @@ class MapBackground(InfiniteScrollBackground):
             tx = tile_x
             left = dst_left
             while left < cw:
-                self.draw_tile(layer, tx, ty, left, dst_top)
+                tileset = self.tmap.tilesets[0] # first tileset only
+                rows = math.ceil(tileset.tilecount / tileset.columns) # 타일셋의 세로방향 타일 갯수를 구한다. 
+                t_index = ty * layer.width + tx # 그 위치의 타일정보는 data[t_index] 에 있다
+                tile = layer.data[t_index]   # 그려야 할 타일 번호를 구한다
+                sx = (tile - 1) % tileset.columns  # 해당 번호의 타일은 타일셋이미지 에서 왼쪽으로부터 sx 번째에 있다
+                sy = (tile - 1) // tileset.columns # 해당 번호의 타일은 타일셋이미지 에서 위로부터 sy 번째에 있다
+                src_left = tileset.margin + sx * (tileset.tilewidth + tileset.spacing) # 타일은 이미지의 src_left 번째 픽셀부터 시작 = 소스 x 좌표
+                src_botm = tileset.margin + (rows - sy - 1) * (tileset.tileheight + tileset.spacing) # 소스 y 좌표.
+
+                dst_botm = dst_top - self.tilesize
+                tileset.tile_image.clip_draw_to_origin(
+                    src_left, src_botm, tileset.tilewidth, tileset.tileheight, 
+                    left, dst_botm, self.tilesize, self.tilesize)
+
                 left += self.tilesize
                 tx += 1
                 if tx >= layer.width:
@@ -75,21 +88,6 @@ class MapBackground(InfiniteScrollBackground):
             if ty >= layer.height:
                 if not self.wraps: break
                 ty -= layer.height
-
-    def draw_tile(self, layer, tx, ty, dst_left, dst_top):
-        tileset = self.tmap.tilesets[0] # first tileset only
-        rows = math.ceil(tileset.tilecount / tileset.columns) # 타일셋의 세로방향 타일 갯수를 구한다. 
-        t_index = ty * layer.width + tx # 그 위치의 타일정보는 data[t_index] 에 있다
-        tile = layer.data[t_index]   # 그려야 할 타일 번호를 구한다
-        sx = (tile - 1) % tileset.columns  # 해당 번호의 타일은 타일셋이미지 에서 왼쪽으로부터 sx 번째에 있다
-        sy = (tile - 1) // tileset.columns # 해당 번호의 타일은 타일셋이미지 에서 위로부터 sy 번째에 있다
-        src_left = tileset.margin + sx * (tileset.tilewidth + tileset.spacing) # 타일은 이미지의 src_left 번째 픽셀부터 시작 = 소스 x 좌표
-        src_botm = tileset.margin + (rows - sy - 1) * (tileset.tileheight + tileset.spacing) # 소스 y 좌표.
-
-        dst_botm = dst_top - self.tilesize
-        tileset.tile_image.clip_draw_to_origin(
-            src_left, src_botm, tileset.tilewidth, tileset.tileheight, 
-            dst_left, dst_botm, self.tilesize, self.tilesize)
 
 
 class TestScene:
