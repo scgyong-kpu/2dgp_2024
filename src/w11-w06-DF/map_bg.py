@@ -20,7 +20,6 @@ class MapBg:
         self.wraps = wraps
         self.x, self.y = 0, 0
         self.scroll_dx, self.scroll_dy = 0, 0
-        self.debug_str = ''
     def set_scroll_speed(self, dx, dy):
         self.scroll_dx, self.scroll_dy = dx, dy
     def update(self): 
@@ -29,7 +28,6 @@ class MapBg:
     def draw(self):
         for layer in self.tmap.layers:
             self.draw_layer(layer)
-        scene.font.draw(0, 100, self.debug_str)
     def draw_layer(self, layer):
         cw,ch = get_canvas_width(), get_canvas_height()
 
@@ -49,9 +47,6 @@ class MapBg:
 
         beg_x = -(sx % self.tilesize);
         beg_y = -(sy % self.tilesize);
-
-        self.debug_str = f'{sx=} {sy=} {tile_x=} {tile_y=} {beg_x=} {beg_y=}'
-
 
         dst_left, dst_top = beg_x, ch - beg_y
         ty = tile_y
@@ -92,7 +87,6 @@ class TestScene:
         self.world = World()
         self.map_bg = MapBg('res/earth.json', 40)
         self.world.append(self.map_bg, 0)
-        self.font = gfw.font.load('res/lucon.ttf')
     def exit(self): pass
     def handle_event(self, e):
         if e.type == SDL_MOUSEMOTION:
