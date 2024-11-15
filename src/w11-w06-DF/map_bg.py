@@ -18,18 +18,28 @@ class MapBg:
         for ts in self.tmap.tilesets:
             ts.tile_image = gfw.image.load(f'{self.folder}/{ts.image}')
             # print(ts.tile_image)
+        self.scroll_x, self.scroll_y = 150, 3220
     def update(self): pass
     def draw(self):
         for layer in self.tmap.layers:
             self.draw_layer(layer)
     def draw_layer(self, layer):
-        startx, starty = 0, 0
-        dst_left, dst_top = 0, get_canvas_height()
-        ty = 0
+        cw,ch = get_canvas_width(), get_canvas_height()
+
+        sx, sy = round(self.scroll_x), round(self.scroll_y)
+        tile_x = sx // self.tilesize # 그려질 타일 크기 기준 어느 타일부터 시작할지
+        tile_y = sy // self.tilesize
+
+        beg_x = -(sx % self.tilesize);
+        beg_y = -(sy % self.tilesize);
+
+
+        dst_left, dst_top = beg_x, ch - beg_y
+        ty = tile_y
         while dst_top > 0:
-            tx = startx
+            tx = tile_x
             left = dst_left
-            while left < get_canvas_width():
+            while left < cw:
                 self.draw_tile(layer, tx, ty, left, dst_top)
                 left += self.tilesize
                 tx += 1
@@ -57,7 +67,7 @@ class MapBg:
 class TestScene:
     def enter(self):
         self.world = World()
-        self.map_bg = MapBg('res/earth.json', 4)
+        self.map_bg = MapBg('res/earth.json', 40)
         self.world.append(self.map_bg, 0)
     def exit(self): pass
     def handle_event(self, e): pass
