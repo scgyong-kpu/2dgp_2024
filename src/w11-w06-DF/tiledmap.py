@@ -40,37 +40,6 @@ def to_float(x: Any) -> float:
     return x
 
 
-@dataclass
-class Export:
-    target: str
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Export':
-        assert isinstance(obj, dict)
-        target = from_str(obj.get("target"))
-        return Export(target)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["target"] = from_str(self.target)
-        return result
-
-
-@dataclass
-class Editorsettings:
-    export: Export
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Editorsettings':
-        assert isinstance(obj, dict)
-        export = Export.from_dict(obj.get("export"))
-        return Editorsettings(export)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["export"] = to_class(Export, self.export)
-        return result
-
 
 @dataclass
 class Layer:
@@ -115,43 +84,6 @@ class Layer:
         return result
 
 
-@dataclass
-class Terrain:
-    name: str
-    tile: int
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Terrain':
-        assert isinstance(obj, dict)
-        name = from_str(obj.get("name"))
-        tile = from_int(obj.get("tile"))
-        return Terrain(name, tile)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["name"] = from_str(self.name)
-        result["tile"] = from_int(self.tile)
-        return result
-
-
-@dataclass
-class Tile:
-    id: int
-    terrain: List[int]
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Tile':
-        assert isinstance(obj, dict)
-        id = from_int(obj.get("id"))
-        terrain = from_list(from_int, obj.get("terrain"))
-        return Tile(id, terrain)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["id"] = from_int(self.id)
-        result["terrain"] = from_list(from_int, self.terrain)
-        return result
-
 
 @dataclass
 class Tileset:
@@ -163,10 +95,8 @@ class Tileset:
     margin: int
     name: str
     spacing: int
-    terrains: List[Terrain]
     tilecount: int
     tileheight: int
-    tiles: List[Tile]
     tilewidth: int
 
     @staticmethod
@@ -180,12 +110,10 @@ class Tileset:
         margin = from_int(obj.get("margin"))
         name = from_str(obj.get("name"))
         spacing = from_int(obj.get("spacing"))
-        terrains = from_list(Terrain.from_dict, obj.get("terrains"))
         tilecount = from_int(obj.get("tilecount"))
         tileheight = from_int(obj.get("tileheight"))
-        tiles = from_list(Tile.from_dict, obj.get("tiles"))
         tilewidth = from_int(obj.get("tilewidth"))
-        return Tileset(columns, firstgid, image, imageheight, imagewidth, margin, name, spacing, terrains, tilecount, tileheight, tiles, tilewidth)
+        return Tileset(columns, firstgid, image, imageheight, imagewidth, margin, name, spacing, tilecount, tileheight, tilewidth)
 
     def to_dict(self) -> dict:
         result: dict = {}
@@ -200,7 +128,6 @@ class Tileset:
         result["terrains"] = from_list(lambda x: to_class(Terrain, x), self.terrains)
         result["tilecount"] = from_int(self.tilecount)
         result["tileheight"] = from_int(self.tileheight)
-        result["tiles"] = from_list(lambda x: to_class(Tile, x), self.tiles)
         result["tilewidth"] = from_int(self.tilewidth)
         return result
 
@@ -208,7 +135,6 @@ class Tileset:
 @dataclass
 class TiledMap:
     compressionlevel: int
-    editorsettings: Editorsettings
     height: int
     infinite: bool
     layers: List[Layer]
@@ -221,14 +147,13 @@ class TiledMap:
     tilesets: List[Tileset]
     tilewidth: int
     type: str
-    version: float
+    version: str
     width: int
 
     @staticmethod
     def from_dict(obj: Any) -> 'TiledMap':
         assert isinstance(obj, dict)
         compressionlevel = from_int(obj.get("compressionlevel"))
-        editorsettings = Editorsettings.from_dict(obj.get("editorsettings"))
         height = from_int(obj.get("height"))
         infinite = from_bool(obj.get("infinite"))
         layers = from_list(Layer.from_dict, obj.get("layers"))
@@ -241,14 +166,13 @@ class TiledMap:
         tilesets = from_list(Tileset.from_dict, obj.get("tilesets"))
         tilewidth = from_int(obj.get("tilewidth"))
         type = from_str(obj.get("type"))
-        version = from_float(obj.get("version"))
+        version = from_str(obj.get("version"))
         width = from_int(obj.get("width"))
-        return TiledMap(compressionlevel, editorsettings, height, infinite, layers, nextlayerid, nextobjectid, orientation, renderorder, tiledversion, tileheight, tilesets, tilewidth, type, version, width)
+        return TiledMap(compressionlevel, height, infinite, layers, nextlayerid, nextobjectid, orientation, renderorder, tiledversion, tileheight, tilesets, tilewidth, type, version, width)
 
     def to_dict(self) -> dict:
         result: dict = {}
         result["compressionlevel"] = from_int(self.compressionlevel)
-        result["editorsettings"] = to_class(Editorsettings, self.editorsettings)
         result["height"] = from_int(self.height)
         result["infinite"] = from_bool(self.infinite)
         result["layers"] = from_list(lambda x: to_class(Layer, x), self.layers)
@@ -261,7 +185,7 @@ class TiledMap:
         result["tilesets"] = from_list(lambda x: to_class(Tileset, x), self.tilesets)
         result["tilewidth"] = from_int(self.tilewidth)
         result["type"] = from_str(self.type)
-        result["version"] = to_float(self.version)
+        result["version"] = from_str(self.version)
         result["width"] = from_int(self.width)
         return result
 
