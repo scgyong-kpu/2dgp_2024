@@ -7,16 +7,20 @@ def get_folder(filename):
     idx = filename.rfind('/')
     return '.' if idx < 0 else filename[:idx]
 
-class MapBg:
-    def __init__(self, filename, tilesize, wraps=True):
+class MapBackground:
+    def __init__(self, filename, tilesize=50, wraps=True, fitsWidth=False, fitsHeight=False):
         self.map_filename = filename
         self.folder = get_folder(filename)
-        self.tilesize = tilesize
         with open(filename, 'r') as f:
             mapjson = json.load(f)
         self.tmap = tiledmap.tiled_map_from_dict(mapjson)
         for ts in self.tmap.tilesets:
             ts.tile_image = gfw.image.load(f'{self.folder}/{ts.image}')
+        if fitsWidth:
+            tilesize = get_canvas_width() // self.tmap.width
+        elif fitsHeight:
+            tilesize = get_canvas_height() // self.tmap.height
+        self.tilesize = tilesize
         self.wraps = wraps
         self.x, self.y = 0, 0
         self.scroll_dx, self.scroll_dy = 0, 0
@@ -85,12 +89,13 @@ class MapBg:
 class TestScene:
     def enter(self):
         self.world = World()
-        self.map_bg = MapBg('res/earth.json', 40)
+        self.map_bg = MapBackground('res/earth.json', fitsWidth=True)
         self.world.append(self.map_bg, 0)
     def exit(self): pass
     def handle_event(self, e):
         if e.type == SDL_MOUSEMOTION:
-            dx = get_canvas_width() // 2 - e.x
+            # dx = get_canvas_width() // 2 - e.x
+            dx = 0
             dy = get_canvas_height() // 2 - e.y
 
             self.map_bg.set_scroll_speed(dx, dy)
