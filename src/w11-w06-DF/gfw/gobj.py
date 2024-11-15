@@ -243,9 +243,9 @@ class MapBackground(InfiniteScrollBackground):
         for ts in self.tmap.tilesets:
             ts.tile_image = gfw.image.load(f'{self.folder}/{ts.image}')
         if fitsWidth:
-            tilesize = get_canvas_width() // self.tmap.width
+            tilesize = math.ceil(get_canvas_width() / self.tmap.width)
         elif fitsHeight:
-            tilesize = get_canvas_height() // self.tmap.height
+            tilesize = math.ceil(get_canvas_height() / self.tmap.height)
         self.tilesize = tilesize
         self.wraps = wraps
         self.x, self.y = 0, 0
