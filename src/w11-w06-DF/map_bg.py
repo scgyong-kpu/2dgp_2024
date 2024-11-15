@@ -36,6 +36,7 @@ class MapBg:
                 if tx >= self.tmap.width: break
             dst_top -= self.tilesize
             ty += 1
+            if ty >= self.tmap.height: break
 
     def draw_tile(self, layer, tx, ty, dst_left, dst_top):
         tileset = self.tmap.tilesets[0] # first tileset only
@@ -56,7 +57,7 @@ class MapBg:
 class TestScene:
     def enter(self):
         self.world = World()
-        self.map_bg = MapBg('res/earth.json', 6) # 6 까지는 괜찮은데 5는 에러가 난다.
+        self.map_bg = MapBg('res/earth.json', 4)
         self.world.append(self.map_bg, 0)
     def exit(self): pass
     def handle_event(self, e): pass
