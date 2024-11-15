@@ -17,9 +17,14 @@ class MapBg:
             ts.tile_image = gfw.image.load(f'{self.folder}/{ts.image}')
             print(ts.tile_image)
 
+class TestScene:
+    def enter(self):
+        self.world = World()
+    def exit(self): pass
+    def handle_event(self, e): pass
+
 if __name__ == '__main__':
-    open_canvas()
-    mapbg = MapBg('res/earth.json')
-    close_canvas()
+    scene = TestScene()
+    gfw.start(scene)
 
 
