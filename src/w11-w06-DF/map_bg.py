@@ -19,7 +19,9 @@ class MapBg:
             ts.tile_image = gfw.image.load(f'{self.folder}/{ts.image}')
             # print(ts.tile_image)
         self.scroll_x, self.scroll_y = 150, 3220
-    def update(self): pass
+    def update(self): 
+        self.scroll_x += gfw.frame_time * 5
+        self.scroll_y += gfw.frame_time * 20        
     def draw(self):
         for layer in self.tmap.layers:
             self.draw_layer(layer)
