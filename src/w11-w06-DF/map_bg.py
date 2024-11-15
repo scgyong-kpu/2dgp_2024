@@ -7,9 +7,10 @@ def get_folder(filename):
     idx = filename.rfind('/')
     return '.' if idx < 0 else filename[:idx]
 
-class MapBackground:
-    def __init__(self, filename, tilesize=50, wraps=True, fitsWidth=False, fitsHeight=False):
-        self.map_filename = filename
+class MapBackground(InfiniteScrollBackground):
+    def __init__(self, filename, tilesize=50, wraps=True, fitsWidth=False, fitsHeight=False, dx=0, dy=0):
+        super().__init__(None)
+        self.filename = filename
         self.folder = get_folder(filename)
         with open(filename, 'r') as f:
             mapjson = json.load(f)
@@ -23,7 +24,12 @@ class MapBackground:
         self.tilesize = tilesize
         self.wraps = wraps
         self.x, self.y = 0, 0
-        self.scroll_dx, self.scroll_dy = 0, 0
+        self.scroll_dx, self.scroll_dy = dx, dy
+
+    # TODO: show() 가 override 되어야 한다
+    # def show(self, x, y):
+    #     pass
+
     def set_scroll_speed(self, dx, dy):
         self.scroll_dx, self.scroll_dy = dx, dy
     def update(self): 
@@ -91,8 +97,11 @@ class TestScene:
         self.world = World()
         self.map_bg = MapBackground('res/earth.json', fitsWidth=True)
         self.world.append(self.map_bg, 0)
+        # self.shows_bounding_box = True
     def exit(self): pass
     def handle_event(self, e):
+        if e.type == SDL_KEYDOWN and e.key == SDLK_1:
+            print(self.world.objects)
         if e.type == SDL_MOUSEMOTION:
             # dx = get_canvas_width() // 2 - e.x
             dx = 0
