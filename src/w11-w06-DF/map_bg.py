@@ -23,13 +23,15 @@ class MapBg:
         for layer in self.tmap.layers:
             self.draw_layer(layer)
     def draw_layer(self, layer):
-        tx, ty = 0, 0 # 0,0 위치의 타일을 그리겠다. map 의 0,0 은 좌상단이다.
+        startx, starty = 0, 0
         dst_left, dst_top = 0, get_canvas_height()
         for ty in range(5):
+            tx = startx
             left = dst_left
-            for tx in range(5):
+            while left < get_canvas_width():
                 self.draw_tile(layer, tx, ty, left, dst_top)
                 left += self.tilesize
+                tx += 1
             dst_top -= self.tilesize
     def draw_tile(self, layer, tx, ty, dst_left, dst_top):
         tileset = self.tmap.tilesets[0] # first tileset only
