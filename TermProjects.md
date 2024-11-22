@@ -12,14 +12,14 @@
 | 박수민 | GoHome(공포) | [README](https://github.com/sumin2022/parksumin2022180015/blob/main/README.md) | [1차](https://www.youtube.com/watch?v=5OFAKzuJWak) | [2차]() |  |
 | 송영준 | 야구 | [README](https://github.com/SYJ1029/2Dgame_2021184018/blob/main/README.md) | [1차](https://youtu.be/YhcWDeT6S44) [README](https://github.com/SYJ1029/2Dgame_2021184018/blob/7c8cc8f747afa22ec789e009bf7e432435e585b9/README.md) | [2차](https://youtu.be/pQMkKLPnMAM) |  |
 | 신유안 | 전략피지컬 | [README]() | [1차]() | [2차]() |  |
-| 안대훈 | I Wanna Be | [README]() | [1차]() | [2차]() |  |
-| 유석진 | 뱀서 | [README]() | [1차]() | [2차]() |  |
-| 윤민혁 | 뱀서 | [README]() | [1차]() | [2차]() |  |
-| 이규아 | 1942 | [README]() | [1차]() | [2차]() |  |
+| 안대훈 | I Wanna Be | [README]() | [1차]() | [2차](https://youtube.com/shorts/X44f-196cao?feature=share) |  |
+| 유석진 | 뱀서 | [README]() | [1차]() | [2차](https://youtu.be/XQFYz2O36p8) |  |
+| 윤민혁 | 뱀서 | [README]() | [1차]() | [2차](https://youtu.be/yC9KzDTfIm4) |  |
+| 이규아 | 1942 | [README]() | [1차]() | [2차](https://www.youtube.com/watch?v=jvpT_Q_BSCs) |  |
 | 이종명 | 고양이마리오 | [README]() | [1차]() | [2차]() |  |
 | 이현범 | VirusStriker | [README]() | [1차]() | [2차]() |  |
-| 임성민 | NecroCircus | [README]() | [1차]() | [2차]() |  |
-| 임성훈 | GuiltyAndRain | [README]() | [1차]() | [2차]() |  |
+| 임성민 | NecroCircus | [README]() | [1차]() | [2차](https://www.youtube.com/watch?v=938ixX0zZLU) |  |
+| 임성훈 | GuiltyAndRain | [README]() | [1차]() | [2차](https://youtu.be/WKfDIfGfr0M) |  |
 | 정극훈 | 가디언오브테라 | [README]() | [1차]() | [2차]() |  |
-| 최재헌 | Spelunch | [README]() | [1차]() | [2차]() |  |
-| 최제연 | 컬링 | [README]() | [1차]() | [2차]() |  |
+| 최재헌 | Spelunch | [README]() | [1차]() | [2차](https://youtu.be/6V619XHeT94) |  |
+| 최제연 | 컬링 | [README]() | [1차]() | [2차](https://youtu.be/n-Idt-eA0OM) |  |
