@@ -1,10 +1,10 @@
 from pico2d import * 
 from gfw import *
 
-world = World()
+world = gfw.World(['bg', 'enemy', 'item', 'player', 'ui', 'controller'])
 
-canvas_width = 960
-canvas_height = 540
+canvas_width = 1280
+canvas_height = 720
 shows_bounding_box = True
 shows_object_count = True
 
