@@ -23,13 +23,13 @@ class Boy(gfw.Sprite):
         self.time += gfw.frame_time
         fps, frame_count = 10, 8
         self.frame = round(self.time * fps) % frame_count
-        ox, oy = self.x, self.y
-        self.x += self.dx * self.speed * self.mag * gfw.frame_time
-        self.y += self.dy * self.speed * self.mag * gfw.frame_time
-        if self.bg.collides_box(*self.get_bb()):
-            self.x, self.y = ox, oy
-        self.x = clamp(self.bg.margin, self.x, self.bg.total_width() - self.bg.margin)
-        self.y = clamp(self.bg.margin, self.y, self.bg.total_height() - self.bg.margin)
+        dx = self.dx * self.speed * self.mag * gfw.frame_time
+        dy = self.dy * self.speed * self.mag * gfw.frame_time
+        l,b,r,t = self.get_bb()
+        if not self.bg.collides_box(l+dx,b,r+dx,t):
+            self.x = clamp(self.bg.margin, self.x + dx, self.bg.total_width() - self.bg.margin)
+        if not self.bg.collides_box(l,b+dy,r,t+dy):
+            self.y = clamp(self.bg.margin, self.y + dy, self.bg.total_height() - self.bg.margin)
         if self.target is not None:
             tx, ty = self.target
             if (self.dx > 0 and self.x >= tx) or (self.dx < 0 and self.x <= tx):
