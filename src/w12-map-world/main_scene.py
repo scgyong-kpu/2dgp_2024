@@ -10,7 +10,7 @@ shows_bounding_box = True
 shows_object_count = True
 
 def enter():
-    world.bg = MapBackground('res/desert.tmj')
+    world.bg = MapBackground('res/desert.tmj', tilesize=20)
     world.bg.margin = 100
     world.bg.set_collision_tiles({1,2,3,9,10,11,17,18,19,20,21,25,26,27,28,29,33,34,35,36,37,41,42,43,44,45})
     world.append(world.bg, world.layer.bg)
