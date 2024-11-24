@@ -254,6 +254,44 @@ class MapBackground(InfiniteScrollBackground):
         self.ts = self.tmap.tilesets[0] # first tileset only
         self.ts.rows = math.ceil(self.ts.tilecount / self.ts.columns) # 타일셋의 세로방향 타일 갯수를 구한다. 
 
+    def set_collision_tiles(self, tiles):
+        self.collision_tiles = tiles
+
+    def collides_box(self, left, bottom, right, top, tiles=None):
+        if tiles is None:
+            tiles = self.collision_tiles
+        map_total_width = self.total_width()
+        map_total_height = self.total_height()
+        bottom = bottom // self.tilesize * self.tilesize
+        left = left // self.tilesize * self.tilesize
+        start_left, start_botm = round(left), round(bottom)
+        if self.wraps:
+            start_left %= map_total_width
+            start_botm %= map_total_height
+        ty = start_botm // self.tilesize
+        # print('-'*10,(left,bottom,right,top),'-'*70)
+        while bottom < top:
+            tx = start_left // self.tilesize
+            curr_left = left
+            while curr_left < right:
+                t_index = (self.layer.height - ty - 1) * self.layer.width + tx
+                tile = self.layer.data[t_index]
+                # print(f'{tx=} {ty=} {t_index=} {tile=} {bottom=} {top=}')
+                if tile in tiles:
+                    return True
+                curr_left += self.tilesize
+                tx += 1
+                if tx > self.layer.width:
+                    if not self.wraps: break
+                    tx -= self.layer.width
+            bottom += self.tilesize
+            ty += 1
+            if ty > self.layer.height:
+                if not self.wraps: break
+                ty -= self.layer.height
+        # print('='*100)
+        return False
+
     # TODO: show() 가 override 되어야 한다
     # def show(self, x, y):
     #     pass
