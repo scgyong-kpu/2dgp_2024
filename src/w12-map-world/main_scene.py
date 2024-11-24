@@ -9,6 +9,8 @@ shows_bounding_box = True
 shows_object_count = True
 
 def enter():
+    world.bg = MapBackground('res/desert.tmj')
+    world.append(world.bg, world.layer.bg)
     pass
 
 def exit():
