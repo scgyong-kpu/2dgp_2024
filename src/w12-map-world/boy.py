@@ -26,6 +26,7 @@ class Boy(gfw.Sprite):
         dx = self.dx * self.speed * self.mag * gfw.frame_time
         dy = self.dy * self.speed * self.mag * gfw.frame_time
         l,b,r,t = self.get_bb()
+        l,b,r,t = l+15,b+15,r-15,t-15
         if not self.bg.collides_box(l+dx,b,r+dx,t):
             self.x = clamp(self.bg.margin, self.x + dx, self.bg.total_width() - self.bg.margin)
         if not self.bg.collides_box(l,b+dy,r,t+dy):
