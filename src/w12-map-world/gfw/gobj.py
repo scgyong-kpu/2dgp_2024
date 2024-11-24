@@ -267,7 +267,7 @@ class MapBackground(InfiniteScrollBackground):
         layer = self.layer
         cw,ch = get_canvas_width(), get_canvas_height()
 
-        sx, sy = round(self.x), round(self.y)
+        sx, sy = round(self.x), -round(self.y)
         if self.wraps:
             map_total_width = self.tmap.width * self.tilesize
             map_total_height = self.tmap.height * self.tilesize
