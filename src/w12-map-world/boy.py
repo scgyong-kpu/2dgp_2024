@@ -25,6 +25,9 @@ class Boy(gfw.Sprite):
         self.frame = round(self.time * fps) % frame_count
         self.x += self.dx * self.speed * self.mag * gfw.frame_time
         self.y += self.dy * self.speed * self.mag * gfw.frame_time
+        self.x = clamp(self.bg.margin, self.x, self.bg.total_width() - self.bg.margin)
+        self.y = clamp(self.bg.margin, self.y, self.bg.total_height() - self.bg.margin)
+        # print(f'{self.y=}, {self.bg.total_height() - self.bg.margin=}')
         if self.target is not None:
             tx, ty = self.target
             if (self.dx > 0 and self.x >= tx) or (self.dx < 0 and self.x <= tx):

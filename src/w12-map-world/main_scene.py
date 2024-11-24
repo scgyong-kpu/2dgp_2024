@@ -11,7 +11,7 @@ shows_object_count = True
 
 def enter():
     world.bg = MapBackground('res/desert.tmj')
-    # world.bg.margin = 100
+    world.bg.margin = 100
     world.append(world.bg, world.layer.bg)
     global player
     player = Boy()

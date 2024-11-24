@@ -260,6 +260,10 @@ class MapBackground(InfiniteScrollBackground):
 
     def set_scroll_speed(self, dx, dy):
         self.scroll_dx, self.scroll_dy = dx, dy
+    def total_width(self):
+        return self.tmap.width * self.tilesize
+    def total_height(self):
+        return self.tmap.height * self.tilesize
     def update(self): 
         self.x += gfw.frame_time * self.scroll_dx
         self.y += gfw.frame_time * self.scroll_dy
@@ -267,10 +271,10 @@ class MapBackground(InfiniteScrollBackground):
         layer = self.layer
         cw,ch = get_canvas_width(), get_canvas_height()
 
-        sx, sy = round(self.x), -round(self.y)
+        sx, sy = round(self.x), round(self.y)
         if self.wraps:
-            map_total_width = self.tmap.width * self.tilesize
-            map_total_height = self.tmap.height * self.tilesize
+            map_total_width = self.total_width()
+            map_total_height = self.total_height()
             sx %= map_total_width;
             if sx < 0:
                 sx += map_total_width;
@@ -284,20 +288,19 @@ class MapBackground(InfiniteScrollBackground):
         beg_x = -(sx % self.tilesize);
         beg_y = -(sy % self.tilesize);
 
-        dst_left, dst_top = beg_x, ch - beg_y
+        dst_left, dst_botm = beg_x, beg_y
         ty = tile_y
-        while dst_top > 0:
+        while dst_botm < ch:
             tx = tile_x
             left = dst_left
             while left < cw:
-                t_index = ty * layer.width + tx # 그 위치의 타일정보는 data[t_index] 에 있다
+                t_index = (self.tmap.height - ty - 1) * layer.width + tx # 그 위치의 타일정보는 data[t_index] 에 있다
                 tile = layer.data[t_index]   # 그려야 할 타일 번호를 구한다
                 sx = (tile - 1) % self.ts.columns  # 해당 번호의 타일은 타일셋이미지 에서 왼쪽으로부터 sx 번째에 있다
                 sy = (tile - 1) // self.ts.columns # 해당 번호의 타일은 타일셋이미지 에서 위로부터 sy 번째에 있다
                 src_left = self.ts.margin + sx * (self.ts.tilewidth + self.ts.spacing) # 타일은 이미지의 src_left 번째 픽셀부터 시작 = 소스 x 좌표
                 src_botm = self.ts.margin + (self.ts.rows - sy - 1) * (self.ts.tileheight + self.ts.spacing) # 소스 y 좌표.
 
-                dst_botm = dst_top - self.tilesize
                 self.ts.tile_image.clip_draw_to_origin(
                     src_left, src_botm, self.ts.tilewidth, self.ts.tileheight, 
                     left, dst_botm, self.tilesize, self.tilesize)
@@ -307,7 +310,7 @@ class MapBackground(InfiniteScrollBackground):
                 if tx >= layer.width:
                     if not self.wraps: break
                     tx -= layer.width
-            dst_top -= self.tilesize
+            dst_botm += self.tilesize
             ty += 1
             if ty >= layer.height:
                 if not self.wraps: break
