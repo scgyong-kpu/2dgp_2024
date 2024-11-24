@@ -12,9 +12,9 @@ shows_bounding_box = True
 shows_object_count = True
 
 def enter():
-    world.append(gfw.VertFillBackground('res/clouds.png', -60), world.layer.bg)
     # world.append(gfw.VertFillBackground('res/bg_city.png', -30), world.layer.bg)
     world.append(gfw.MapBackground('res/earth.json', fitsWidth=True, dy=-30), world.layer.bg)
+    world.append(gfw.VertFillBackground('res/clouds.png', -60), world.layer.bg)
     global fighter
     fighter = Fighter()
     world.append(fighter, world.layer.fighter)
