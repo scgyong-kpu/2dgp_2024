@@ -1,5 +1,6 @@
 from pico2d import * 
 from gfw import *
+from boy import Boy
 
 world = gfw.World(['bg', 'enemy', 'item', 'player', 'ui', 'controller'])
 
@@ -11,7 +12,10 @@ shows_object_count = True
 def enter():
     world.bg = MapBackground('res/desert.tmj')
     world.append(world.bg, world.layer.bg)
-    pass
+    global player
+    player = Boy()
+    player.bg = world.bg
+    world.append(player, world.layer.player)
 
 def exit():
     world.clear()
