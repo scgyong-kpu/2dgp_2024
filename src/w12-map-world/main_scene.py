@@ -10,6 +10,14 @@ canvas_height = 720
 shows_bounding_box = True
 shows_object_count = True
 
+class CollisionChecker:
+    def draw(self): pass
+    def update(self):
+        for obj in world.objects_at(world.layer.enemy):
+            if collides_box(player, obj):
+                world.remove(obj)
+                break
+
 def enter():
     world.bg = MapBackground('res/desert.tmj', tilesize=30)
     world.bg.margin = 100
@@ -21,6 +29,7 @@ def enter():
     world.append(player, world.layer.player)
 
     world.append(DemonGen(), world.layer.controller)
+    world.append(CollisionChecker(), world.layer.controller)
 
 def exit():
     world.clear()
