@@ -35,6 +35,9 @@ class Demon(AnimSprite):
             l,r = -r,-l
         return self.x+l, self.y+b, self.x+r, self.y+t
 
+    def is_on_obstacle(self):
+        return False
+
 class LionDemon(Demon):
     def update(self):
         world = gfw.top().world
@@ -51,6 +54,10 @@ class LionDemon(Demon):
             self.x += dx
         if not world.bg.collides_box(l,b+dy,r,t+dy):
             self.y += dy
+
+    def is_on_obstacle(self):
+        world = gfw.top().world
+        return world.bg.collides_box(*self.get_bb())
 
 INFO = [
     (Demon, 'res/demon_itsumade.png', 0, 50, 100, -15, -15, 15, 15),
@@ -86,4 +93,6 @@ class DemonGen:
         x, y = position_somewhere_outside_screen()
         clazz = INFO[type][0]
         demon = clazz(type, x, y)
+        if demon.is_on_obstacle():
+            return
         world.append(demon)
