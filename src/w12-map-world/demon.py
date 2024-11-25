@@ -45,13 +45,14 @@ def position_somewhere_outside_screen():
     r, t = bg.from_screen(cw, ch)
     side = random.randint(1, 4)
     if side == 1: # left
-        x, y = l - MARGIN, random.random() * ch
+        x, y = l - MARGIN, b + random.random() * ch
     elif side == 2: # bottom
-        x, y = random.random() * cw, b - MARGIN
+        x, y = l + random.random() * cw, b - MARGIN
     elif side == 3: # right
-        x, y = cw + MARGIN, random.random() * ch
+        x, y = r + MARGIN, b + random.random() * ch
     else: # side == 4, up
-        x, y = random.random() * cw, ch + MARGIN
+        x, y = l + random.random() * cw, t + MARGIN
+    # print(f'{side=} {(x,y)=}')
     return x, y
 
 class DemonGen:
