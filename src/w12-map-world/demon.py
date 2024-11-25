@@ -9,19 +9,22 @@ class Demon(AnimSprite):
         self.speed = 100
         self.bb_width = 30
         self.bb_height = 30
+        self.flip = ''
 
     def update(self):
         world = gfw.top().world
         player = world.object_at(world.layer.player, 0)
         angle_radian = math.atan2(player.y - self.y, player.x - self.x)
-        self.x += self.speed * math.cos(angle_radian) * gfw.frame_time
+        dx = self.speed * math.cos(angle_radian) * gfw.frame_time
+        self.x += dx
         self.y += self.speed * math.sin(angle_radian) * gfw.frame_time
+        self.flip = 'h' if dx > 0 else ''
 
     def draw(self):
         bg = gfw.top().world.bg
         index = self.get_anim_index()
         screen_pos = bg.to_screen(self.x, self.y)
-        self.image.clip_draw(index * self.width, 0, self.width, self.height, *screen_pos)
+        self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, 0, self.flip, *screen_pos, self.width, self.height)
 
     def get_bb(self):
         l = self.x - self.bb_width // 2
