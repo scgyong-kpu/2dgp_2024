@@ -3,13 +3,18 @@ import random
 from pico2d import * 
 from gfw import *
 
+INFO = [
+    ('res/demon_itsumade.png', 0, 50, 100, -15, -15, 15, 15),
+    ('res/demon_mizar.png', 12, 20, 50, -28, -5, 8, 31),
+]
+
 class Demon(AnimSprite):
-    def __init__(self, x, y, speed=100):
-        super().__init__('res/demon_itsumade.png', x, y, random.uniform(9, 11))
+    def __init__(self, type, x, y):
+        fn, cnt, sp1, sp2 = INFO[type][:4]
+        super().__init__(fn, x, y, random.uniform(9, 11), cnt)
         self.layer_index = gfw.top().world.layer.enemy
-        self.speed = speed
-        self.bb_width = 30
-        self.bb_height = 30
+        self.speed = random.uniform(sp1, sp2)
+        self.info = INFO[type]
         self.flip = ''
 
     def update(self):
@@ -30,15 +35,14 @@ class Demon(AnimSprite):
         self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, 0, self.flip, *screen_pos, self.width, self.height)
 
     def get_bb(self):
-        l = self.x - self.bb_width // 2
-        b = self.y - self.bb_height // 2
-        r = self.x + self.bb_width // 2
-        t = self.y + self.bb_height // 2
-        return l, b, r, t
+        l, b, r, t = self.info[4:8]
+        if self.flip == 'h':
+            l,r = -r,-l
+        return self.x+l, self.y+b, self.x+r, self.y+t
 
 def position_somewhere_outside_screen():
-    MARGIN = -100
-    # MARGIN = 100
+    # MARGIN = -100
+    MARGIN = 50
     bg = gfw.top().world.bg
     cw, ch = get_canvas_width(), get_canvas_height()
     l, b = bg.from_screen(0, 0)
@@ -60,7 +64,7 @@ class DemonGen:
     def update(self):
         world = gfw.top().world
         if world.count_at(world.layer.enemy) >= 10: return
-        speed = random.uniform(50, 100)
+        type = random.choice([0,1])
         x, y = position_somewhere_outside_screen()
-        demon = Demon(x, y, speed=speed)
+        demon = Demon(type, x, y)
         world.append(demon)
