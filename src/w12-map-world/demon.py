@@ -3,15 +3,9 @@ import random
 from pico2d import * 
 from gfw import *
 
-INFO = [
-    ('res/demon_itsumade.png', 0, 50, 100, -15, -15, 15, 15),
-    ('res/demon_mizar.png', 12, 20, 50, -28, -5, 8, 31),
-    ('res/demon_lion.png', 8, 40, 60, -25, -14, 25, 14),
-]
-
 class Demon(AnimSprite):
     def __init__(self, type, x, y):
-        fn, cnt, sp1, sp2 = INFO[type][:4]
+        fn, cnt, sp1, sp2 = INFO[type][1:5]
         super().__init__(fn, x, y, random.uniform(9, 11), cnt)
         self.layer_index = gfw.top().world.layer.enemy
         self.speed = random.uniform(sp1, sp2)
@@ -36,10 +30,33 @@ class Demon(AnimSprite):
         self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, 0, self.flip, *screen_pos, self.width, self.height)
 
     def get_bb(self):
-        l, b, r, t = self.info[4:8]
+        l, b, r, t = self.info[5:9]
         if self.flip == 'h':
             l,r = -r,-l
         return self.x+l, self.y+b, self.x+r, self.y+t
+
+class LionDemon(Demon):
+    def update(self):
+        world = gfw.top().world
+        player = world.object_at(world.layer.player, 0)
+        diff_x, diff_y = player.x - self.x, player.y - self.y
+        dist = math.sqrt(diff_x ** 2 + diff_y ** 2)
+        if dist < 1: return
+        dx = self.speed * gfw.frame_time * diff_x / dist
+        dy = self.speed * gfw.frame_time * diff_y / dist
+        self.flip = 'h' if dx > 0 else ''
+        l,b,r,t = self.get_bb()
+        l,b,r,t = l+10,b+10,r-10,t-10
+        if not world.bg.collides_box(l+dx,b,r+dx,t):
+            self.x += dx
+        if not world.bg.collides_box(l,b+dy,r,t+dy):
+            self.y += dy
+
+INFO = [
+    (Demon, 'res/demon_itsumade.png', 0, 50, 100, -15, -15, 15, 15),
+    (Demon, 'res/demon_mizar.png', 12, 20, 50, -28, -5, 8, 31),
+    (LionDemon, 'res/demon_lion.png', 8, 40, 60, -25, -14, 25, 14),
+]
 
 def position_somewhere_outside_screen():
     # MARGIN = -100
@@ -67,5 +84,6 @@ class DemonGen:
         if world.count_at(world.layer.enemy) >= 10: return
         type = random.randrange(len(INFO))
         x, y = position_somewhere_outside_screen()
-        demon = Demon(type, x, y)
+        clazz = INFO[type][0]
+        demon = clazz(type, x, y)
         world.append(demon)
