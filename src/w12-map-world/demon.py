@@ -36,12 +36,29 @@ class Demon(AnimSprite):
         t = self.y + self.bb_height // 2
         return l, b, r, t
 
+def position_somewhere_outside_screen():
+    MARGIN = 0
+    bg = gfw.top().world.bg
+    cw, ch = get_canvas_width(), get_canvas_height()
+    l, b = bg.from_screen(0, 0)
+    r, t = bg.from_screen(cw, ch)
+    side = random.randint(1, 4)
+    if side == 1: # left
+        x, y = l - MARGIN, random.random() * ch
+    elif side == 2: # bottom
+        x, y = random.random() * cw, b - MARGIN
+    elif side == 3: # right
+        x, y = cw + MARGIN, random.random() * ch
+    else: # side == 4, up
+        x, y = random.random() * cw, ch + MARGIN
+    return x, y
+
 class DemonGen:
     def draw(self): pass
     def update(self):
         world = gfw.top().world
         if world.count_at(world.layer.enemy) >= 10: return
         speed = random.uniform(50, 100)
-        x, y = random.randint(300, 500), random.randint(400, 600)
+        x, y = position_somewhere_outside_screen()
         demon = Demon(x, y, speed=speed)
         world.append(demon)
