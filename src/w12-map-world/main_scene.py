@@ -1,6 +1,7 @@
 from pico2d import * 
 from gfw import *
 from boy import Boy
+from demon import Demon
 
 world = gfw.World(['bg', 'enemy', 'item', 'player', 'ui', 'controller'])
 
@@ -19,7 +20,7 @@ def enter():
     player.bg = world.bg
     world.append(player, world.layer.player)
 
-    world.append(AnimSprite('res/demon_itsumade.png', 600, 500, 10), world.layer.enemy)
+    world.append(Demon(600, 500))
 
 def exit():
     world.clear()
