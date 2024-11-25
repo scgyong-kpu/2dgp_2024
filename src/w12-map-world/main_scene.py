@@ -29,11 +29,13 @@ class PathDraw:
             x, y = world.bg.to_screen(tx * size, ty * size)
             self.image.draw_to_origin(x, y, size, size)
     def handle_event(self, e):
+        px = int(player.x // world.bg.tilesize)
+        py = int(player.y // world.bg.tilesize)
         mx, my = gfw.mouse_xy(e)
         mx, my = world.bg.from_screen(mx, my)
-        self.path_tiles = [ 
-            (int(mx // world.bg.tilesize), int(my // world.bg.tilesize)),
-        ]
+        mx = int(mx // world.bg.tilesize)
+        my = int(my // world.bg.tilesize)
+        self.path_tiles = [ (px, py), (mx, my) ]
         # layer = world.bg.layer
         # tile = layer.data[(layer.height - self.ty - 1) * layer.width + self.tx]
         # is_wall = tile in world.bg.collision_tiles
