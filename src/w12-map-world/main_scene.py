@@ -31,7 +31,10 @@ class PathDraw:
         mx, my = gfw.mouse_xy(e)
         self.tx = int(mx // world.bg.tilesize)
         self.ty = int(my // world.bg.tilesize)
-        print(f'{self.tx=} {self.ty=}')
+        layer = world.bg.layer
+        tile = layer.data[(layer.height - self.ty - 1) * layer.width + self.tx]
+        is_wall = tile in world.bg.collision_tiles
+        print(f'{self.tx=} {self.ty=} {tile=} {is_wall=}')
 
 def enter():
     world.bg = MapBackground('res/desert.tmj', tilesize=30)
