@@ -16,10 +16,11 @@ class Demon(AnimSprite):
         player = world.object_at(world.layer.player, 0)
         diff_x, diff_y = player.x - self.x, player.y - self.y
         dist = math.sqrt(diff_x ** 2 + diff_y ** 2)
-        dx = self.speed * diff_x / dist * gfw.frame_time
-        self.x += dx
-        self.y += self.speed * diff_y / dist * gfw.frame_time
-        self.flip = 'h' if dx > 0 else ''
+        if dist >= 1:
+            dx = self.speed * diff_x / dist * gfw.frame_time
+            self.x += dx
+            self.y += self.speed * diff_y / dist * gfw.frame_time
+            self.flip = 'h' if dx > 0 else ''
 
     def draw(self):
         bg = gfw.top().world.bg
