@@ -6,6 +6,7 @@ from gfw import *
 INFO = [
     ('res/demon_itsumade.png', 0, 50, 100, -15, -15, 15, 15),
     ('res/demon_mizar.png', 12, 20, 50, -28, -5, 8, 31),
+    ('res/demon_lion.png', 8, 40, 60, -25, -14, 25, 14),
 ]
 
 class Demon(AnimSprite):
@@ -64,7 +65,7 @@ class DemonGen:
     def update(self):
         world = gfw.top().world
         if world.count_at(world.layer.enemy) >= 10: return
-        type = random.choice([0,1])
+        type = random.randrange(len(INFO))
         x, y = position_somewhere_outside_screen()
         demon = Demon(type, x, y)
         world.append(demon)
