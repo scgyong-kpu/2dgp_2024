@@ -21,9 +21,12 @@ class CollisionChecker:
 class PathDraw:
     def __init__(self):
         self.image = gfw.image.load('res/trans_50b.png')
+        self.x, self.y = 500, 500
     def update(self): pass
     def draw(self):
-        self.image.draw(400, 400, 100, 100)
+        self.image.draw(self.x, self.y, world.bg.tilesize, world.bg.tilesize)
+    def handle_event(self, e):
+        self.x, self.y = gfw.mouse_xy(e)
 
 def enter():
     world.bg = MapBackground('res/desert.tmj', tilesize=30)
@@ -54,6 +57,9 @@ def resume():
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
+        return
+    if e.type == SDL_MOUSEMOTION:
+        path_draw.handle_event(e)
         return
     player.handle_event(e)
 
