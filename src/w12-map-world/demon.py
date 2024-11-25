@@ -14,10 +14,11 @@ class Demon(AnimSprite):
     def update(self):
         world = gfw.top().world
         player = world.object_at(world.layer.player, 0)
-        angle_radian = math.atan2(player.y - self.y, player.x - self.x)
-        dx = self.speed * math.cos(angle_radian) * gfw.frame_time
+        diff_x, diff_y = player.x - self.x, player.y - self.y
+        dist = math.sqrt(diff_x ** 2 + diff_y ** 2)
+        dx = self.speed * diff_x / dist * gfw.frame_time
         self.x += dx
-        self.y += self.speed * math.sin(angle_radian) * gfw.frame_time
+        self.y += self.speed * diff_y / dist * gfw.frame_time
         self.flip = 'h' if dx > 0 else ''
 
     def draw(self):
