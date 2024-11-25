@@ -21,22 +21,23 @@ class CollisionChecker:
 class PathDraw:
     def __init__(self):
         self.image = gfw.image.load('res/trans_50b.png')
-        self.tx, self.ty = 100, 100
+        self.path_tiles = [(0,0)]
     def update(self): pass
     def draw(self):
-        x = self.tx * world.bg.tilesize
-        y = self.ty * world.bg.tilesize
-        x, y = world.bg.to_screen(x, y)
-        self.image.draw_to_origin(x, y, world.bg.tilesize, world.bg.tilesize)
+        size = world.bg.tilesize
+        for tx, ty in self.path_tiles:
+            x, y = world.bg.to_screen(tx * size, ty * size)
+            self.image.draw_to_origin(x, y, size, size)
     def handle_event(self, e):
         mx, my = gfw.mouse_xy(e)
         mx, my = world.bg.from_screen(mx, my)
-        self.tx = int(mx // world.bg.tilesize)
-        self.ty = int(my // world.bg.tilesize)
-        layer = world.bg.layer
-        tile = layer.data[(layer.height - self.ty - 1) * layer.width + self.tx]
-        is_wall = tile in world.bg.collision_tiles
-        print(f'{self.tx=} {self.ty=} {tile=} {is_wall=}')
+        self.path_tiles = [ 
+            (int(mx // world.bg.tilesize), int(my // world.bg.tilesize)),
+        ]
+        # layer = world.bg.layer
+        # tile = layer.data[(layer.height - self.ty - 1) * layer.width + self.tx]
+        # is_wall = tile in world.bg.collision_tiles
+        # print(f'{self.tx=} {self.ty=} {tile=} {is_wall=}')
 
 def enter():
     world.bg = MapBackground('res/desert.tmj', tilesize=30)
