@@ -1,12 +1,13 @@
 import math
+import random
 from pico2d import * 
 from gfw import *
 
 class Demon(AnimSprite):
-    def __init__(self, x, y):
-        super().__init__('res/demon_itsumade.png', x, y, 10)
+    def __init__(self, x, y, speed=100):
+        super().__init__('res/demon_itsumade.png', x, y, random.uniform(9, 11))
         self.layer_index = gfw.top().world.layer.enemy
-        self.speed = 100
+        self.speed = speed
         self.bb_width = 30
         self.bb_height = 30
         self.flip = ''
@@ -35,3 +36,12 @@ class Demon(AnimSprite):
         t = self.y + self.bb_height // 2
         return l, b, r, t
 
+class DemonGen:
+    def draw(self): pass
+    def update(self):
+        world = gfw.top().world
+        if world.count_at(world.layer.enemy) >= 10: return
+        speed = random.uniform(50, 100)
+        x, y = random.randint(300, 500), random.randint(400, 600)
+        demon = Demon(x, y, speed=speed)
+        world.append(demon)

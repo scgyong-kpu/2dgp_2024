@@ -1,7 +1,7 @@
 from pico2d import * 
 from gfw import *
 from boy import Boy
-from demon import Demon
+from demon import Demon, DemonGen
 
 world = gfw.World(['bg', 'enemy', 'item', 'player', 'ui', 'controller'])
 
@@ -20,7 +20,7 @@ def enter():
     player.bg = world.bg
     world.append(player, world.layer.player)
 
-    world.append(Demon(600, 500))
+    world.append(DemonGen(), world.layer.controller)
 
 def exit():
     world.clear()
