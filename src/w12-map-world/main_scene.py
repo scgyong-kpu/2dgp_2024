@@ -21,12 +21,17 @@ class CollisionChecker:
 class PathDraw:
     def __init__(self):
         self.image = gfw.image.load('res/trans_50b.png')
-        self.x, self.y = 500, 500
+        self.tx, self.ty = 100, 100
     def update(self): pass
     def draw(self):
-        self.image.draw(self.x, self.y, world.bg.tilesize, world.bg.tilesize)
+        x = self.tx * world.bg.tilesize
+        y = self.ty * world.bg.tilesize
+        self.image.draw(x, y, world.bg.tilesize, world.bg.tilesize)
     def handle_event(self, e):
-        self.x, self.y = gfw.mouse_xy(e)
+        mx, my = gfw.mouse_xy(e)
+        self.tx = int(mx // world.bg.tilesize)
+        self.ty = int(my // world.bg.tilesize)
+        print(f'{self.tx=} {self.ty=}')
 
 def enter():
     world.bg = MapBackground('res/desert.tmj', tilesize=30)
