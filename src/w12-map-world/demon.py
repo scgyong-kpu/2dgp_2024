@@ -37,7 +37,8 @@ class Demon(AnimSprite):
         return l, b, r, t
 
 def position_somewhere_outside_screen():
-    MARGIN = 0
+    # MARGIN = -100
+    MARGIN = 100
     bg = gfw.top().world.bg
     cw, ch = get_canvas_width(), get_canvas_height()
     l, b = bg.from_screen(0, 0)
