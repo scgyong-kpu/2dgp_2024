@@ -35,7 +35,13 @@ class PathDraw:
         mx, my = world.bg.from_screen(mx, my)
         mx = int(mx // world.bg.tilesize)
         my = int(my // world.bg.tilesize)
-        self.path_tiles = [ (px, py), (mx, my) ]
+        self.path_tiles = [ (px, py) ]
+        while px != mx or py != my:
+            px += 1 if mx > px else -1 if mx < px else 0
+            py += 1 if my > py else -1 if my < py else 0
+            self.path_tiles.append( (px, py) )
+
+
         # layer = world.bg.layer
         # tile = layer.data[(layer.height - self.ty - 1) * layer.width + self.tx]
         # is_wall = tile in world.bg.collision_tiles
