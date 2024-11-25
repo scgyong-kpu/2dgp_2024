@@ -17,6 +17,12 @@ class Demon(AnimSprite):
         self.x += self.speed * math.cos(angle_radian) * gfw.frame_time
         self.y += self.speed * math.sin(angle_radian) * gfw.frame_time
 
+    def draw(self):
+        bg = gfw.top().world.bg
+        index = self.get_anim_index()
+        screen_pos = bg.to_screen(self.x, self.y)
+        self.image.clip_draw(index * self.width, 0, self.width, self.height, *screen_pos)
+
     def get_bb(self):
         l = self.x - self.bb_width // 2
         b = self.y - self.bb_height // 2
