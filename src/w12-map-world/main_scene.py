@@ -26,6 +26,7 @@ class PathDraw:
     def draw(self):
         x = self.tx * world.bg.tilesize
         y = self.ty * world.bg.tilesize
+        x, y = world.bg.to_screen(x, y)
         self.image.draw_to_origin(x, y, world.bg.tilesize, world.bg.tilesize)
     def handle_event(self, e):
         mx, my = gfw.mouse_xy(e)
