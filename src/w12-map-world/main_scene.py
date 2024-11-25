@@ -18,6 +18,13 @@ class CollisionChecker:
                 world.remove(obj)
                 break
 
+class PathDraw:
+    def __init__(self):
+        self.image = gfw.image.load('res/trans_50b.png')
+    def update(self): pass
+    def draw(self):
+        self.image.draw(400, 400, 100, 100)
+
 def enter():
     world.bg = MapBackground('res/desert.tmj', tilesize=30)
     world.bg.margin = 100
@@ -27,6 +34,10 @@ def enter():
     player = Boy()
     player.bg = world.bg
     world.append(player, world.layer.player)
+
+    global path_draw
+    path_draw = PathDraw()
+    world.append(path_draw, world.layer.ui)
 
     world.append(DemonGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)
