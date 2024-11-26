@@ -17,6 +17,7 @@ class AStarNode:
         return self.f < other.f
 
     def __repr__(self):
+        # return f'({self.g}/{self.h})'
         return f'({self.f}/{self.g}/{self.h})'
         # return f'[{(self.x,self.y)}]({self.f}/{self.g}/{self.h})'
 
@@ -49,8 +50,8 @@ class AStarPath:
         self.gen = self.find_tiles()
     def next(self, frame_time):
         self.time += frame_time
-        if self.time < 0.1: return
-        self.time -= 0.1
+        if self.time < 0.01: return
+        self.time -= 0.01
         if self.gen: 
             try:
                 next(self.gen)
@@ -65,7 +66,15 @@ class AStarPath:
         count = 0
         while self.open_list:
             count += 1
-            # if count == 23: print(dict(self.open_list))
+            if count == 23: 
+                print(self.open_list.peekitem())
+                values = list(self.open_list.values())
+                values.sort()
+                print(values)
+                d = dict(self.open_list)
+                hd = heapdict(d)
+                print(hd.peekitem())
+
             curr_pos, curr_node = self.open_list.popitem()
             print(f'{count=} {curr_pos=} {curr_node=}')
             x,y = curr_pos
