@@ -39,7 +39,12 @@ class PathDraw:
         self.path_tiles = self.a_star.find_tiles()
         # self.path_tiles = [(0,0)]
         self.font = gfw.font.load('C:/Windows/Fonts/lucon.ttf', 13)
-    def update(self): pass
+        self.paused = False
+    def update(self): 
+        if self.paused: return
+        self.a_star.next(gfw.frame_time)
+        self.path_tiles = self.a_star.tiles
+
     def draw(self):
         size = world.bg.tilesize
         for tx, ty in self.path_tiles:
@@ -60,7 +65,10 @@ class PathDraw:
         my = int(my // world.bg.tilesize)
 
         self.a_star = MapPath( (px, py), (mx, my), world.bg)
-        self.path_tiles = self.a_star.find_tiles()
+        # self.path_tiles = self.a_star.find_tiles()
+        self.a_star.start_gen()
+        self.paused = False
+        self.path_tiles = self.a_star.tiles
 
         # layer = world.bg.layer
         # tile = layer.data[(layer.height - self.ty - 1) * layer.width + self.tx]
@@ -99,6 +107,9 @@ def resume():
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
+        return
+    if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
+        path_draw.paused = not path_draw.paused
         return
     if e.type == SDL_MOUSEMOTION:
         path_draw.handle_event(e)

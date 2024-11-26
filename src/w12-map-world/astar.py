@@ -32,6 +32,10 @@ class AStarPath:
         start_node = AStarNode(sx, sy, 0, h)
         self.open_list[start_tuple] = start_node
 
+        self.gen = None
+        self.tiles = []
+        self.time = 0
+
     def heuristic_cost(self, x, y):
         ex, ey = self.end
         dist = abs(ex - x) + abs(ey - y)
@@ -41,13 +45,29 @@ class AStarPath:
         # if y == 10 and 10 <= x and x <= 30: return True
         return False
 
+    def start_gen(self):
+        self.gen = self.find_tiles()
+    def next(self, frame_time):
+        self.time += frame_time
+        if self.time < 0.1: return
+        self.time -= 0.1
+        if self.gen: 
+            try:
+                next(self.gen)
+            except:
+                self.gen = None
+
     def find_tiles(self):
         if self.is_wall(*self.start) or self.is_wall(*self.end):
+            self.tiles = []
             return []
 
+        count = 0
         while self.open_list:
+            count += 1
+            # if count == 23: print(dict(self.open_list))
             curr_pos, curr_node = self.open_list.popitem()
-            # print(f'{curr_pos=} {curr_node=}')
+            print(f'{count=} {curr_pos=} {curr_node=}')
             x,y = curr_pos
             self.close_list[curr_pos] = curr_node
             if curr_pos == self.end:
@@ -66,8 +86,10 @@ class AStarPath:
                     h = self.heuristic_cost(*new_pos)
                     node = AStarNode(*new_pos, g, h, curr_node)
                     self.open_list[new_pos] = node
+                yield 0
 
         path = []
+        self.tiles = path
         pos = self.end
         if not pos in self.close_list:
             return path
@@ -75,5 +97,6 @@ class AStarPath:
         while node:
             path.append( (node.x, node.y) )
             node = node.parent
+            yield 0
         path.reverse()
         return path
