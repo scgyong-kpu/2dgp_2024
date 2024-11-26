@@ -37,7 +37,7 @@ class AStarPath:
         return dist * 10
 
     def is_wall(self, x, y):
-        if y == 10 and 10 <= x and x <= 30: return True
+        # if y == 10 and 10 <= x and x <= 30: return True
         return False
 
     def find_tiles(self):
