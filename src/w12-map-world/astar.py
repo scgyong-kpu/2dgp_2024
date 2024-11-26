@@ -16,6 +16,9 @@ class AStarNode:
     def __lt__(self, other):
         return self.f < other.f
 
+    def __repr__(self):
+        return f'[{(self.x,self.y)}]({self.f}/{self.g}/{self.h})'
+
 class AStarPath:
     def __init__(self, start_tuple, end_tuple):
         self.start = start_tuple
@@ -34,11 +37,16 @@ class AStarPath:
         return dist * 10
 
     def is_wall(self, x, y):
+        if y == 10 and 10 <= x and x <= 30: return True
         return False
 
     def find_tiles(self):
+        if self.is_wall(*self.start) or self.is_wall(*self.end):
+            return []
+
         while self.open_list:
             curr_pos, curr_node = self.open_list.popitem()
+            # print(f'{curr_pos=} {curr_node=}')
             x,y = curr_pos
             self.close_list[curr_pos] = curr_node
             if curr_pos == self.end:
