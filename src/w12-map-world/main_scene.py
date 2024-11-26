@@ -2,6 +2,7 @@ from pico2d import *
 from gfw import *
 from boy import Boy
 from demon import Demon, DemonGen
+from astar import AStarPath
 
 world = gfw.World(['bg', 'enemy', 'item', 'player', 'ui', 'controller'])
 
@@ -35,12 +36,9 @@ class PathDraw:
         mx, my = world.bg.from_screen(mx, my)
         mx = int(mx // world.bg.tilesize)
         my = int(my // world.bg.tilesize)
-        self.path_tiles = [ (px, py) ]
-        while px != mx or py != my:
-            px += 1 if mx > px else -1 if mx < px else 0
-            py += 1 if my > py else -1 if my < py else 0
-            self.path_tiles.append( (px, py) )
 
+        a_star = AStarPath( (px, py), (mx, my) )
+        self.path_tiles = a_star.find_tiles()
 
         # layer = world.bg.layer
         # tile = layer.data[(layer.height - self.ty - 1) * layer.width + self.tx]
