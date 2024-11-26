@@ -17,7 +17,8 @@ class AStarNode:
         return self.f < other.f
 
     def __repr__(self):
-        return f'[{(self.x,self.y)}]({self.f}/{self.g}/{self.h})'
+        return f'({self.f}/{self.g}/{self.h})'
+        # return f'[{(self.x,self.y)}]({self.f}/{self.g}/{self.h})'
 
 class AStarPath:
     def __init__(self, start_tuple, end_tuple):
