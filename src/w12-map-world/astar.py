@@ -66,15 +66,6 @@ class AStarPath:
         count = 0
         while self.open_list:
             count += 1
-            if count == 23: 
-                print(self.open_list.peekitem())
-                values = list(self.open_list.values())
-                values.sort()
-                print(values)
-                d = dict(self.open_list)
-                hd = heapdict(d)
-                print(hd.peekitem())
-
             curr_pos, curr_node = self.open_list.popitem()
             print(f'{count=} {curr_pos=} {curr_node=}')
             x,y = curr_pos
@@ -91,6 +82,7 @@ class AStarPath:
                     if node.g > g:
                         node.parent = curr_node
                         node.f, node.g = g + node.h, g
+                        self.open_list[new_pos] = node
                 else:
                     h = self.heuristic_cost(*new_pos)
                     node = AStarNode(*new_pos, g, h, curr_node)
