@@ -38,14 +38,19 @@ class PathDraw:
         self.a_star = MapPath((0,0),(0,0),world.bg)
         self.path_tiles = self.a_star.find_tiles()
         # self.path_tiles = [(0,0)]
-        self.font = gfw.font.load('C:/Windows/Fonts/lucon.ttf', 12)
+        self.font = gfw.font.load('C:/Windows/Fonts/lucon.ttf', 13)
     def update(self): pass
     def draw(self):
         size = world.bg.tilesize
         for tx, ty in self.path_tiles:
             x, y = world.bg.to_screen(tx * size, ty * size)
             self.image.draw_to_origin(x, y, size, size)
-            self.font.draw(x, y+10, f'{self.a_star.close_list[(tx,ty)]}', (192,192,255))
+        for (tx,ty),node in self.a_star.open_list.items():
+            x, y = world.bg.to_screen(tx * size, ty * size)
+            self.font.draw(x, y+10, f'{node}')
+        for (tx,ty),node in self.a_star.close_list.items():
+            x, y = world.bg.to_screen(tx * size, ty * size)
+            self.font.draw(x, y+10, f'{node}', (0,0,127))
     def handle_event(self, e):
         px = int(player.x // world.bg.tilesize)
         py = int(player.y // world.bg.tilesize)
