@@ -43,6 +43,10 @@ class LionDemon(Demon):
     def __init__(self, type, x, y):
         super().__init__(type, x, y)
         self.tx, self.ty = None, None
+
+        world = gfw.top().world
+        player = world.object_at(world.layer.player, 0)
+        self.path_draw = PathDraw(player, world.bg)
         self.head_to_player()
 
     def head_to_player(self):
@@ -60,6 +64,12 @@ class LionDemon(Demon):
             return
         x, y = tiles[1] # second tile
         self.tx, self.ty = (x + 0.5) * world.bg.tilesize, (y + 0.5) * world.bg.tilesize
+
+        self.path_draw.set_tiles(tiles)
+
+    def draw(self):
+        self.path_draw.draw()
+        super().draw()
 
     def update(self):
         if self.tx is None:

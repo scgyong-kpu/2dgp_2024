@@ -16,8 +16,9 @@ class MapPath(AStarPath):
 class PathDraw:
     def __init__(self, player, bg):
         self.image = gfw.image.load('res/trans_50b.png')
-        self.a_star = MapPath((0,0),(0,0),bg)
-        self.path_tiles = self.a_star.find_tiles()
+        # self.a_star = MapPath((0,0),(0,0),bg)
+        # self.path_tiles = self.a_star.find_tiles()
+        self.path_tiles = []
         self.player = player
         self.bg = bg
         # self.path_tiles = [(0,0)]
@@ -28,6 +29,9 @@ class PathDraw:
         for tx, ty in self.path_tiles:
             x, y = self.bg.to_screen(tx * size, ty * size)
             self.image.draw_to_origin(x, y, size, size)
+    def set_tiles(self, tiles):
+        self.path_tiles = tiles
+
     def handle_event(self, e):
         px = int(self.player.x // self.bg.tilesize)
         py = int(self.player.y // self.bg.tilesize)

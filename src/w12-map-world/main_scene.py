@@ -31,10 +31,6 @@ def enter():
     player.bg = world.bg
     world.append(player, world.layer.player)
 
-    global path_draw
-    path_draw = PathDraw(player, player.bg)
-    world.append(path_draw, world.layer.ui)
-
     world.append(DemonGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)
 
@@ -50,9 +46,6 @@ def resume():
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
-        return
-    if e.type == SDL_MOUSEMOTION:
-        path_draw.handle_event(e)
         return
     player.handle_event(e)
 
