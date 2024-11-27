@@ -4,7 +4,7 @@ from boy import Boy
 from demon import Demon, DemonGen
 from map_helper import *
 
-world = gfw.World(['bg', 'enemy', 'item', 'player', 'ui', 'controller'])
+world = gfw.World(['bg', 'enemy', 'item', 'player', 'weapon', 'ui', 'controller'])
 
 canvas_width = 1280
 canvas_height = 720
@@ -30,6 +30,7 @@ def enter():
     player = Boy()
     player.bg = world.bg
     world.append(player, world.layer.player)
+    world.append(player.weapon, world.layer.weapon)
 
     world.append(DemonGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)

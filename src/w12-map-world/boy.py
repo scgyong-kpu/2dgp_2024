@@ -37,10 +37,8 @@ class Boy(gfw.Sprite):
         y = self.action * 100
         screen_pos = self.bg.to_screen(self.x, self.y)
         self.image.clip_draw(x, y, 100, 100, *screen_pos)
-        self.weapon.draw()
 
     def update(self):
-        self.weapon.update()
 
         self.time += gfw.frame_time
         fps, frame_count = 10, 8
