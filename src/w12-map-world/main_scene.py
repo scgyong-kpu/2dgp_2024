@@ -17,7 +17,7 @@ class CollisionChecker:
     def draw(self): pass
     def update(self):
         for obj in world.objects_at(world.layer.enemy):
-            if collides_box(player, obj):
+            if collides_box(player.weapon, obj):
                 world.remove(obj)
                 break
 
