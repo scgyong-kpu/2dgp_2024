@@ -121,7 +121,8 @@ class DemonGen:
     def update(self):
         world = gfw.top().world
         if world.count_at(world.layer.enemy) >= 10: return
-        type = random.randrange(len(INFO))
+        # type = random.randrange(len(INFO))
+        type = 2
         x, y = position_somewhere_outside_screen()
         clazz = INFO[type][0]
         demon = clazz(type, x, y)
