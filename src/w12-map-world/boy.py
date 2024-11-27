@@ -2,6 +2,24 @@ from pico2d import *
 import random
 import gfw
 
+TWO_PI = math.pi * 2
+
+class SoccerBall(gfw.Sprite):
+    def __init__(self, player):
+        super().__init__('res/ball21x21.png', 0, 0)
+        self.player = player
+        self.angle = 0
+        self.radius = 100
+        self.speed = 1 # one circle in 1 second
+
+    def update(self):
+        self.angle += self.speed * TWO_PI * gfw.frame_time
+        if self.angle >= TWO_PI:
+            self.angle -= TWO_PI
+        self.x = self.player.x + self.radius * math.cos(self.angle)
+        self.y = self.player.y + self.radius * math.sin(self.angle)
+
+
 class Boy(gfw.Sprite):
     def __init__(self):
         super().__init__('res/animation_sheet.png', get_canvas_width()//3, get_canvas_height()//2)
@@ -12,14 +30,18 @@ class Boy(gfw.Sprite):
         self.action = 3 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
         self.mag = 1
         self.target = None
+        self.weapon = SoccerBall(self)
 
     def draw(self):
         x = self.frame * 100
         y = self.action * 100
         screen_pos = self.bg.to_screen(self.x, self.y)
         self.image.clip_draw(x, y, 100, 100, *screen_pos)
+        self.weapon.draw()
 
     def update(self):
+        self.weapon.update()
+
         self.time += gfw.frame_time
         fps, frame_count = 10, 8
         self.frame = round(self.time * fps) % frame_count
