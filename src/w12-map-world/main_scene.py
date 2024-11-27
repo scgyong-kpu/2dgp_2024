@@ -2,7 +2,7 @@ from pico2d import *
 from gfw import *
 from boy import Boy
 from demon import Demon, DemonGen
-from astar import AStarPath
+from map_helper import *
 
 world = gfw.World(['bg', 'enemy', 'item', 'player', 'ui', 'controller'])
 
@@ -21,41 +21,6 @@ class CollisionChecker:
                 world.remove(obj)
                 break
 
-class MapPath(AStarPath):
-    def __init__(self, start_tuple, end_tuple, bg):
-        super().__init__(start_tuple, end_tuple)
-        self.bg = bg
-    def is_wall(self, x, y):
-        width, height = self.bg.layer.width, self.bg.layer.height
-        if x < 0 or x >= width: return True
-        if y < 0 or y >= height: return True
-        tile = self.bg.layer.data[(height - y - 1) * width + x]
-        return tile in self.bg.collision_tiles
-
-class PathDraw:
-    def __init__(self):
-        self.image = gfw.image.load('res/trans_50b.png')
-        self.a_star = MapPath((0,0),(0,0),world.bg)
-        self.path_tiles = self.a_star.find_tiles()
-        # self.path_tiles = [(0,0)]
-    def update(self): pass
-
-    def draw(self):
-        size = world.bg.tilesize
-        for tx, ty in self.path_tiles:
-            x, y = world.bg.to_screen(tx * size, ty * size)
-            self.image.draw_to_origin(x, y, size, size)
-    def handle_event(self, e):
-        px = int(player.x // world.bg.tilesize)
-        py = int(player.y // world.bg.tilesize)
-        mx, my = gfw.mouse_xy(e)
-        mx, my = world.bg.from_screen(mx, my)
-        mx = int(mx // world.bg.tilesize)
-        my = int(my // world.bg.tilesize)
-
-        self.a_star = MapPath( (px, py), (mx, my), world.bg)
-        self.path_tiles = self.a_star.find_tiles()
-
 def enter():
     world.bg = MapBackground('res/desert.tmj', tilesize=30)
     world.bg.margin = 100
@@ -67,7 +32,7 @@ def enter():
     world.append(player, world.layer.player)
 
     global path_draw
-    path_draw = PathDraw()
+    path_draw = PathDraw(player, player.bg)
     world.append(path_draw, world.layer.ui)
 
     world.append(DemonGen(), world.layer.controller)
