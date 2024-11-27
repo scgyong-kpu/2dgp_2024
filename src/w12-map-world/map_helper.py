@@ -5,10 +5,11 @@ class MapPath(AStarPath):
     def __init__(self, start_tuple, end_tuple, bg):
         super().__init__(start_tuple, end_tuple)
         self.bg = bg
+        self.off_border_wall = True
     def is_wall(self, x, y):
         width, height = self.bg.layer.width, self.bg.layer.height
-        if x < 0 or x >= width: return True
-        if y < 0 or y >= height: return True
+        if x < 0 or x >= width: return self.off_border_wall
+        if y < 0 or y >= height: return self.off_border_wall
         tile = self.bg.layer.data[(height - y - 1) * width + x]
         return tile in self.bg.collision_tiles
 

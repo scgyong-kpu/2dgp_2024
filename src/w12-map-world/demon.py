@@ -2,6 +2,7 @@ import math
 import random
 from pico2d import * 
 from gfw import *
+from map_helper import *
 
 class Demon(AnimSprite):
     def __init__(self, type, x, y):
@@ -39,21 +40,42 @@ class Demon(AnimSprite):
         return False
 
 class LionDemon(Demon):
-    def update(self):
+    def __init__(self, type, x, y):
+        super().__init__(type, x, y)
+        self.tx, self.ty = None, None
+        self.head_to_player()
+
+    def head_to_player(self):
         world = gfw.top().world
         player = world.object_at(world.layer.player, 0)
-        diff_x, diff_y = player.x - self.x, player.y - self.y
+        px = int(player.x // world.bg.tilesize)
+        py = int(player.y // world.bg.tilesize)
+        mx = int(self.x // world.bg.tilesize)
+        my = int(self.y // world.bg.tilesize)
+        a_star = MapPath((mx, my), (px, py), world.bg)
+        a_star.off_border_wall = False
+        tiles = a_star.find_tiles()
+        if len(tiles) < 2:
+            print(f'No path: {(mx, my)=}, {(px, py)=}')
+            return
+        x, y = tiles[1] # second tile
+        self.tx, self.ty = (x + 0.5) * world.bg.tilesize, (y + 0.5) * world.bg.tilesize
+
+    def update(self):
+        if self.tx is None:
+            print(f'{self.tx=}')
+            return
+
+        diff_x, diff_y = self.tx - self.x, self.ty - self.y
         dist = math.sqrt(diff_x ** 2 + diff_y ** 2)
-        if dist < 1: return
+        if dist < 1: 
+            self.head_to_player() # find next tile
+            return
         dx = self.speed * gfw.frame_time * diff_x / dist
         dy = self.speed * gfw.frame_time * diff_y / dist
         self.flip = 'h' if dx > 0 else ''
-        l,b,r,t = self.get_bb()
-        l,b,r,t = l+10,b+10,r-10,t-10
-        if not world.bg.collides_box(l+dx,b,r+dx,t):
-            self.x += dx
-        if not world.bg.collides_box(l,b+dy,r,t+dy):
-            self.y += dy
+        self.x += dx
+        self.y += dy
 
     def is_on_obstacle(self):
         world = gfw.top().world
