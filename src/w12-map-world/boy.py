@@ -71,6 +71,7 @@ class Boy(gfw.Sprite):
         self.weapon = Weapons(self)
         self.weapon.append(SoccerBall(self))
         self.weapon.append(SoccerBall(self))
+        self.weapon.append(SoccerBall(self))
 
     # @property
     # def power(self):
