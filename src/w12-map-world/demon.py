@@ -133,14 +133,18 @@ class DemonInfo:
         self.__dict__.update(kwargs)
 
 if __name__ == '__main__':
-    a = DemonInfo(a=2,b=3,k='k')
+    a = DemonInfo(clazz=Demon, file='res/demon_itsumade.png', frames=0, 
+        speed=(50,100), bbox=(-15, -15, 15, 15), life=50)
     print(a.__dict__)
-    print(a.k)
+    print(a.bbox, a.life)
 
 INFO = [
-    (Demon, 'res/demon_itsumade.png', 0, 50, 100, -15, -15, 15, 15, 50),
-    (Demon, 'res/demon_mizar.png', 12, 20, 50, -28, -5, 8, 31, 150),
-    (LionDemon, 'res/demon_lion.png', 8, 40, 60, -25, -14, 25, 14, 100),
+    DemonInfo(clazz=Demon, file='res/demon_itsumade.png', frames=0, 
+        speed=(50,100), bbox=(-15, -15, 15, 15), life=50),
+    DemonInfo(clazz=Demon, file='res/demon_mizar.png', frames=12, 
+        speed=(20,50), bbox=(-28, -5, 8, 31), life=150),
+    DemonInfo(clazz=LionDemon, file='res/demon_lion.png', frames=8, 
+        speed=(40,60), bbox=(-25, -14, 25, 14), life=100),
 ]
 
 def position_somewhere_outside_screen():
