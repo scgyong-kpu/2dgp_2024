@@ -157,12 +157,12 @@ class Boy(gfw.Sprite):
         self.action = 3 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
         self.mag = 1
         self.target = None
-        self.weapon = Bombs(self)
-        # self.weapon = Weapons(self)
-        # self.weapon.append(SoccerBall(self))
-        # self.weapon.append(SoccerBall(self))
-        # self.weapon.append(SoccerBall(self))
-        # self.weapon.append(Bombs(self))
+        # self.weapon = Bombs(self)
+        self.weapon = Weapons(self)
+        self.weapon.append(SoccerBall(self))
+        self.weapon.append(SoccerBall(self))
+        self.weapon.append(SoccerBall(self))
+        self.weapon.append(Bombs(self))
 
     # @property
     # def power(self):
