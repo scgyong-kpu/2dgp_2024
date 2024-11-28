@@ -6,13 +6,13 @@ from map_helper import *
 
 class Demon(AnimSprite):
     def __init__(self, type, x, y):
-        fn, cnt, sp1, sp2 = INFO[type][1:5]
-        super().__init__(fn, x, y, random.uniform(9, 11), cnt)
+        info = INFO[type]
+        super().__init__(info.file, x, y, random.uniform(9, 11), info.frames)
         self.layer_index = gfw.top().world.layer.enemy
-        self.speed = random.uniform(sp1, sp2)
-        self.info = INFO[type]
+        self.speed = random.uniform(*info.speed)
+        self.info = info
         self.flip = ''
-        self.max_life = self.info[9]
+        self.max_life = info.life
         self.life = self.max_life
         self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
         self.stun_timer = 0
@@ -66,7 +66,7 @@ class Demon(AnimSprite):
         self.gauge.draw(gx, gy-20, self.width - 20, self.life / self.max_life)
 
     def get_bb(self):
-        l, b, r, t = self.info[5:9]
+        l, b, r, t = self.info.bbox
         if self.flip == 'h':
             l,r = -r,-l
         return self.x+l, self.y+b, self.x+r, self.y+t
@@ -174,8 +174,8 @@ class DemonGen:
         type = random.randrange(len(INFO))
         # type = 2
         x, y = position_somewhere_outside_screen()
-        clazz = INFO[type][0]
-        demon = clazz(type, x, y)
+        info = INFO[type]
+        demon = info.clazz(type, x, y)
         if demon.is_on_obstacle():
             return
         world.append(demon)
