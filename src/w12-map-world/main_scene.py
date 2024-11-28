@@ -10,7 +10,7 @@ canvas_width = 1280
 canvas_height = 720
 canvas_width = 1920
 canvas_height = 1080
-shows_bounding_box = True
+# shows_bounding_box = True
 shows_object_count = True
 
 class CollisionChecker:

@@ -87,7 +87,7 @@ class LionDemon(Demon):
 
         world = gfw.top().world
         player = world.object_at(world.layer.player, 0)
-        self.path_draw = PathDraw(player, world.bg)
+        # self.path_draw = PathDraw(player, world.bg)
         self.head_to_player()
 
     def head_to_player(self):
@@ -101,16 +101,16 @@ class LionDemon(Demon):
         a_star.off_border_wall = False
         tiles = a_star.find_tiles()
         if len(tiles) < 2:
-            print(f'No path: {(mx, my)=}, {(px, py)=}')
+            # print(f'No path: {(mx, my)=}, {(px, py)=}')
             return
         x, y = tiles[1] # second tile
         self.tx, self.ty = (x + 0.5) * world.bg.tilesize, (y + 0.5) * world.bg.tilesize
 
-        self.path_draw.set_tiles(tiles)
+        # self.path_draw.set_tiles(tiles)
 
-    def draw(self):
-        self.path_draw.draw()
-        super().draw()
+    # def draw(self):
+    #     self.path_draw.draw()
+    #     super().draw()
 
     def update(self):
         if self.check_stun():

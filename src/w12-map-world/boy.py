@@ -82,7 +82,7 @@ class Bomb(gfw.AnimSprite):
             main_scene = gfw.top()
             main_scene.world.remove(obj)
             main_scene.score_sprite.score += obj.score
-            print('score=', main_scene.score_sprite.score)
+            # print('score=', main_scene.score_sprite.score)
 
         self.reset()
         return dead
