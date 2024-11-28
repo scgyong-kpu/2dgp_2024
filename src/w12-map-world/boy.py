@@ -24,11 +24,39 @@ class SoccerBall(gfw.Sprite):
         x, y = bg.to_screen(self.x, self.y)
         self.image.draw(x, y)
 
-    def try_hit(self, obj):
+    def try_hit(self, obj): # returns False if obj is removed
         if gfw.collides_box(self, obj):
             if obj.hit(self.power):
                 world = gfw.top().world
                 world.remove(obj)
+                return True
+        return False
+
+class Weapons:
+    def __init__(self, player):
+        self.weapons = []
+    def append(self, weapon):
+        self.weapons.append(weapon)
+        if isinstance(weapon, SoccerBall):
+            print('is SoccerBall')
+            balls = [w for w in self.weapons if isinstance(w, SoccerBall)]
+            count = len(balls)
+            if count >= 2:
+                step = TWO_PI / count
+                angle = 0
+                for ball in balls:
+                    ball.angle = angle
+                    angle += step
+                    print(ball.angle)
+    def update(self):
+        for w in self.weapons: w.update()
+    def draw(self):
+        for w in self.weapons: w.draw()
+    def try_hit(self, obj):
+        for w in self.weapons:
+             if w.try_hit(obj):
+                return True
+        return False
 
 class Boy(gfw.Sprite):
     def __init__(self):
@@ -40,7 +68,9 @@ class Boy(gfw.Sprite):
         self.action = 3 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
         self.mag = 1
         self.target = None
-        self.weapon = SoccerBall(self)
+        self.weapon = Weapons(self)
+        self.weapon.append(SoccerBall(self))
+        self.weapon.append(SoccerBall(self))
 
     # @property
     # def power(self):
