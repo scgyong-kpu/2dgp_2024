@@ -34,16 +34,22 @@ class SoccerBall(gfw.Sprite):
 
 class Bomb(gfw.AnimSprite):
     def __init__(self, player):
-        super().__init__('res/weapon_bomb.png', 100, 100, 10)
+        super().__init__('res/weapon_bomb.png', -100, -100, 10)
         self.player = player
         self.power = 80
         self.speed = 200
+        self.angle = 0
+        self.dx, self.dy = 0, 0
         self.reset()
     def reset(self):
-        self.angle = math.pi / 6 # 30°
+        world = gfw.top().world
+        if world.count_at(world.layer.enemy) == 0: return
+        demons = world.objects_at(world.layer.enemy)
+        self.x, self.y = self.player.x, self.player.y
+        nearest = min(demons, key=lambda d: (d.x - self.x) ** 2 + (d.y - self.y) ** 2)
+        self.angle = math.atan2(nearest.y - self.y, nearest.x - self.x)
         self.dx = math.cos(self.angle) * self.speed
         self.dy = math.sin(self.angle) * self.speed
-        self.x, self.y = self.player.x, self.player.y
     def draw(self):
         bg = self.player.bg
         x, y = bg.to_screen(self.x, self.y)
@@ -66,6 +72,7 @@ class Bomb(gfw.AnimSprite):
                 world.remove(obj)
                 return True
         return False
+
 class Weapons:
     def __init__(self, player):
         self.weapons = []
