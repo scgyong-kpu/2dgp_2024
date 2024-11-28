@@ -70,6 +70,7 @@ class Bomb(gfw.AnimSprite):
             if obj.hit(self.power):
                 world = gfw.top().world
                 world.remove(obj)
+                self.reset()
                 return True
         return False
     def get_bb(self):
