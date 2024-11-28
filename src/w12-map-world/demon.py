@@ -23,6 +23,8 @@ class Demon(AnimSprite):
         return True
 
     def hit(self, damage): #return True if dead
+        if self.stun_timer > 0:
+            return False
         self.life -= damage
         if self.life <= 0: return True
         self.stun_timer = 1.0
