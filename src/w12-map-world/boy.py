@@ -79,8 +79,11 @@ class Bomb(gfw.AnimSprite):
 
         dead = obj.hit(self.power)
         if dead:
-            world = gfw.top().world
-            world.remove(obj)
+            main_scene = gfw.top()
+            main_scene.world.remove(obj)
+            main_scene.score_sprite.score += 10
+            print('score=', main_scene.score_sprite.score)
+
         self.reset()
         return dead
     def get_bb(self):

@@ -175,7 +175,7 @@ class DemonGen:
     def draw(self): pass
     def update(self):
         world = gfw.top().world
-        if world.count_at(world.layer.enemy) >= 10: return
+        if world.count_at(world.layer.enemy) >= 100: return
         type = random.randrange(len(INFO))
         # type = 2
         x, y = position_somewhere_outside_screen()

@@ -30,6 +30,10 @@ def enter():
     world.append(player, world.layer.player)
     world.append(player.weapon, world.layer.weapon)
 
+    global score_sprite
+    score_sprite = gfw.ScoreSprite('res/number_24x32.png', canvas_width - 50, canvas_height - 50)
+    world.append(score_sprite, world.layer.ui)
+
     world.append(DemonGen(), world.layer.controller)
     world.append(CollisionChecker(), world.layer.controller)    
 
