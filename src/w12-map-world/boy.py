@@ -37,11 +37,13 @@ class Bomb(gfw.AnimSprite):
         super().__init__('res/weapon_bomb.png', 100, 100, 10, 4)
         self.player = player
         self.power = 80
-        self.speed = 400
+        self.speed = 100
         self.reset()
     def reset(self):
+        # self.angle = pi/6 #30 degree
+        # cos(30°) = sqrt(3), sin(30°) = 1/2
         self.x, self.y = self.player.x, self.player.y
-        self.dx, self.dy = 0 * self.speed, 1 * self.speed
+        self.dx, self.dy = math.sqrt(3) * self.speed, 1/2 * self.speed
     def draw(self):
         bg = self.player.bg
         x, y = bg.to_screen(self.x, self.y)
