@@ -17,9 +17,7 @@ class CollisionChecker:
     def draw(self): pass
     def update(self):
         for obj in world.objects_at(world.layer.enemy):
-            if collides_box(player.weapon, obj):
-                if obj.hit(player.power):
-                    world.remove(obj)
+            player.weapon.try_hit(obj)
 
 def enter():
     world.bg = MapBackground('res/desert.tmj', tilesize=30)
@@ -33,7 +31,7 @@ def enter():
     world.append(player.weapon, world.layer.weapon)
 
     world.append(DemonGen(), world.layer.controller)
-    world.append(CollisionChecker(), world.layer.controller)
+    world.append(CollisionChecker(), world.layer.controller)    
 
 def exit():
     world.clear()

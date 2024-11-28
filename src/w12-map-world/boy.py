@@ -24,6 +24,11 @@ class SoccerBall(gfw.Sprite):
         x, y = bg.to_screen(self.x, self.y)
         self.image.draw(x, y)
 
+    def try_hit(self, obj):
+        if gfw.collides_box(self, obj):
+            if obj.hit(self.power):
+                world = gfw.top().world
+                world.remove(obj)
 
 class Boy(gfw.Sprite):
     def __init__(self):
@@ -37,9 +42,9 @@ class Boy(gfw.Sprite):
         self.target = None
         self.weapon = SoccerBall(self)
 
-    @property
-    def power(self):
-        return self.weapon.power
+    # @property
+    # def power(self):
+    #     return self.weapon.power
 
     def draw(self):
         x = self.frame * 100
