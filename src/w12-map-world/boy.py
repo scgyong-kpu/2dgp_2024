@@ -32,6 +32,18 @@ class SoccerBall(gfw.Sprite):
                 return True
         return False
 
+class Bomb(gfw.AnimSprite):
+    def __init__(self, player):
+        super().__init__('res/weapon_bomb.png', 100, 100, 10, 4)
+        self.power = 80
+        self.x, self.y = player.x, player.y
+    def try_hit(self, obj): # returns False if obj is removed
+        if gfw.collides_box(self, obj):
+            if obj.hit(self.power):
+                world = gfw.top().world
+                world.remove(obj)
+                return True
+        return False
 class Weapons:
     def __init__(self, player):
         self.weapons = []
@@ -68,10 +80,11 @@ class Boy(gfw.Sprite):
         self.action = 3 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
         self.mag = 1
         self.target = None
-        self.weapon = Weapons(self)
-        self.weapon.append(SoccerBall(self))
-        self.weapon.append(SoccerBall(self))
-        self.weapon.append(SoccerBall(self))
+        self.weapon = Bomb(self)
+        # self.weapon = Weapons(self)
+        # self.weapon.append(SoccerBall(self))
+        # self.weapon.append(SoccerBall(self))
+        # self.weapon.append(SoccerBall(self))
 
     # @property
     # def power(self):
