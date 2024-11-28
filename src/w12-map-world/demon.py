@@ -128,6 +128,15 @@ class LionDemon(Demon):
         world = gfw.top().world
         return world.bg.collides_box(*self.get_bb())
 
+class DemonInfo:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+if __name__ == '__main__':
+    a = DemonInfo(a=2,b=3,k='k')
+    print(a.__dict__)
+    print(a.k)
+
 INFO = [
     (Demon, 'res/demon_itsumade.png', 0, 50, 100, -15, -15, 15, 15, 50),
     (Demon, 'res/demon_mizar.png', 12, 20, 50, -28, -5, 8, 31, 150),
