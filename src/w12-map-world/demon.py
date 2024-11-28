@@ -20,6 +20,9 @@ class Demon(AnimSprite):
     def check_stun(self):
         if self.stun_timer <= 0: return False
         self.stun_timer -= gfw.frame_time
+        if self.stun_timer > 0.8:
+            self.x += self.waver_x * gfw.frame_time
+            self.y += self.waver_y * gfw.frame_time
         return True
 
     def hit(self, damage): #return True if dead
@@ -28,6 +31,14 @@ class Demon(AnimSprite):
         self.life -= damage
         if self.life <= 0: return True
         self.stun_timer = 1.0
+        world = gfw.top().world
+        player = world.object_at(world.layer.player, 0)
+        diff_x, diff_y = player.x - self.x, player.y - self.y
+        dist = math.sqrt(diff_x ** 2 + diff_y ** 2)
+        waver_distance = 20
+        self.waver_x = -waver_distance * diff_x / dist
+        self.waver_y = -waver_distance * diff_y / dist
+
         return False
 
     def is_dead(self):
