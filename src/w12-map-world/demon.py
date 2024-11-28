@@ -96,6 +96,8 @@ class LionDemon(Demon):
         super().draw()
 
     def update(self):
+        if self.check_stun():
+            return
         if self.tx is None:
             print(f'{self.tx=}')
             return
