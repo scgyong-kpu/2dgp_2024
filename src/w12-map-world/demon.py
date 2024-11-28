@@ -18,6 +18,7 @@ class Demon(AnimSprite):
         self.life = self.max_life
         self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
         self.stun_timer = 0
+        self.score = info.score
 
     def check_stun(self):
         if self.stun_timer <= 0: return False
@@ -145,11 +146,11 @@ if __name__ == '__main__':
 
 INFO = [
     DemonInfo(clazz=Demon, file='res/demon_itsumade.png', frames=0, 
-        speed=(50,100), bbox=(-15, -15, 15, 15), life=50),
+        speed=(50,100), bbox=(-15, -15, 15, 15), life=50, score=10),
     DemonInfo(clazz=Demon, file='res/demon_mizar.png', frames=12, 
-        speed=(20,50), bbox=(-28, -5, 8, 31), life=150),
+        speed=(20,50), bbox=(-28, -5, 8, 31), life=150, score=50),
     DemonInfo(clazz=LionDemon, file='res/demon_lion.png', frames=8, 
-        speed=(40,60), bbox=(-25, -14, 25, 14), life=100),
+        speed=(40,60), bbox=(-25, -14, 25, 14), life=100, score=30),
 ]
 
 def position_somewhere_outside_screen():
