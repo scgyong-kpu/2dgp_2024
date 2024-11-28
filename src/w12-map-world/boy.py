@@ -11,6 +11,7 @@ class SoccerBall(gfw.Sprite):
         self.angle = 0
         self.radius = 100
         self.speed = 1 # one circle in 1 second
+        self.power = 60
 
     def update(self):
         self.angle += self.speed * TWO_PI * gfw.frame_time
@@ -35,6 +36,10 @@ class Boy(gfw.Sprite):
         self.mag = 1
         self.target = None
         self.weapon = SoccerBall(self)
+
+    @property
+    def power(self):
+        return self.weapon.power
 
     def draw(self):
         x = self.frame * 100

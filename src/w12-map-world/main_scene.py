@@ -18,8 +18,8 @@ class CollisionChecker:
     def update(self):
         for obj in world.objects_at(world.layer.enemy):
             if collides_box(player.weapon, obj):
-                world.remove(obj)
-                break
+                if obj.hit(player.power):
+                    world.remove(obj)
 
 def enter():
     world.bg = MapBackground('res/desert.tmj', tilesize=30)

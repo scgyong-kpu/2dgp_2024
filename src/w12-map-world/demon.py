@@ -15,8 +15,25 @@ class Demon(AnimSprite):
         self.max_life = self.info[9]
         self.life = self.max_life
         self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
+        self.stun_timer = 0
+
+    def check_stun(self):
+        if self.stun_timer <= 0: return False
+        self.stun_timer -= gfw.frame_time
+        return True
+
+    def hit(self, damage): #return True if dead
+        self.life -= damage
+        if self.life <= 0: return True
+        self.stun_timer = 1.0
+        return False
+
+    def is_dead(self):
+        return self.life <= 0
 
     def update(self):
+        if self.check_stun():
+            return
         world = gfw.top().world
         player = world.object_at(world.layer.player, 0)
         diff_x, diff_y = player.x - self.x, player.y - self.y
