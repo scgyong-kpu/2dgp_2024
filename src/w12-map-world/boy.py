@@ -35,8 +35,28 @@ class SoccerBall(gfw.Sprite):
 class Bomb(gfw.AnimSprite):
     def __init__(self, player):
         super().__init__('res/weapon_bomb.png', 100, 100, 10, 4)
+        self.player = player
         self.power = 80
-        self.x, self.y = player.x, player.y
+        self.speed = 400
+        self.reset()
+    def reset(self):
+        self.x, self.y = self.player.x, self.player.y
+        self.dx, self.dy = 0 * self.speed, 1 * self.speed
+    def draw(self):
+        bg = self.player.bg
+        x, y = bg.to_screen(self.x, self.y)
+        index = self.get_anim_index()
+        self.image.clip_draw(index * self.width, 0, self.width, self.height, x, y)
+    def update(self):
+        self.x += self.dx * gfw.frame_time
+        self.y += self.dy * gfw.frame_time
+
+        l, b = self.player.bg.from_screen(0, 0)
+        cw, ch = get_canvas_width(), get_canvas_height()
+        r, t = self.player.bg.from_screen(cw, ch)
+        if self.x < l or r < self.x or \
+            self.y < b or t < self.y:
+            self.reset()
     def try_hit(self, obj): # returns False if obj is removed
         if gfw.collides_box(self, obj):
             if obj.hit(self.power):
