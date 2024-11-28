@@ -34,21 +34,21 @@ class SoccerBall(gfw.Sprite):
 
 class Bomb(gfw.AnimSprite):
     def __init__(self, player):
-        super().__init__('res/weapon_bomb.png', 100, 100, 10, 4)
+        super().__init__('res/weapon_bomb.png', 100, 100, 3)
         self.player = player
         self.power = 80
         self.speed = 100
         self.reset()
     def reset(self):
-        # self.angle = pi/6 #30 degree
-        # cos(30°) = sqrt(3), sin(30°) = 1/2
+        self.angle = math.pi / 6 # 30°
+        self.dx = math.cos(self.angle) * self.speed
+        self.dy = math.sin(self.angle) * self.speed
         self.x, self.y = self.player.x, self.player.y
-        self.dx, self.dy = math.sqrt(3) * self.speed, 1/2 * self.speed
     def draw(self):
         bg = self.player.bg
         x, y = bg.to_screen(self.x, self.y)
         index = self.get_anim_index()
-        self.image.clip_draw(index * self.width, 0, self.width, self.height, x, y)
+        self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, self.angle, '', x, y, self.width, self.height)
     def update(self):
         self.x += self.dx * gfw.frame_time
         self.y += self.dy * gfw.frame_time
