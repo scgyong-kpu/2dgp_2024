@@ -42,14 +42,20 @@ class Bomb(gfw.AnimSprite):
         self.dx, self.dy = 0, 0
         self.reset()
     def reset(self):
+        self.valid = False
+    def fire(self):
         world = gfw.top().world
-        if world.count_at(world.layer.enemy) == 0: return
+        if world.count_at(world.layer.enemy) == 0: return False
         demons = world.objects_at(world.layer.enemy)
         self.x, self.y = self.player.x, self.player.y
-        nearest = min(demons, key=lambda d: (d.x - self.x) ** 2 + (d.y - self.y) ** 2)
+        INF = float('inf')
+        nearest = min(demons, key=lambda d: INF if d.is_stunned() else (d.x - self.x) ** 2 + (d.y - self.y) ** 2)
+        if nearest.is_stunned(): return False
         self.angle = math.atan2(nearest.y - self.y, nearest.x - self.x)
         self.dx = math.cos(self.angle) * self.speed
         self.dy = math.sin(self.angle) * self.speed
+        self.valid = True
+        return True
     def draw(self):
         bg = self.player.bg
         x, y = bg.to_screen(self.x, self.y)
@@ -66,16 +72,56 @@ class Bomb(gfw.AnimSprite):
             self.y < b or t < self.y:
             self.reset()
     def try_hit(self, obj): # returns False if obj is removed
-        if gfw.collides_box(self, obj):
-            if obj.hit(self.power):
-                world = gfw.top().world
-                world.remove(obj)
-                self.reset()
-                return True
-        return False
+        if not gfw.collides_box(self, obj):
+            return False
+        if obj.is_stunned():
+            return False
+
+        dead = obj.hit(self.power)
+        if dead:
+            world = gfw.top().world
+            world.remove(obj)
+        self.reset()
+        return dead
     def get_bb(self):
         r = 12 # radius
         return self.x-r, self.y-r, self.x+r, self.y+r
+
+class Bombs:
+    COOL_TIME = 1.0
+    def __init__(self, player):
+        self.player = player
+        self.bombs = []
+        self.time = self.COOL_TIME
+        self.append()
+        self.append()
+    def append(self):
+        bomb = Bomb(self.player)
+        self.bombs.append(bomb)
+    def update(self):
+        fires = False
+        if self.time > 0:
+            self.time -= gfw.frame_time
+        else:
+            fires = True
+
+        for b in self.bombs: 
+            if b.valid: 
+                b.update()
+            elif fires:
+                fires = False
+                fired = b.fire()
+                if fired:
+                    self.time = self.COOL_TIME
+
+    def draw(self):
+        for b in self.bombs: 
+            if b.valid: b.draw()
+    def try_hit(self, obj):
+        for b in self.bombs:
+            if b.valid and b.try_hit(obj):
+                return True
+        return False
 
 class Weapons:
     def __init__(self, player):
@@ -83,7 +129,6 @@ class Weapons:
     def append(self, weapon):
         self.weapons.append(weapon)
         if isinstance(weapon, SoccerBall):
-            print('is SoccerBall')
             balls = [w for w in self.weapons if isinstance(w, SoccerBall)]
             count = len(balls)
             if count >= 2:
@@ -92,7 +137,6 @@ class Weapons:
                 for ball in balls:
                     ball.angle = angle
                     angle += step
-                    print(ball.angle)
     def update(self):
         for w in self.weapons: w.update()
     def draw(self):
@@ -113,11 +157,12 @@ class Boy(gfw.Sprite):
         self.action = 3 # 3=StandRight, 2=StandLeft, 1=RunRight, 0=RunLeft
         self.mag = 1
         self.target = None
-        self.weapon = Bomb(self)
+        self.weapon = Bombs(self)
         # self.weapon = Weapons(self)
         # self.weapon.append(SoccerBall(self))
         # self.weapon.append(SoccerBall(self))
         # self.weapon.append(SoccerBall(self))
+        # self.weapon.append(Bombs(self))
 
     # @property
     # def power(self):
