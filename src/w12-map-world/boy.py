@@ -34,10 +34,10 @@ class SoccerBall(gfw.Sprite):
 
 class Bomb(gfw.AnimSprite):
     def __init__(self, player):
-        super().__init__('res/weapon_bomb.png', 100, 100, 3)
+        super().__init__('res/weapon_bomb.png', 100, 100, 10)
         self.player = player
         self.power = 80
-        self.speed = 100
+        self.speed = 200
         self.reset()
     def reset(self):
         self.angle = math.pi / 6 # 30°
