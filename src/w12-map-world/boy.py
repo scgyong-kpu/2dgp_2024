@@ -18,6 +18,10 @@ class SoccerBall(gfw.Sprite):
             self.angle -= TWO_PI
         self.x = self.player.x + self.radius * math.cos(self.angle)
         self.y = self.player.y + self.radius * math.sin(self.angle)
+    def draw(self):
+        bg = self.player.bg
+        x, y = bg.to_screen(self.x, self.y)
+        self.image.draw(x, y)
 
 
 class Boy(gfw.Sprite):
