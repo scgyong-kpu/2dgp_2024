@@ -72,6 +72,9 @@ class Bomb(gfw.AnimSprite):
                 world.remove(obj)
                 return True
         return False
+    def get_bb(self):
+        r = 12 # radius
+        return self.x-r, self.y-r, self.x+r, self.y+r
 
 class Weapons:
     def __init__(self, player):
