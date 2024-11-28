@@ -12,6 +12,9 @@ class Demon(AnimSprite):
         self.speed = random.uniform(sp1, sp2)
         self.info = INFO[type]
         self.flip = ''
+        self.max_life = self.info[9]
+        self.life = self.max_life
+        self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
 
     def update(self):
         world = gfw.top().world
@@ -29,6 +32,8 @@ class Demon(AnimSprite):
         index = self.get_anim_index()
         screen_pos = bg.to_screen(self.x, self.y)
         self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, 0, self.flip, *screen_pos, self.width, self.height)
+        gx, gy = screen_pos
+        self.gauge.draw(gx, gy-20, self.width - 20, self.life / self.max_life)
 
     def get_bb(self):
         l, b, r, t = self.info[5:9]
@@ -92,9 +97,9 @@ class LionDemon(Demon):
         return world.bg.collides_box(*self.get_bb())
 
 INFO = [
-    (Demon, 'res/demon_itsumade.png', 0, 50, 100, -15, -15, 15, 15),
-    (Demon, 'res/demon_mizar.png', 12, 20, 50, -28, -5, 8, 31),
-    (LionDemon, 'res/demon_lion.png', 8, 40, 60, -25, -14, 25, 14),
+    (Demon, 'res/demon_itsumade.png', 0, 50, 100, -15, -15, 15, 15, 50),
+    (Demon, 'res/demon_mizar.png', 12, 20, 50, -28, -5, 8, 31, 150),
+    (LionDemon, 'res/demon_lion.png', 8, 40, 60, -25, -14, 25, 14, 100),
 ]
 
 def position_somewhere_outside_screen():
