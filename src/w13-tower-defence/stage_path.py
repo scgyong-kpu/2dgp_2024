@@ -21,7 +21,7 @@ class PathDraw:
 
     def draw(self):
         size = map_bg.tilesize
-        for tx, ty in path_tiles:
+        for tx, ty in path_coords:
             x, y = map_bg.to_screen(tx, ty)
             self.image.draw(x, y, size, size)
 
@@ -37,24 +37,26 @@ def set_tile_bg(bg):
     def tile_to_coord(x, y):
         return (x + 0.5) * map_bg.tilesize,  (y + 0.5) * map_bg.tilesize
 
-    global path_tiles
+    global path_coords
     tiles = a_star.find_tiles()
     print(f'{tiles=}')
     px,py = tiles.pop(0)
-    path_tiles = [tile_to_coord(px,py)]
+    path_coords = [tile_to_coord(px,py)]
     while tiles:
         x,y = tiles.pop(0)
         if not tiles:
-            path_tiles.append(tile_to_coord(x,y))
+            path_coords.append(tile_to_coord(x,y))
             break
         nx,ny = tiles[0]
         in_line = (x + x == px + nx and y + y == py + ny)
         px,py = x,y
         # print(f'{(px,py)=} {(x,y)=} {(nx,ny)=} {in_line=}')
         if not in_line:
-            path_tiles.append(tile_to_coord(x,y))
+            path_coords.append(tile_to_coord(x,y))
+    print(f'{path_coords=}')
 
-
+def spawn_pos():
+    return path_coords[0]
 
 
 def path_shower():

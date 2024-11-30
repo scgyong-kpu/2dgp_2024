@@ -27,6 +27,7 @@ class StageButton(Button):
         if not hasattr(StageButton, 'font'):
             StageButton.load()
         title, rect = STAGE_INFOS[stage]
+        print(title,rect)
         super().__init__(self.np_normal, self.np_over, self.font, title, *rect, self.on_click)
         self.stage = stage
 
