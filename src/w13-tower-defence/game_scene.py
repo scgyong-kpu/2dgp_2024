@@ -2,6 +2,7 @@ from pico2d import *
 from gfw import *
 import stage_path
 import fly_gen
+import pause_scene
 
 canvas_width = 1536 # 32 * 48
 canvas_height = 864 # 18 * 48
@@ -30,17 +31,20 @@ def enter():
 def exit():
     world.clear()
 
-# def pause():
-#     print('[main.pause()]')
+def pause():
+    print('[main.pause()]')
 
-# def resume():
-#     print('[main.resume()]')
+def resume():
+    print('[main.resume()]')
 
 def handle_event(e):
     if e.type == SDL_KEYDOWN and e.key == SDLK_1:
         print(world.objects)
         print(bg.tmap)
         return
+    if e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE:
+        gfw.push(pause_scene)
+        return True
 
 if __name__ == '__main__':
     gfw.start_main_module()
