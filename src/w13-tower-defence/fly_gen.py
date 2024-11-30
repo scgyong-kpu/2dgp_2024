@@ -11,21 +11,27 @@ class Fly(AnimSprite):
         # y = random.randint(100, get_canvas_height() - 100)
         super().__init__(f'res/fly_{type}.png', x, y, 3)
         self.layer_index = world.layer.fly
-        self.speed = 100
+        self.speed = 50
         self.path_index = 1
+        self.angle = 0
         self.set_target_position()
-        print(f'{(self.x, self.y)=}')
+        # print(f'{(self.x, self.y)=}')
 
     def set_target_position(self):
         if self.path_index >= len(stage_path.path_coords):
             self.dx, self.dy = 0, 0
             return
         self.tx, self.ty = stage_path.path_coords[self.path_index]
-        print(f'{(self.tx, self.ty)=}')
+        # print(f'{(self.tx, self.ty)=}')
         dx, dy = self.tx - self.x, self.ty - self.y
         dist = math.sqrt(dx ** 2 + dy ** 2)
         self.dx, self.dy = dx / dist, dy / dist
+        self.angle = math.atan2(dy, dx)
         # print(f'{(self.dx, self.dy)=}')
+
+    def draw(self):
+        index = self.get_anim_index()
+        self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, self.angle, '', self.x, self.y, self.width, self.height)
 
     def update(self):
         self.x += self.dx * self.speed * gfw.frame_time

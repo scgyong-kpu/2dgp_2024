@@ -39,7 +39,7 @@ def set_tile_bg(bg):
 
     global path_coords
     tiles = a_star.find_tiles()
-    print(f'{tiles=}')
+    # print(f'{tiles=}')
     px,py = tiles.pop(0)
     path_coords = [tile_to_coord(px,py)]
     while tiles:
@@ -53,7 +53,7 @@ def set_tile_bg(bg):
         # print(f'{(px,py)=} {(x,y)=} {(nx,ny)=} {in_line=}')
         if not in_line:
             path_coords.append(tile_to_coord(x,y))
-    print(f'{path_coords=}')
+    # print(f'{path_coords=}')
 
 def spawn_pos():
     return path_coords[0]
