@@ -1,6 +1,6 @@
 from pico2d import * 
 from gfw import *
-# import stage_path
+import stage_path
 import random
 
 GEN_INTERVAL = 1.0
