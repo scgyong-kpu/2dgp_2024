@@ -40,11 +40,12 @@ class PathDraw:
             x, y = self.bg.to_screen(tx * size, ty * size)
             self.image.draw_to_origin(x, y, size, size)
 
-
+stage = 1
 
 def enter():
     global bg
-    bg = MapBackground('res/map/stage_03.json', fitsHeight=True, wraps=False)
+    json_fn = f'res/map/stage_{stage:02d}.json'
+    bg = MapBackground(json_fn, fitsHeight=True, wraps=False)
 
     world.append(bg, world.layer.bg)
     world.bg = bg
