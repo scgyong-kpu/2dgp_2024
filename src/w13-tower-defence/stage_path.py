@@ -70,7 +70,8 @@ def set_tile_bg(bg):
         if not in_line:
             path_coords.append(tile_to_coord(x,y))
 
-    # print(f'{tiles=} {list(path_coords)=}')
+def spawn_pos():
+    return path_coords[0]
 
 def path_shower():
     return PathDraw(map_bg, path_coords)
