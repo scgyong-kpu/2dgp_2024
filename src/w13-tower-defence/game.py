@@ -15,9 +15,8 @@ def enter():
     bg = MapBackground(f'res/map/stage_{stage:02d}.json', fitsHeight=True, wraps=False)
     layer = bg.tmap.layers[1]
 
-    o1, o2 = layer.objects[0:2]
-    start_pos = o1['x'], o1['y']
-    end_pos = o2['x'], o2['y']
+    ts = bg.tilesize
+    start_pos, end_pos = map(lambda o: (int(o['x'] // ts), int(o['y'] // ts)), layer.objects[0:2])
 
     print(f'{start_pos=}, {end_pos=:}')
 
