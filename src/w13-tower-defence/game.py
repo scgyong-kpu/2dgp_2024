@@ -14,7 +14,10 @@ def enter():
     global bg
     bg = MapBackground(f'res/map/stage_{stage:02d}.json', fitsHeight=True, wraps=False)
     layer = bg.tmap.layers[1]
-    start_pos, end_pos = map(lambda o: (o['x'], o['y']), layer.objects[0:2])
+
+    o1, o2 = layer.objects[0:2]
+    f = lambda o: (o['x'], o['y'])
+    start_pos, end_pos = f(o1), f(o2)
 
     print(f'{start_pos=}, {end_pos=:}')
 
