@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, List, TypeVar, Type, cast, Callable
+from typing import Any, List, Optional, TypeVar, Type, cast, Callable
 
 
 T = TypeVar("T")
@@ -43,7 +43,8 @@ def to_float(x: Any) -> float:
 
 @dataclass
 class Layer:
-    data: List[int]
+    data: Optional[List[int]]
+    objects: Optional[List[dict]]
     height: int
     id: int
     name: str
@@ -57,17 +58,18 @@ class Layer:
     @staticmethod
     def from_dict(obj: Any) -> 'Layer':
         assert isinstance(obj, dict)
-        data = from_list(from_int, obj.get("data"))
-        height = from_int(obj.get("height"))
+        data = from_list(from_int, obj.get("data")) if 'data' in obj else None
+        objects = obj.get("objects") if 'objects' in obj else None
+        width = from_int(obj.get("width")) if 'width' in obj else None
+        height = from_int(obj.get("height")) if 'height' in obj else None
         id = from_int(obj.get("id"))
         name = from_str(obj.get("name"))
         opacity = from_int(obj.get("opacity"))
         type = from_str(obj.get("type"))
         visible = from_bool(obj.get("visible"))
-        width = from_int(obj.get("width"))
         x = from_int(obj.get("x"))
         y = from_int(obj.get("y"))
-        return Layer(data, height, id, name, opacity, type, visible, width, x, y)
+        return Layer(data, objects, height, id, name, opacity, type, visible, width, x, y)
 
     def to_dict(self) -> dict:
         result: dict = {}
