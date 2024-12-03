@@ -10,6 +10,22 @@ world = gfw.World(['bg', 'path'])
 
 stage = 1
 
+class PathDraw:
+    def __init__(self, bg):
+        self.bg = bg
+        self.image = gfw.image.load('res/trans_50b.png')
+        self.path_tiles = []
+
+        print(self.path_tiles)
+    def update(self): pass
+
+    def draw(self):
+        size = self.bg.tilesize
+        for tx, ty in self.path_tiles:
+            x, y = self.bg.to_screen(tx * size, ty * size)
+            self.image.draw_to_origin(x, y, size, size)
+
+
 def enter():
     global bg
     bg = MapBackground(f'res/map/stage_{stage:02d}.json', fitsHeight=True, wraps=False)
@@ -19,6 +35,11 @@ def enter():
     start_pos, end_pos = map(lambda o: (int(o['x'] // ts), int(o['y'] // ts)), layer.objects[0:2])
 
     print(f'{start_pos=}, {end_pos=:}')
+
+    pd = PathDraw(bg)
+    pd.path_tiles = [ start_pos, end_pos ]
+    world.append(bg, world.layer.bg)
+    world.append(pd, world.layer.path)
 
 def exit():
     world.clear()
