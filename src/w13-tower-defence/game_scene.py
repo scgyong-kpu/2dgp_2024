@@ -1,13 +1,14 @@
 from pico2d import * 
 from gfw import *
 import stage_path
+import fly_gen
 
 tilesize = 48
 canvas_width = 32 * tilesize # 1536 = 32 * 48
 canvas_height = 18 * tilesize # 864 = 18 * 48
 shows_object_count = True
 
-world = gfw.World(['bg', 'path'])
+world = gfw.World(['bg', 'path', 'fly', 'controller'])
 
 
 stage = 1
@@ -23,6 +24,10 @@ def enter():
     stage_path.set_tile_bg(bg)
     map_path = stage_path.path_shower()
     world.append(map_path, world.layer.path)
+
+    fly_gen.init()
+    world.append(fly_gen, world.layer.controller)
+
 
 def exit():
     world.clear()
