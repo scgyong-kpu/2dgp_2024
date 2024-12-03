@@ -9,6 +9,8 @@ world = gfw.World(['bg', 'path'])
 
 
 stage = 1
+# stage = 2
+# stage = 3
 
 class PathDraw:
     def __init__(self, bg):
@@ -31,7 +33,7 @@ def enter():
     bg = MapBackground(f'res/map/stage_{stage:02d}.json', fitsHeight=True, wraps=False)
     layer = bg.tmap.layers[1]
 
-    ts = bg.tilesize
+    ts = bg.tmap.tileheight
     start_pos, end_pos = map(lambda o: (int(o['x'] // ts), int(o['y'] // ts)), layer.objects[0:2])
 
     print(f'{start_pos=}, {end_pos=:}')
