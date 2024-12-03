@@ -1,6 +1,8 @@
 import gfw
 from astar import AStarPath
 
+SHORTENS = False
+
 class MapPath(AStarPath):
     def __init__(self, start_tuple, end_tuple, bg):
         super().__init__(start_tuple, end_tuple)
@@ -43,7 +45,10 @@ def set_tile_bg(bg):
 
     global path_tiles
     tiles = a_star.find_tiles()
-    print(f'{tiles=}')
+    if not SHORTENS:
+        path_tiles = tiles
+        return
+    # print(f'{tiles=}')
     px,py = tiles.pop(0)
     path_tiles = [(px,py)]
     while tiles:
