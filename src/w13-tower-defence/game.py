@@ -34,7 +34,8 @@ def enter():
     layer = bg.tmap.layers[1]
 
     ts = bg.tmap.tileheight
-    start_pos, end_pos = map(lambda o: (int(o['x'] // ts), int(o['y'] // ts)), layer.objects[0:2])
+    mh = bg.tmap.height
+    start_pos, end_pos = map(lambda o: (int(o['x'] // ts), mh - int(o['y'] // ts) - 1), layer.objects[0:2])
 
     print(f'{start_pos=}, {end_pos=:}')
 
