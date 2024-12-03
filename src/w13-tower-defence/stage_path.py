@@ -42,7 +42,21 @@ def set_tile_bg(bg):
     a_star = MapPath(start_pos, end_pos, bg)
 
     global path_tiles
-    path_tiles = a_star.find_tiles()
+    tiles = a_star.find_tiles()
+    print(f'{tiles=}')
+    px,py = tiles.pop(0)
+    path_tiles = [(px,py)]
+    while tiles:
+        x,y = tiles.pop(0)
+        if not tiles:
+            path_tiles.append((x,y))
+            break
+        nx,ny = tiles[0]
+        in_line = (x + x == px + nx and y + y == py + ny)
+        px,py = x,y
+        # print(f'{(px,py)=} {(x,y)=} {(nx,ny)=} {in_line=}')
+        if not in_line:
+            path_tiles.append((x,y))
 
 def path_shower():
     return PathDraw(map_bg, path_tiles)
