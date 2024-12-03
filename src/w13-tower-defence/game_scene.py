@@ -1,8 +1,9 @@
 from pico2d import * 
 from gfw import *
 
-canvas_width = 1536 # 32 * 48
-canvas_height = 864 # 18 * 48
+tilesize = 48
+canvas_width = 32 * tilesize # 1536 = 32 * 48
+canvas_height = 18 * tilesize # 864 = 18 * 48
 shows_object_count = True
 
 world = gfw.World(['bg', 'path'])
@@ -30,7 +31,7 @@ class PathDraw:
 
 def enter():
     global bg
-    bg = MapBackground(f'res/map/stage_{stage:02d}.json', fitsHeight=True, wraps=False)
+    bg = MapBackground(f'res/map/stage_{stage:02d}.json', tilesize=tilesize, wraps=False)
     layer = bg.tmap.layers[1]
 
     ts = bg.tmap.tileheight

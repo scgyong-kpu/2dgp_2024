@@ -4,6 +4,7 @@ import game_scene
 
 canvas_width = game_scene.canvas_width
 canvas_height = game_scene.canvas_height
+tilesize = game_scene.tilesize
 
 import sys
 self = sys.modules[__name__]
@@ -18,7 +19,6 @@ def exit():
     world.clear()
 def update(): pass
 def draw():
-    tilesize = 48
     for y in range(0, canvas_height, tilesize):
         for x in range(0, canvas_width, tilesize):
             tile_img.draw_to_origin(x, y, tilesize, tilesize)
