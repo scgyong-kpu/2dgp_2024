@@ -1,4 +1,17 @@
 import gfw
+from astar import AStarPath
+
+class MapPath(AStarPath):
+    def __init__(self, start_tuple, end_tuple, bg):
+        super().__init__(start_tuple, end_tuple)
+        self.bg = bg
+        self.off_border_wall = True
+    def is_wall(self, x, y):
+        width, height = self.bg.layer.width, self.bg.layer.height
+        if x < 0 or x >= width: return self.off_border_wall
+        if y < 0 or y >= height: return self.off_border_wall
+        tile = self.bg.layer.data[(height - y - 1) * width + x]
+        return tile != 11
 
 class PathDraw:
     def __init__(self, bg, tiles=[]):
@@ -25,8 +38,11 @@ def set_tile_bg(bg):
     mh = bg.tmap.height
     start_pos, end_pos = map(lambda o: (int(o['x'] // ts), mh - int(o['y'] // ts) - 1), layer.objects[0:2])
 
+    global a_star
+    a_star = MapPath(start_pos, end_pos, bg)
+
     global path_tiles
-    path_tiles = [ start_pos, end_pos ]
+    path_tiles = a_star.find_tiles()
 
 def path_shower():
     return PathDraw(map_bg, path_tiles)
