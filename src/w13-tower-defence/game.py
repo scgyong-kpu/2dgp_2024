@@ -13,10 +13,10 @@ stage = 1
 def enter():
     global bg
     bg = MapBackground(f'res/map/stage_{stage:02d}.json', fitsHeight=True, wraps=False)
-    object_layer = bg.tmap.layers[1]
+    layer = bg.tmap.layers[1]
+    start_pos, end_pos = map(lambda o: (o['x'], o['y']), layer.objects[0:2])
 
-    obj_start, obj_end = object_layer.objects[0:2]
-    print(obj_start, obj_end)
+    print(f'{start_pos=}, {end_pos=:}')
 
 def exit():
     world.clear()
