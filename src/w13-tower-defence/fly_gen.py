@@ -9,9 +9,11 @@ class Fly(AnimSprite):
         # x = random.randint(100, get_canvas_width() - 100)
         # y = random.randint(100, get_canvas_height() - 100)
         x, y = stage_path.spawn_pos() # spawn position
+        x += random.uniform(-10, 10)
+        y += random.uniform(-10, 10)
         super().__init__(f'res/fly_{type}.png', x, y, 3)
         self.layer_index = world.layer.fly
-        self.speed = 50
+        self.speed = random.uniform(40,50)
         self.path_index = 1
         self.angle = 0
         self.set_target_position()
@@ -21,6 +23,8 @@ class Fly(AnimSprite):
             self.dx, self.dy = 0, 0
             return
         self.tx, self.ty = stage_path.path_coords[self.path_index]
+        self.tx += random.uniform(-10, 10)
+        self.ty += random.uniform(-10, 10)
         # print(f'{(self.tx, self.ty)=}')
         dx, dy = self.tx - self.x, self.ty - self.y
         dist = math.sqrt(dx ** 2 + dy ** 2)
