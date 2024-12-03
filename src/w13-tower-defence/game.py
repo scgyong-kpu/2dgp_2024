@@ -16,8 +16,8 @@ def enter():
     layer = bg.tmap.layers[1]
 
     o1, o2 = layer.objects[0:2]
-    f = lambda o: (o['x'], o['y'])
-    start_pos, end_pos = f(o1), f(o2)
+    start_pos = o1['x'], o1['y']
+    end_pos = o2['x'], o2['y']
 
     print(f'{start_pos=}, {end_pos=:}')
 
