@@ -1,8 +1,8 @@
 import gfw
 from astar import AStarPath
 
-# SHORTENS = True
-SHORTENS = False
+SHORTENS = True
+# SHORTENS = False
 
 class MapPath(AStarPath):
     def __init__(self, start_tuple, end_tuple, bg):
@@ -20,14 +20,14 @@ class PathDraw:
     def __init__(self, bg, tiles=[]):
         self.bg = bg
         self.image = gfw.image.load('res/trans_50b.png')
-        self.path_tiles = tiles
+        self.path_coords = tiles
 
-        # print(self.path_tiles)
+        # print(self.path_coords)
     def update(self): pass
 
     def draw(self):
         size = self.bg.tilesize
-        for tx, ty in path_tiles:
+        for tx, ty in path_coords:
             x, y = map_bg.to_screen(tx, ty)
             self.image.draw(x, y, size, size)
 
@@ -49,28 +49,28 @@ def set_tile_bg(bg):
             x, y = x
         return (x + 0.5) * map_bg.tilesize,  (y + 0.5) * map_bg.tilesize
 
-    global path_tiles
+    global path_coords
     tiles = a_star.find_tiles()
     if not SHORTENS:
-        path_tiles = list(map(tile_to_coord, tiles))
-        # print(f'{tiles=} {path_tiles=}')
+        path_coords = list(map(tile_to_coord, tiles))
+        # print(f'{tiles=} {path_coords=}')
         return
     # print(f'{tiles=}')
     px,py = tiles.pop(0)
-    path_tiles = [tile_to_coord(px,py)]
+    path_coords = [tile_to_coord(px,py)]
     while tiles:
         x,y = tiles.pop(0)
         if not tiles:
-            path_tiles.append(tile_to_coord(x,y))
+            path_coords.append(tile_to_coord(x,y))
             break
         nx,ny = tiles[0]
         in_line = (x + x == px + nx and y + y == py + ny)
         px,py = x,y
         # print(f'{(px,py)=} {(x,y)=} {(nx,ny)=} {in_line=}')
         if not in_line:
-            path_tiles.append(tile_to_coord(x,y))
+            path_coords.append(tile_to_coord(x,y))
 
-    # print(f'{tiles=} {list(path_tiles)=}')
+    # print(f'{tiles=} {list(path_coords)=}')
 
 def path_shower():
-    return PathDraw(map_bg, path_tiles)
+    return PathDraw(map_bg, path_coords)
