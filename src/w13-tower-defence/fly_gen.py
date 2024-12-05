@@ -2,18 +2,32 @@ from pico2d import *
 from gfw import *
 import stage_path
 import random
+from functools import reduce
+
+class Info:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+FLY_TYPES = [
+    Info(file='res/fly_1.png', fps=3, speed=(20,30), rate=10),
+    Info(file='res/fly_2.png', fps=3, speed=(40,50), rate=20),
+    Info(file='res/fly_3.png', fps=3, speed=(40,50), rate=25),
+    Info(file='res/fly_4.png', fps=2, speed=(40,50), rate=20),
+    Info(file='res/fly_5.png', fps=1, speed=(50,60), rate=25),
+]
 
 GEN_INTERVAL = 2.0
 class Fly(AnimSprite):
-    def __init__(self, type):
+    def __init__(self, info):
         # x = random.randint(100, get_canvas_width() - 100)
         # y = random.randint(100, get_canvas_height() - 100)
         x, y = stage_path.spawn_pos() # spawn position
         x += random.uniform(-10, 10)
         y += random.uniform(-10, 10)
-        super().__init__(f'res/fly_{type}.png', x, y, 3)
+        super().__init__(info.file, x, y, info.fps)
         self.layer_index = world.layer.fly
-        self.speed = random.uniform(40,50)
+        self.info = info
+        self.speed = random.uniform(*info.speed)
         self.path_index = 1
         self.angle = 0
         self.set_target_position()
@@ -62,14 +76,25 @@ def init():
     global type
     type = 1
 
+
 def draw(): pass
 def update():
     global time, type
     time -= gfw.frame_time
     if time <= 0:
         time += GEN_INTERVAL
-        world.append(Fly(type))
-        type += 1
-        if type > 5: type = 1
+        generate()
+
+rate_sum = reduce(lambda sum, i: sum + i.rate, FLY_TYPES, 0)
+# print(f'{rate_sum=}')
+
+def generate():
+    val = random.randrange(rate_sum)
+    for info in FLY_TYPES:
+        val -= info.rate
+        if val < 0: break
+    else:
+        return
+    world.append(Fly(info))
 
 
