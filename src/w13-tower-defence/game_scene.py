@@ -32,10 +32,11 @@ def enter():
     fly_gen.init()
     world.append(fly_gen, world.layer.controller)
 
-    
+
     world.append(collision, world.layer.controller)
 
     world.append(BowWeapon(), world.layer.weapon)
+    world.append(IceSword(), world.layer.weapon)
 
     world.append(AnimSprite('res/bullet_snow.png', 500, 500, 10), world.layer.bullet)
 
