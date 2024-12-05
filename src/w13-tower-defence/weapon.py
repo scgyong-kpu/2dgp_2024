@@ -5,17 +5,17 @@ import random
 INITIAL_SNOW_INTERVAL = 3.0
 INITIAL_ARROW_INTERVAL = 2.0
 
-class Arrow(Sprite):
-    R = 15
-    SPEED = 200
-    def __init__(self, bow):
-        super().__init__('res/arrow.png', bow.x, bow.y)
-        self.angle = bow.angle
-        self.speed = self.SPEED
-        self.dx = self.speed * math.cos(self.angle)
-        self.dy = self.speed * math.sin(self.angle)
+class Bullet(AnimSprite):
+    def __init__(self, file, weapon, speed, power, radius):
+        super().__init__(file, weapon.x, weapon.y, 10)
+        self.angle = weapon.angle
+        self.speed = speed
+        self.power = power
+        self.radius = radius
+        self.dx = speed * math.cos(self.angle)
+        self.dy = speed * math.sin(self.angle)
         self.layer_index = gfw.top().world.layer.bullet
-        self.power = 50
+
     def update(self):
         self.x += self.dx * gfw.frame_time
         self.y += self.dy * gfw.frame_time
@@ -23,36 +23,22 @@ class Arrow(Sprite):
         if self.x < 0 or self.x > get_canvas_width() or \
             self.y < 0 or self.y > get_canvas_height():
             world = gfw.top().world
-            world.remove(self, world.layer.bullet)
+            world.remove(self)
 
     def draw(self):
-        self.image.composite_draw(self.angle, '', self.x, self.y)
+        index = self.get_anim_index()
+        self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, self.angle, '', self.x, self.y, self.width, self.height)
 
     def get_bb(self):
-        return self.x - self.R, self.y - self.R, self.x + self.R, self.y + self.R
+        return self.x - self.radius, self.y - self.radius, self.x + self.radius, self.y + self.radius
 
-class SnowBall(AnimSprite):
-    R = 10
-    SPEED = 200
+class Arrow(Bullet):
     def __init__(self, weapon):
-        super().__init__('res/bullet_snow.png', weapon.x, weapon.y, 10)
-        self.angle = weapon.angle
-        self.speed = self.SPEED
-        self.dx = self.speed * math.cos(self.angle)
-        self.dy = self.speed * math.sin(self.angle)
-        self.layer_index = gfw.top().world.layer.bullet
-        self.power = 60
-    def update(self):
-        self.x += self.dx * gfw.frame_time
-        self.y += self.dy * gfw.frame_time
+        super().__init__('res/arrow.png', weapon, speed=300, power=50, radius=15)
 
-        if self.x < 0 or self.x > get_canvas_width() or \
-            self.y < 0 or self.y > get_canvas_height():
-            world = gfw.top().world
-            world.remove(self, world.layer.bullet)
-
-    def get_bb(self):
-        return self.x - self.R, self.y - self.R, self.x + self.R, self.y + self.R
+class SnowBall(Bullet):
+    def __init__(self, weapon):
+        super().__init__('res/bullet_snow.png', weapon, speed=200, power=60, radius=10)
 
 class BowWeapon(Sprite):
     def __init__(self):
