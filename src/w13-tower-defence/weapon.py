@@ -2,6 +2,7 @@ from pico2d import *
 from gfw import *
 import random
 
+INITIAL_ARROW_INTERVAL = 2.0
 
 class Arrow(Sprite):
     def __init__(self, bow):
@@ -27,7 +28,7 @@ class BowWeapon(Sprite):
         x, y = 500, 300
         super().__init__('res/bow_1.png', x, y)
         self.time = 0
-        self.interval = 1.0
+        self.interval = INITIAL_ARROW_INTERVAL
         self.angle = 1.0 # 57.3 degree
     def update(self):
         self.find_neareast_enemy()

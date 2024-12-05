@@ -3,7 +3,7 @@ from gfw import *
 import stage_path
 import random
 
-GEN_INTERVAL = 1.0
+GEN_INTERVAL = 2.0
 class Fly(AnimSprite):
     def __init__(self, type):
         # x = random.randint(100, get_canvas_width() - 100)
