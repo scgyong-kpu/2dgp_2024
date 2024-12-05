@@ -9,11 +9,11 @@ class Info:
         self.__dict__.update(kwargs)
 
 FLY_TYPES = [
-    Info(file='res/fly_1.png', fps=3, speed=(20,30), rate=10, bbox=(-20,-20,20,20)),
-    Info(file='res/fly_2.png', fps=3, speed=(40,50), rate=20, bbox=(-20,-20,20,20)),
-    Info(file='res/fly_3.png', fps=3, speed=(40,50), rate=25, bbox=(-20,-20,20,20)),
-    Info(file='res/fly_4.png', fps=2, speed=(40,50), rate=20, bbox=(-20,-20,20,20)),
-    Info(file='res/fly_5.png', fps=1, speed=(50,60), rate=25, bbox=(-20,-20,20,20)),
+    Info(file='res/fly_1.png', fps=3, speed=(20,30), rate=10, bbox=(-20,-20,20,20), life=900),
+    Info(file='res/fly_2.png', fps=3, speed=(40,50), rate=20, bbox=(-20,-20,20,20), life=300),
+    Info(file='res/fly_3.png', fps=3, speed=(40,50), rate=25, bbox=(-20,-20,20,20), life=200),
+    Info(file='res/fly_4.png', fps=2, speed=(40,50), rate=20, bbox=(-20,-20,20,20), life=150),
+    Info(file='res/fly_5.png', fps=1, speed=(50,60), rate=25, bbox=(-20,-20,20,20), life=80),
 ]
 
 GEN_INTERVAL = 2.0
@@ -29,6 +29,9 @@ class Fly(AnimSprite):
         self.info = info
         self.speed = random.uniform(*info.speed)
         self.path_index = 1
+        self.max_life = info.life
+        self.life = self.max_life
+        self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
         self.angle = 0
         self.set_target_position()
 
@@ -53,6 +56,9 @@ class Fly(AnimSprite):
     def draw(self):
         index = self.get_anim_index()
         self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, self.angle, '', self.x, self.y, self.width, self.height)
+        gx, gy = self.x, self.y - 24
+        self.gauge.draw(gx, gy, self.width - 28, self.life / self.max_life)
+
 
     def update(self):
         self.x += self.dx * self.speed * gfw.frame_time
