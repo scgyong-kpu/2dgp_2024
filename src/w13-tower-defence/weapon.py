@@ -3,7 +3,7 @@ from gfw import *
 import random
 
 INITIAL_SNOW_INTERVAL = 3.0
-INITIAL_ARROW_INTERVAL = 2.0
+INITIAL_ARROW_INTERVAL = 12.0
 
 class Bullet(AnimSprite):
     def __init__(self, file, weapon, speed, power, radius):
@@ -32,13 +32,43 @@ class Bullet(AnimSprite):
     def get_bb(self):
         return self.x - self.radius, self.y - self.radius, self.x + self.radius, self.y + self.radius
 
+    def check_collision(self):
+        world = gfw.top().world
+        for e in world.objects_at(world.layer.fly):
+            if collides_box(e, self):
+                if e.hit(self.power):
+                    world.remove(e)
+                world.remove(self)
+                break
+
 class Arrow(Bullet):
     def __init__(self, weapon):
         super().__init__('res/arrow.png', weapon, speed=300, power=50, radius=15)
 
 class SnowBall(Bullet):
+    SPLASH_DISTANCE_SQUARE = 100 ** 2
     def __init__(self, weapon):
         super().__init__('res/bullet_snow.png', weapon, speed=200, power=60, radius=10)
+
+    def check_collision(self):
+        world = gfw.top().world
+        for e in world.objects_at(world.layer.fly):
+            if collides_box(e, self):
+                if e.hit(self.power):
+                    world.remove(e)
+                world.remove(self)
+                break
+        else:
+            return
+
+        for e in world.objects_at(world.layer.fly):
+            dist_sq = (self.x - e.x) ** 2 + (self.y - e.y) ** 2
+            if dist_sq < self.SPLASH_DISTANCE_SQUARE: 
+                power = self.power * (1 - dist_sq / self.SPLASH_DISTANCE_SQUARE)
+                print(f'{dist_sq=:.2f} distance={math.sqrt(dist_sq):.2f} {power=:.2f} {e=}')
+                if e.hit(power):
+                    world.remove(e)
+
 
 class Weapon(Sprite):
     def __init__(self, file, x, y, intitial_interval, bullet_class):
