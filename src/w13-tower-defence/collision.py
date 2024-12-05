@@ -8,6 +8,7 @@ def update():
     for e in world.objects_at(world.layer.fly):
         for b in world.objects_at(world.layer.bullet):
             if collides_box(e, b):
-                world.remove(e)
+                if e.hit(b.power):
+                    world.remove(e)
                 world.remove(b)
                 break

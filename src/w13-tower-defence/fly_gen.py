@@ -9,11 +9,11 @@ class Info:
         self.__dict__.update(kwargs)
 
 FLY_TYPES = [
-    Info(file='res/fly_1.png', fps=3, speed=(20,30), rate=10, bbox=(-20,-20,20,20), life=900),
-    Info(file='res/fly_2.png', fps=3, speed=(40,50), rate=20, bbox=(-20,-20,20,20), life=300),
-    Info(file='res/fly_3.png', fps=3, speed=(40,50), rate=25, bbox=(-20,-20,20,20), life=200),
-    Info(file='res/fly_4.png', fps=2, speed=(40,50), rate=20, bbox=(-20,-20,20,20), life=150),
-    Info(file='res/fly_5.png', fps=1, speed=(50,60), rate=25, bbox=(-20,-20,20,20), life=80),
+    Info(file='res/fly_1.png', fps=3, speed=(5,10), rate=5,  bbox=(-20,-20,20,20), life=900),
+    Info(file='res/fly_2.png', fps=3, speed=(10,30), rate=10, bbox=(-20,-20,20,20), life=300),
+    Info(file='res/fly_3.png', fps=3, speed=(20,30), rate=15, bbox=(-20,-20,20,20), life=200),
+    Info(file='res/fly_4.png', fps=2, speed=(30,40), rate=25, bbox=(-20,-20,20,20), life=150),
+    Info(file='res/fly_5.png', fps=1, speed=(30,40), rate=35, bbox=(-20,-20,20,20), life=80),
 ]
 
 GEN_INTERVAL = 2.0
@@ -59,6 +59,9 @@ class Fly(AnimSprite):
         gx, gy = self.x, self.y - 24
         self.gauge.draw(gx, gy, self.width - 28, self.life / self.max_life)
 
+    def hit(self, damage): #return True if dead
+        self.life -= damage
+        return self.life <= 0
 
     def update(self):
         self.x += self.dx * self.speed * gfw.frame_time

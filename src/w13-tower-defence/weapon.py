@@ -5,14 +5,16 @@ import random
 INITIAL_ARROW_INTERVAL = 2.0
 
 class Arrow(Sprite):
-    R=15
+    R = 15
+    SPEED = 200
     def __init__(self, bow):
         super().__init__('res/arrow.png', bow.x, bow.y)
         self.angle = bow.angle
-        self.speed = 100
+        self.speed = self.SPEED
         self.dx = self.speed * math.cos(self.angle)
         self.dy = self.speed * math.sin(self.angle)
         self.layer_index = gfw.top().world.layer.bullet
+        self.power = 50
     def update(self):
         self.x += self.dx * gfw.frame_time
         self.y += self.dy * gfw.frame_time
