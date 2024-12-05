@@ -3,9 +3,11 @@ from gfw import *
 import random
 
 INITIAL_SNOW_INTERVAL = 3.0
-INITIAL_ARROW_INTERVAL = 12.0
+INITIAL_ARROW_INTERVAL = 2.0
+INITIAL_FIRE_INTERVAL = 6.0
 
 class Bullet(AnimSprite):
+    SPLASH_DISTANCE_SQUARE = 100 ** 2
     def __init__(self, file, weapon, speed, power, radius):
         super().__init__(file, weapon.x, weapon.y, 10)
         self.angle = weapon.angle
@@ -89,11 +91,19 @@ class Arrow(Bullet):
         super().__init__('res/arrow.png', weapon, speed=300, power=50, radius=15)
 
 class SnowBall(Bullet):
-    SPLASH_DISTANCE_SQUARE = 100 ** 2
     def __init__(self, weapon):
         super().__init__('res/bullet_snow.png', weapon, speed=200, power=60, radius=10)
     def explosion(self):
         return Explosion('res/bullet_snow_explosion.png', self, 9, 1)
+
+    def check_collision(self):
+        self.hittest_enemies(splash=True, stuns=True)
+
+class FireBall(Bullet):
+    def __init__(self, weapon):
+        super().__init__('res/fireball.png', weapon, speed=160, power=80, radius=14)
+    def explosion(self):
+        return Explosion('res/fireball_explosion.png', self, 15, 1)
 
     def check_collision(self):
         self.hittest_enemies(splash=True, stuns=True)
@@ -144,6 +154,10 @@ class BowWeapon(Weapon):
 class IceSword(Weapon):
     def __init__(self):
         super().__init__('res/ice_sword_1.png', 400, 600, INITIAL_SNOW_INTERVAL, SnowBall)
+
+class FireThrower(Weapon):
+    def __init__(self):
+        super().__init__('res/fire_thrower.png', 500, 500, INITIAL_FIRE_INTERVAL, FireBall)
 
 
 
