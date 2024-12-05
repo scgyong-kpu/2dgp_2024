@@ -12,7 +12,7 @@ canvas_height = 18 * tilesize # 864 = 18 * 48
 shows_object_count = True
 shows_bounding_box = True
 
-world = gfw.World(['bg', 'path', 'weapon', 'bullet', 'fly', 'controller'])
+world = gfw.World(['bg', 'path', 'weapon', 'bullet', 'fly', 'explosion', 'controller'])
 
 
 stage = 1

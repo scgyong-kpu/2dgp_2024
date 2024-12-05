@@ -32,6 +32,9 @@ class Bullet(AnimSprite):
     def get_bb(self):
         return self.x - self.radius, self.y - self.radius, self.x + self.radius, self.y + self.radius
 
+    def explosion(self):
+        return None
+
     def check_collision(self):
         self.hittest_enemies()
 
@@ -52,6 +55,9 @@ class Bullet(AnimSprite):
         
         if not didHit or not splash: return
 
+        exp = self.explosion()
+        if exp: world.append(exp)
+
         for e in world.objects_at(world.layer.fly):
             if e == enemy: continue
             dist_sq = (self.x - e.x) ** 2 + (self.y - e.y) ** 2
@@ -64,6 +70,18 @@ class Bullet(AnimSprite):
                     duration = max(0.5, power / self.power)
                     e.make_stunned(duration)
 
+class Explosion(AnimSprite):
+    def __init__(self, file, bullet, fps, duration):
+        super().__init__(file, bullet.x, bullet.y, fps)
+        self.duration = duration
+        self.layer_index = gfw.top().world.layer.explosion
+    def update(self):
+        # super().update()
+        self.duration -= gfw.frame_time
+        if self.duration > 0: return
+        world = gfw.top().world
+        world.remove(self)
+
 
 
 class Arrow(Bullet):
@@ -74,9 +92,12 @@ class SnowBall(Bullet):
     SPLASH_DISTANCE_SQUARE = 100 ** 2
     def __init__(self, weapon):
         super().__init__('res/bullet_snow.png', weapon, speed=200, power=60, radius=10)
+    def explosion(self):
+        return Explosion('res/bullet_snow_explosion.png', self, 9, 1)
 
     def check_collision(self):
         self.hittest_enemies(splash=True, stuns=True)
+
 
 class Weapon(Sprite):
     def __init__(self, file, x, y, intitial_interval, bullet_class):
