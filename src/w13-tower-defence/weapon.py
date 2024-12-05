@@ -40,47 +40,14 @@ class SnowBall(Bullet):
     def __init__(self, weapon):
         super().__init__('res/bullet_snow.png', weapon, speed=200, power=60, radius=10)
 
-class BowWeapon(Sprite):
-    def __init__(self):
-        x, y = 500, 300
-        super().__init__('res/bow_1.png', x, y)
+class Weapon(Sprite):
+    def __init__(self, file, x, y, intitial_interval, bullet_class):
+        # x, y = 500, 300
+        super().__init__(file, x, y)
         self.time = 0
-        self.interval = INITIAL_ARROW_INTERVAL
-        self.angle = 1.0 # 57.3 degree
-    def update(self):
-        self.find_neareast_enemy()
-        self.time += gfw.frame_time
-        if self.time >= self.interval:
-            self.time -= self.interval
-            self.fire()
-    def draw(self):
-        self.image.composite_draw(self.angle, '', self.x, self.y)
-
-    def fire(self):
-        arrow = Arrow(self)
-        world = gfw.top().world
-        world.append(arrow)
-
-    def find_neareast_enemy(self):
-        world = gfw.top().world
-        min_dsq, enemy = float('inf'), None
-        for fly in world.objects_at(world.layer.fly):
-            dsq = (fly.x - self.x) ** 2 + (fly.y - self.y) ** 2
-            if min_dsq > dsq:
-                min_dsq, enemy = dsq, fly
-                # print(f'{dsq=:-10.2f} {fly=}')
-
-        if enemy is not None:
-            self.angle = math.atan2(enemy.y - self.y, enemy.x - self.x)
-            # print(f'{fly=} {self.angle=:.2f}')
-
-class IceSword(Sprite):
-    def __init__(self):
-        x, y = 400, 600
-        super().__init__('res/ice_sword_1.png', x, y)
-        self.time = 0
-        self.interval = INITIAL_SNOW_INTERVAL
         self.angle = 0
+        self.interval = intitial_interval
+        self.bullet_class = bullet_class
     def update(self):
         self.find_neareast_enemy()
         self.time += gfw.frame_time
@@ -91,7 +58,7 @@ class IceSword(Sprite):
         self.image.composite_draw(self.angle, '', self.x, self.y)
 
     def fire(self):
-        arrow = SnowBall(self)
+        arrow = self.bullet_class(self)
         world = gfw.top().world
         world.append(arrow)
 
@@ -107,6 +74,17 @@ class IceSword(Sprite):
         if enemy is not None:
             self.angle = math.atan2(enemy.y - self.y, enemy.x - self.x)
             # print(f'{fly=} {self.angle=:.2f}')
+
+    def get_bb(self):
+        return self.x - 40, self.y - 40, self.x + 40, self.y + 40
+
+class BowWeapon(Weapon):
+    def __init__(self):
+        super().__init__('res/bow_1.png', 500, 300, INITIAL_ARROW_INTERVAL, Arrow)
+
+class IceSword(Weapon):
+    def __init__(self):
+        super().__init__('res/ice_sword_1.png', 400, 600, INITIAL_SNOW_INTERVAL, SnowBall)
 
 
 

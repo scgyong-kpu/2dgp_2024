@@ -38,8 +38,6 @@ def enter():
     world.append(BowWeapon(), world.layer.weapon)
     world.append(IceSword(), world.layer.weapon)
 
-    world.append(AnimSprite('res/bullet_snow.png', 500, 500, 10), world.layer.bullet)
-
 
 def exit():
     world.clear()
