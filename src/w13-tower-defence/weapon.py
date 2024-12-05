@@ -33,13 +33,38 @@ class Bullet(AnimSprite):
         return self.x - self.radius, self.y - self.radius, self.x + self.radius, self.y + self.radius
 
     def check_collision(self):
+        self.hittest_enemies()
+
+    def hittest_enemies(self, splash=False, stuns=False):
         world = gfw.top().world
+        didHit = False
+        enemy = None
         for e in world.objects_at(world.layer.fly):
             if collides_box(e, self):
                 if e.hit(self.power):
                     world.remove(e)
+                elif stuns: 
+                    e.make_stunned(1)
+                    enemy = e
                 world.remove(self)
+                didHit = True
                 break
+        
+        if not didHit or not splash: return
+
+        for e in world.objects_at(world.layer.fly):
+            if e == enemy: continue
+            dist_sq = (self.x - e.x) ** 2 + (self.y - e.y) ** 2
+            if dist_sq < self.SPLASH_DISTANCE_SQUARE: 
+                power = self.power * (1 - dist_sq / self.SPLASH_DISTANCE_SQUARE)
+                print(f'{dist_sq=:.2f} distance={math.sqrt(dist_sq):.2f} {power=:.2f} {e=}')
+                if e.hit(power):
+                    world.remove(e)
+                elif stuns:
+                    duration = max(0.5, power / self.power)
+                    e.make_stunned(duration)
+
+
 
 class Arrow(Bullet):
     def __init__(self, weapon):
@@ -51,24 +76,7 @@ class SnowBall(Bullet):
         super().__init__('res/bullet_snow.png', weapon, speed=200, power=60, radius=10)
 
     def check_collision(self):
-        world = gfw.top().world
-        for e in world.objects_at(world.layer.fly):
-            if collides_box(e, self):
-                if e.hit(self.power):
-                    world.remove(e)
-                world.remove(self)
-                break
-        else:
-            return
-
-        for e in world.objects_at(world.layer.fly):
-            dist_sq = (self.x - e.x) ** 2 + (self.y - e.y) ** 2
-            if dist_sq < self.SPLASH_DISTANCE_SQUARE: 
-                power = self.power * (1 - dist_sq / self.SPLASH_DISTANCE_SQUARE)
-                print(f'{dist_sq=:.2f} distance={math.sqrt(dist_sq):.2f} {power=:.2f} {e=}')
-                if e.hit(power):
-                    world.remove(e)
-
+        self.hittest_enemies(splash=True, stuns=True)
 
 class Weapon(Sprite):
     def __init__(self, file, x, y, intitial_interval, bullet_class):

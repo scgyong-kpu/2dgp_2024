@@ -33,6 +33,7 @@ class Fly(AnimSprite):
         self.life = self.max_life
         self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
         self.angle = 0
+        self.stun_timer = 0
         self.set_target_position()
 
     def set_target_position(self):
@@ -63,7 +64,13 @@ class Fly(AnimSprite):
         self.life -= damage
         return self.life <= 0
 
+    def make_stunned(self, seconds):
+        self.stun_timer = seconds
+
     def update(self):
+        if self.stun_timer > 0:
+            self.stun_timer -= gfw.frame_time
+            return
         self.x += self.dx * self.speed * gfw.frame_time
         self.y += self.dy * self.speed * gfw.frame_time
         dx, dy = self.tx - self.x, self.ty - self.y
