@@ -2,6 +2,7 @@ from pico2d import *
 from gfw import *
 import stage_path
 import fly_gen
+import collision
 import pause_scene
 from weapon import *
 
@@ -30,6 +31,9 @@ def enter():
 
     fly_gen.init()
     world.append(fly_gen, world.layer.controller)
+
+    
+    world.append(collision, world.layer.controller)
 
     world.append(BowWeapon(), world.layer.weapon)
 

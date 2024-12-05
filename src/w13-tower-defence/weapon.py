@@ -11,6 +11,7 @@ class Arrow(Sprite):
         self.speed = 100
         self.dx = self.speed * math.cos(self.angle)
         self.dy = self.speed * math.sin(self.angle)
+        self.layer_index = gfw.top().world.layer.bullet
     def update(self):
         self.x += self.dx * gfw.frame_time
         self.y += self.dy * gfw.frame_time
@@ -42,7 +43,7 @@ class BowWeapon(Sprite):
     def fire(self):
         arrow = Arrow(self)
         world = gfw.top().world
-        world.append(arrow, world.layer.bullet)
+        world.append(arrow)
 
     def find_neareast_enemy(self):
         world = gfw.top().world
