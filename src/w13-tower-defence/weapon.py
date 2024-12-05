@@ -30,6 +30,7 @@ class BowWeapon(Sprite):
         self.interval = 1.0
         self.angle = 1.0 # 57.3 degree
     def update(self):
+        self.find_neareast_enemy()
         self.time += gfw.frame_time
         if self.time >= self.interval:
             self.time -= self.interval
@@ -41,4 +42,17 @@ class BowWeapon(Sprite):
         arrow = Arrow(self)
         world = gfw.top().world
         world.append(arrow, world.layer.bullet)
+
+    def find_neareast_enemy(self):
+        world = gfw.top().world
+        min_dsq, enemy = float('inf'), None
+        for fly in world.objects_at(world.layer.fly):
+            dsq = (fly.x - self.x) ** 2 + (fly.y - self.y) ** 2
+            if min_dsq > dsq:
+                min_dsq, enemy = dsq, fly
+                # print(f'{dsq=:-10.2f} {fly=}')
+
+        if enemy is not None:
+            self.angle = math.atan2(enemy.y - self.y, enemy.x - self.x)
+            # print(f'{fly=} {self.angle=:.2f}')
 
