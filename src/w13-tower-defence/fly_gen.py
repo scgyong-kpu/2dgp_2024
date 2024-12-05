@@ -9,11 +9,11 @@ class Info:
         self.__dict__.update(kwargs)
 
 FLY_TYPES = [
-    Info(file='res/fly_1.png', fps=3, speed=(20,30), rate=10),
-    Info(file='res/fly_2.png', fps=3, speed=(40,50), rate=20),
-    Info(file='res/fly_3.png', fps=3, speed=(40,50), rate=25),
-    Info(file='res/fly_4.png', fps=2, speed=(40,50), rate=20),
-    Info(file='res/fly_5.png', fps=1, speed=(50,60), rate=25),
+    Info(file='res/fly_1.png', fps=3, speed=(20,30), rate=10, bbox=(-20,-20,20,20)),
+    Info(file='res/fly_2.png', fps=3, speed=(40,50), rate=20, bbox=(-20,-20,20,20)),
+    Info(file='res/fly_3.png', fps=3, speed=(40,50), rate=25, bbox=(-20,-20,20,20)),
+    Info(file='res/fly_4.png', fps=2, speed=(40,50), rate=20, bbox=(-20,-20,20,20)),
+    Info(file='res/fly_5.png', fps=1, speed=(50,60), rate=25, bbox=(-20,-20,20,20)),
 ]
 
 GEN_INTERVAL = 2.0
@@ -45,6 +45,10 @@ class Fly(AnimSprite):
         self.dx, self.dy = dx / dist, dy / dist
         self.angle = math.atan2(dy, dx)
         # print(f'{(self.dx, self.dy)=}')
+
+    def get_bb(self):
+        l,b,r,t = self.info.bbox
+        return self.x+l, self.y+b, self.x+r, self.y+t
 
     def draw(self):
         index = self.get_anim_index()

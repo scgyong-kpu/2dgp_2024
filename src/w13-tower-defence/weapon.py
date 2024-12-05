@@ -5,6 +5,7 @@ import random
 INITIAL_ARROW_INTERVAL = 2.0
 
 class Arrow(Sprite):
+    R=15
     def __init__(self, bow):
         super().__init__('res/arrow.png', bow.x, bow.y)
         self.angle = bow.angle
@@ -23,6 +24,9 @@ class Arrow(Sprite):
 
     def draw(self):
         self.image.composite_draw(self.angle, '', self.x, self.y)
+
+    def get_bb(self):
+        return self.x - self.R, self.y - self.R, self.x + self.R, self.y + self.R
 
 class BowWeapon(Sprite):
     def __init__(self):
