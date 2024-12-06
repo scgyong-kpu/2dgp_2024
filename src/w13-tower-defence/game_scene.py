@@ -10,7 +10,7 @@ canvas_width = 32 * tilesize # 1536 = 32 * 48
 canvas_height = 18 * tilesize # 864 = 18 * 48
 shows_object_count = True
 
-world = gfw.World(['bg', 'path', 'weapon', 'fly', 'controller'])
+world = gfw.World(['bg', 'path', 'weapon', 'bullet', 'fly', 'controller'])
 
 
 stage = 1
