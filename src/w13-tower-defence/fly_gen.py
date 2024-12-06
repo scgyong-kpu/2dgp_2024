@@ -50,6 +50,10 @@ class Fly(AnimSprite):
         index = self.get_anim_index()
         self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, self.angle, '', self.x, self.y, self.width, self.height)
 
+    def get_bb(self):
+        l,b,r,t = self.info.bbox
+        return self.x+l, self.y+b, self.x+r, self.y+t
+
     def update(self):
         self.x += self.dx * self.speed * gfw.frame_time
         self.y += self.dy * self.speed * gfw.frame_time

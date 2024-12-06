@@ -10,6 +10,7 @@ class Arrow(Sprite):
         self.speed = 100
         self.dx = self.speed * math.cos(self.angle)
         self.dy = self.speed * math.sin(self.angle)
+        self.radius = 15
         self.layer_index = gfw.top().world.layer.bullet
     def update(self):
         self.x += self.dx * gfw.frame_time
@@ -22,6 +23,9 @@ class Arrow(Sprite):
 
     def draw(self):
         self.image.composite_draw(self.angle, '', self.x, self.y)
+
+    def get_bb(self):
+        return self.x - self.radius, self.y - self.radius, self.x + self.radius, self.y + self.radius
 
 class BowWeapon(Sprite):
     def __init__(self):
