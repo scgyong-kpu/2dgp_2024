@@ -3,16 +3,17 @@ from gfw import *
 import random
 
 
-class Arrow(Sprite):
-    def __init__(self, bow):
-        super().__init__('res/weapon/arrow.png', bow.x, bow.y)
-        self.angle = bow.angle
-        self.speed = 200
-        self.power = 50
-        self.dx = self.speed * math.cos(self.angle)
-        self.dy = self.speed * math.sin(self.angle)
-        self.radius = 15
+class Bullet(AnimSprite):
+    def __init__(self, file, weapon, speed, power, radius):
+        super().__init__(file, weapon.x, weapon.y, 10)
+        self.angle = weapon.angle
+        self.speed = speed
+        self.power = power
+        self.radius = radius
+        self.dx = speed * math.cos(self.angle)
+        self.dy = speed * math.sin(self.angle)
         self.layer_index = gfw.top().world.layer.bullet
+
     def update(self):
         self.x += self.dx * gfw.frame_time
         self.y += self.dy * gfw.frame_time
@@ -28,9 +29,19 @@ class Arrow(Sprite):
     def get_bb(self):
         return self.x - self.radius, self.y - self.radius, self.x + self.radius, self.y + self.radius
 
-class BowWeapon(Sprite):
-    def __init__(self):
-        x, y = 500, 300
+class Arrow(Bullet):
+    def __init__(self, weapon):
+        super().__init__('res/weapon/arrow.png', weapon, speed=300, power=50, radius=15)
+
+class Weapon(Sprite):
+    def __init__(self, file, x, y, intitial_interval, bullet_class):
+        # x, y = 500, 300
+        super().__init__(file, x, y)
+        self.time = 0
+        self.angle = 0
+        self.interval = intitial_interval
+        self.bullet_class = bullet_class
+
         super().__init__('res/weapon/bow_1.png', x, y)
         self.time = 0
         self.interval = 1.0
@@ -61,4 +72,8 @@ class BowWeapon(Sprite):
         if enemy is not None:
             self.angle = math.atan2(enemy.y - self.y, enemy.x - self.x)
             # print(f'{fly=} {self.angle=:.2f}')
+
+class BowWeapon(Weapon):
+    def __init__(self):
+        super().__init__('res/weapon/bow_1.png', 500, 300, 2.0, Arrow)
 
