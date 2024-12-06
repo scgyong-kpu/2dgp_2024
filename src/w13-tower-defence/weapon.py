@@ -87,6 +87,13 @@ class SnowBall(Bullet):
     def explosion(self, enemy):
         return Explosion('res/weapon/bullet_snow_explosion.png', enemy.x, enemy.y, 9, 1)
 
+class FireBall(Bullet):
+    def __init__(self, weapon):
+        super().__init__('res/weapon/fireball.png', weapon, speed=160, power=80, radius=14)
+        self.splash = True
+    def explosion(self, enemy):
+        return Explosion('res/weapon/fireball_explosion.png', enemy.x, enemy.y + 20, 15, 1)
+
 class Weapon(Sprite):
     def __init__(self, file, x, y, intitial_interval, bullet_class):
         # x, y = 500, 300
@@ -124,8 +131,14 @@ class Weapon(Sprite):
 
 class BowWeapon(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/bow_1.png', 500, 300, 12.0, Arrow)
+        super().__init__('res/weapon/bow_1.png', 500, 300, 2.0, Arrow)
 
 class IceSword(Weapon):
     def __init__(self):
         super().__init__('res/weapon/ice_sword_1.png', 400, 600, 3.0, SnowBall)
+
+class FireThrower(Weapon):
+    def __init__(self):
+        super().__init__('res/weapon/fire_thrower.png', 500, 500, 6.0, FireBall)
+
+
