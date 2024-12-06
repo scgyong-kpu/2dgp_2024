@@ -10,6 +10,7 @@ tilesize = 48
 canvas_width = 32 * tilesize # 1536 = 32 * 48
 canvas_height = 18 * tilesize # 864 = 18 * 48
 shows_object_count = True
+shows_bounding_box = True
 
 world = gfw.World(['bg', 'path', 'weapon', 'bullet', 'fly', 'controller'])
 
