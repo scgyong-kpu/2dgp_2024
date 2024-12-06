@@ -4,6 +4,7 @@ import random
 
 
 class Bullet(AnimSprite):
+    SPLASH_DISTANCE_SQUARE = 100 ** 2
     def __init__(self, file, weapon, speed, power, radius):
         super().__init__(file, weapon.x, weapon.y, 10)
         self.angle = weapon.angle
@@ -12,6 +13,7 @@ class Bullet(AnimSprite):
         self.radius = radius
         self.dx = speed * math.cos(self.angle)
         self.dy = speed * math.sin(self.angle)
+        self.splash = False
         self.layer_index = gfw.top().world.layer.bullet
 
     def update(self):
@@ -32,12 +34,25 @@ class Bullet(AnimSprite):
 
     def check_collision(self):
         world = gfw.top().world
+        enemy = None
         for e in world.objects_at(world.layer.fly):
             if collides_box(e, self):
                 if e.hit(self.power):
                     world.remove(e)
                 world.remove(self)
+                enemy = e
                 break
+        
+        if enemy is None or not self.splash: return
+
+        for e in world.objects_at(world.layer.fly):
+            if e == enemy: continue
+            dist_sq = (self.x - e.x) ** 2 + (self.y - e.y) ** 2
+            if dist_sq < self.SPLASH_DISTANCE_SQUARE: 
+                power = self.power * (1 - dist_sq / self.SPLASH_DISTANCE_SQUARE)
+                print(f'{dist_sq=:.2f} distance={math.sqrt(dist_sq):.2f} {power=:.2f} {e=}')
+                if e.hit(power):
+                    world.remove(e)
 
 class Arrow(Bullet):
     def __init__(self, weapon):
@@ -46,6 +61,7 @@ class Arrow(Bullet):
 class SnowBall(Bullet):
     def __init__(self, weapon):
         super().__init__('res/weapon/bullet_snow.png', weapon, speed=200, power=60, radius=10)
+        self.splash = True
 
 class Weapon(Sprite):
     def __init__(self, file, x, y, intitial_interval, bullet_class):
@@ -84,7 +100,7 @@ class Weapon(Sprite):
 
 class BowWeapon(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/bow_1.png', 500, 300, 2.0, Arrow)
+        super().__init__('res/weapon/bow_1.png', 500, 300, 12.0, Arrow)
 
 class IceSword(Weapon):
     def __init__(self):
