@@ -7,7 +7,8 @@ class Arrow(Sprite):
     def __init__(self, bow):
         super().__init__('res/weapon/arrow.png', bow.x, bow.y)
         self.angle = bow.angle
-        self.speed = 100
+        self.speed = 200
+        self.power = 50
         self.dx = self.speed * math.cos(self.angle)
         self.dy = self.speed * math.sin(self.angle)
         self.radius = 15

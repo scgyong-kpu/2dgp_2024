@@ -55,6 +55,10 @@ class Fly(AnimSprite):
         gx, gy = self.x, self.y - 24
         self.gauge.draw(gx, gy, self.width - 28, self.life / self.max_life)
 
+    def hit(self, damage): #return True if dead
+        self.life -= damage
+        return self.life <= 0
+
     def get_bb(self):
         l,b,r,t = self.info.bbox
         return self.x+l, self.y+b, self.x+r, self.y+t
