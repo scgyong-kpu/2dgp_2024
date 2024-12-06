@@ -36,6 +36,7 @@ def enter():
     world.append(collision, world.layer.controller)
 
     world.append(BowWeapon(), world.layer.weapon)
+    world.append(IceSword(), world.layer.weapon)
 
 
 def exit():

@@ -24,7 +24,8 @@ class Bullet(AnimSprite):
             world.remove(self, world.layer.bullet)
 
     def draw(self):
-        self.image.composite_draw(self.angle, '', self.x, self.y)
+        index = self.get_anim_index()
+        self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, self.angle, '', self.x, self.y, self.width, self.height)
 
     def get_bb(self):
         return self.x - self.radius, self.y - self.radius, self.x + self.radius, self.y + self.radius
@@ -32,6 +33,10 @@ class Bullet(AnimSprite):
 class Arrow(Bullet):
     def __init__(self, weapon):
         super().__init__('res/weapon/arrow.png', weapon, speed=300, power=50, radius=15)
+
+class SnowBall(Bullet):
+    def __init__(self, weapon):
+        super().__init__('res/weapon/bullet_snow.png', weapon, speed=200, power=60, radius=10)
 
 class Weapon(Sprite):
     def __init__(self, file, x, y, intitial_interval, bullet_class):
@@ -41,11 +46,6 @@ class Weapon(Sprite):
         self.angle = 0
         self.interval = intitial_interval
         self.bullet_class = bullet_class
-
-        super().__init__('res/weapon/bow_1.png', x, y)
-        self.time = 0
-        self.interval = 1.0
-        self.angle = 1.0 # 57.3 degree
     def update(self):
         self.find_neareast_enemy()
         self.time += gfw.frame_time
@@ -56,7 +56,7 @@ class Weapon(Sprite):
         self.image.composite_draw(self.angle, '', self.x, self.y)
 
     def fire(self):
-        arrow = Arrow(self)
+        arrow = self.bullet_class(self)
         world = gfw.top().world
         world.append(arrow)
 
@@ -77,3 +77,6 @@ class BowWeapon(Weapon):
     def __init__(self):
         super().__init__('res/weapon/bow_1.png', 500, 300, 2.0, Arrow)
 
+class IceSword(Weapon):
+    def __init__(self):
+        super().__init__('res/weapon/ice_sword_1.png', 400, 600, 3.0, SnowBall)
