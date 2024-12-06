@@ -29,6 +29,9 @@ class Fly(AnimSprite):
         self.info = info
         self.speed = random.uniform(*info.speed)
         self.path_index = 1
+        self.max_life = info.life
+        self.life = self.max_life
+        self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
         self.angle = 0
         self.set_target_position()
 
@@ -49,6 +52,8 @@ class Fly(AnimSprite):
     def draw(self):
         index = self.get_anim_index()
         self.image.clip_composite_draw(index * self.width, 0, self.width, self.height, self.angle, '', self.x, self.y, self.width, self.height)
+        gx, gy = self.x, self.y - 24
+        self.gauge.draw(gx, gy, self.width - 28, self.life / self.max_life)
 
     def get_bb(self):
         l,b,r,t = self.info.bbox
