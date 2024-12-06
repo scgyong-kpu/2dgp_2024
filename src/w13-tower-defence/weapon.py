@@ -30,6 +30,15 @@ class Bullet(AnimSprite):
     def get_bb(self):
         return self.x - self.radius, self.y - self.radius, self.x + self.radius, self.y + self.radius
 
+    def check_collision(self):
+        world = gfw.top().world
+        for e in world.objects_at(world.layer.fly):
+            if collides_box(e, self):
+                if e.hit(self.power):
+                    world.remove(e)
+                world.remove(self)
+                break
+
 class Arrow(Bullet):
     def __init__(self, weapon):
         super().__init__('res/weapon/arrow.png', weapon, speed=300, power=50, radius=15)

@@ -16,7 +16,7 @@ FLY_TYPES = [
     Info(file='res/fly_5.png', fps=1, speed=(30,40), rate=35, bbox=(-20,-20,20,20), life=80),
 ]
 
-GEN_INTERVAL = 1.0
+GEN_INTERVAL = 2.0
 class Fly(AnimSprite):
     def __init__(self, info):
         # x = random.randint(100, get_canvas_width() - 100)
