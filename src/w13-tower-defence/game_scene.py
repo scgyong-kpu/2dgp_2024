@@ -3,13 +3,14 @@ from gfw import *
 import stage_path
 import fly_gen
 import pause_scene
+from weapon import *
 
 tilesize = 48
 canvas_width = 32 * tilesize # 1536 = 32 * 48
 canvas_height = 18 * tilesize # 864 = 18 * 48
 shows_object_count = True
 
-world = gfw.World(['bg', 'path', 'fly', 'controller'])
+world = gfw.World(['bg', 'path', 'weapon', 'fly', 'controller'])
 
 
 stage = 1
@@ -28,6 +29,8 @@ def enter():
 
     fly_gen.init()
     world.append(fly_gen, world.layer.controller)
+
+    world.append(BowWeapon(), world.layer.weapon)
 
 
 def exit():
