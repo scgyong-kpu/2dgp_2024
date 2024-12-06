@@ -14,6 +14,7 @@ class Bullet(AnimSprite):
         self.dx = speed * math.cos(self.angle)
         self.dy = speed * math.sin(self.angle)
         self.splash = False
+        self.stuns = False
         self.layer_index = gfw.top().world.layer.bullet
 
     def update(self):
@@ -42,6 +43,9 @@ class Bullet(AnimSprite):
             if collides_box(e, self):
                 if e.hit(self.power):
                     world.remove(e)
+                elif self.stuns: 
+                    e.make_stunned(1)
+                    enemy = e
                 world.remove(self)
                 enemy = e
                 break
@@ -59,9 +63,9 @@ class Bullet(AnimSprite):
                 print(f'{dist_sq=:.2f} distance={math.sqrt(dist_sq):.2f} {power=:.2f} {e=}')
                 if e.hit(power):
                     world.remove(e)
-                # elif self.stuns:
-                #     duration = max(0.5, power / self.power)
-                #     e.make_stunned(duration)
+                elif self.stuns:
+                    duration = max(0.5, power / self.power)
+                    e.make_stunned(duration)
 
 class Explosion(AnimSprite):
     def __init__(self, file, x, y, fps, duration):
@@ -84,6 +88,7 @@ class SnowBall(Bullet):
     def __init__(self, weapon):
         super().__init__('res/weapon/bullet_snow.png', weapon, speed=200, power=60, radius=10)
         self.splash = True
+        self.stuns = True
     def explosion(self, enemy):
         return Explosion('res/weapon/bullet_snow_explosion.png', enemy.x, enemy.y, 9, 1)
 
