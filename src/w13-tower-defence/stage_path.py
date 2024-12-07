@@ -89,6 +89,15 @@ def can_install_at(x, y):
     print(f'{(x,y)=} {(x,y) in install_positions=} {len(install_positions)=} ')
     return (x, y) in install_positions
 
+def install_at(x, y, size):
+    x1, x2 = x - size, x + size
+    y1, y2 = y - size, y + size
+    for i in range(len(install_positions)-1, -1, -1):
+        px,py = install_positions[i]
+        if x1 < px < x2 and y1 < py < y2:
+            install_positions.pop(i)
+            print(f'{(px,py)},',end='')
+    print('--')
 def spawn_pos():
     return path_coords[0]
 

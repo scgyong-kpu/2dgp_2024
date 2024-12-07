@@ -61,7 +61,7 @@ class Bullet(AnimSprite):
             dist_sq = (enemy.x - e.x) ** 2 + (enemy.y - e.y) ** 2
             if dist_sq < self.SPLASH_DISTANCE_SQUARE: 
                 power = self.power * (1 - dist_sq / self.SPLASH_DISTANCE_SQUARE)
-                print(f'{dist_sq=:.2f} distance={math.sqrt(dist_sq):.2f} {power=:.2f} {e=}')
+                # print(f'{dist_sq=:.2f} distance={math.sqrt(dist_sq):.2f} {power=:.2f} {e=}')
                 if e.hit(power):
                     world.remove(e)
                 elif self.stuns:
@@ -122,6 +122,7 @@ class Weapon(Sprite):
             self.x, self.y = x, y
     def install(self):
         if stage_path.can_install_at(self.x, self.y):
+            stage_path.install_at(self.x, self.y, self.width)
             self.enabled = True
             return True
         return False
