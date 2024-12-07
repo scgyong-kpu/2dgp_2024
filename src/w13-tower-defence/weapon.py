@@ -124,7 +124,7 @@ class Weapon(Sprite):
             self.x, self.y = x, y
     def install(self):
         if stage_path.can_install_at(self.x, self.y):
-            stage_path.install_at(self.x, self.y, self.width)
+            stage_path.install_at(self.x, self.y, 2 * self.width)
             self.enabled = True
             return True
         return False

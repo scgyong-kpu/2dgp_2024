@@ -84,13 +84,13 @@ def search_install_positions():
             tile = layer.data[y * layer.width + x]
             if tile == TILE_GRASS:
                 install_positions.append(tile_to_coord(x, (layer.height - y - 1)))
-    print(f'{len(install_positions)=}')
+    # print(f'{len(install_positions)=}')
 
 def any_install_position():
     return random.choice(install_positions)
     
 def can_install_at(x, y):
-    print(f'{(x,y)=} {(x,y) in install_positions=} {len(install_positions)=} ')
+    # print(f'{(x,y)=} {(x,y) in install_positions=} {len(install_positions)=} ')
     return (x, y) in install_positions
 
 def install_at(x, y, size):
@@ -100,8 +100,8 @@ def install_at(x, y, size):
         px,py = install_positions[i]
         if x1 < px < x2 and y1 < py < y2:
             install_positions.pop(i)
-            print(f'{(px,py)},',end='')
-    print('--')
+            # print(f'{(px,py)},',end='')
+    # print('--')
 def spawn_pos():
     return path_coords[0]
 
