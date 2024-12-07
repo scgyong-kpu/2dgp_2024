@@ -58,6 +58,10 @@ def handle_event(e):
             return True
         if e.key in { SDLK_1, SDLK_2, SDLK_3, SDLK_4 }:
             num = e.key - SDLK_1
+            if weapon_to_install is not None:
+                world.remove(weapon_to_install)
+                weapon_to_install = None
+                return
             weapon_to_install = weapon.get_weapon(num)
             if weapon_to_install is not None: 
                 world.append(weapon_to_install)
