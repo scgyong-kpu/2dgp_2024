@@ -69,8 +69,9 @@ def handle_event(e):
     elif e.type == SDL_MOUSEBUTTONDOWN:
         if e.button == SDL_BUTTON_LEFT:
             if weapon_to_install is not None:
-                weapon_to_install.install()
-                weapon_to_install = None
+                installed = weapon_to_install.install()
+                if installed:
+                    weapon_to_install = None
 
 if __name__ == '__main__':
     gfw.start_main_module()

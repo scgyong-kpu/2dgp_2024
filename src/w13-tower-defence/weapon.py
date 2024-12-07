@@ -121,7 +121,10 @@ class Weapon(Sprite):
         if stage_path.can_install_at(x, y):
             self.x, self.y = x, y
     def install(self):
-        self.enabled = True
+        if stage_path.can_install_at(self.x, self.y):
+            self.enabled = True
+            return True
+        return False
     def update(self):
         if not self.enabled: return
         self.find_neareast_enemy()
