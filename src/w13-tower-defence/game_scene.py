@@ -54,7 +54,7 @@ weapon_to_install = None
 selected_weapon = None
 
 def handle_event(e):
-    global weapon_to_install
+    global weapon_to_install, selected_weapon
     if e.type == SDL_KEYDOWN:
         if e.key == SDLK_ESCAPE:
             gfw.push(pause_scene)
@@ -64,6 +64,7 @@ def handle_event(e):
             pos = None
             if weapon_to_install is not None:
                 world.remove(weapon_to_install)
+                world.remove(map_path, world.layer.path)
                 pos = weapon_to_install.x, weapon_to_install.y
                 # weapon_to_install = None
                 # return
@@ -71,11 +72,14 @@ def handle_event(e):
             if weapon_to_install is not None: 
                 if pos is not None:
                     weapon_to_install.x, weapon_to_install.y = pos
-                else:
-                    world.append(map_path, world.layer.path)
                 world.append(weapon_to_install)
-            else:
-                world.remove(map_path, world.layer.path)
+                world.append(map_path, world.layer.path)
+
+                if selected_weapon is not None:
+                    selected_weapon.select(False)
+                selected_weapon = weapon_to_install
+                selected_weapon.select(True)
+
             return
     elif e.type == SDL_MOUSEMOTION:
         if weapon_to_install is not None:
@@ -89,7 +93,6 @@ def handle_event(e):
                     weapon_to_install = None
                     world.remove(map_path, world.layer.path)
                 return
-            global selected_weapon
             if selected_weapon is not None:
                 selected_weapon.select(False)
             x, y = gfw.mouse_xy(e)
