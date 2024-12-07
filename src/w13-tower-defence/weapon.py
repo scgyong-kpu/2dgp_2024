@@ -115,6 +115,7 @@ class Weapon(Sprite):
         self.bullet_class = bullet_class
         self.layer_index = gfw.top().world.layer.weapon
         self.range = range
+        self.selected = False
     def move_to(self, x, y):
         main_scene = gfw.top()
         tsize = main_scene.bg.tilesize
@@ -122,6 +123,8 @@ class Weapon(Sprite):
         y = (int(y / tsize) + 0.5) * tsize
         if stage_path.can_install_at(x, y):
             self.x, self.y = x, y
+    def select(self, selected):
+        self.selected = selected
     def install(self):
         if stage_path.can_install_at(self.x, self.y):
             stage_path.install_at(self.x, self.y, 2 * self.width)
@@ -136,8 +139,9 @@ class Weapon(Sprite):
             self.time = 0
             self.fire()
     def draw(self):
-        size = 2 * self.range
-        self.range_image.draw(self.x, self.y, size, size)
+        if self.selected:
+            size = 2 * self.range
+            self.range_image.draw(self.x, self.y, size, size)
         self.image.composite_draw(self.angle, '', self.x, self.y)
 
     def fire(self):

@@ -51,6 +51,7 @@ def resume():
     print('[main.resume()]')
 
 weapon_to_install = None
+selected_weapon = None
 
 def handle_event(e):
     global weapon_to_install
@@ -87,6 +88,16 @@ def handle_event(e):
                 if installed:
                     weapon_to_install = None
                     world.remove(map_path, world.layer.path)
+                return
+            global selected_weapon
+            if selected_weapon is not None:
+                selected_weapon.select(False)
+            x, y = gfw.mouse_xy(e)
+            for w in world.objects_at(world.layer.weapon):
+                if w.contains_xy(x, y):
+                    selected_weapon = w
+                    selected_weapon.select(True)
+                    break
 
 if __name__ == '__main__':
     gfw.start_main_module()
