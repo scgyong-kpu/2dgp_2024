@@ -146,11 +146,12 @@ class Weapon(Sprite):
         world.append(arrow)
 
     def find_neareast_enemy(self):
+        max_dsq = self.range ** 2
         world = gfw.top().world
         min_dsq, enemy = float('inf'), None
         for fly in world.objects_at(world.layer.fly):
             dsq = (fly.x - self.x) ** 2 + (fly.y - self.y) ** 2
-            if min_dsq > dsq:
+            if min_dsq > dsq and dsq <= max_dsq:
                 min_dsq, enemy = dsq, fly
                 # print(f'{dsq=:-10.2f} {fly=}')
 
