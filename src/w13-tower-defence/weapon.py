@@ -104,7 +104,7 @@ class FireBall(Bullet):
         return Explosion('res/weapon/fireball_explosion.png', x, y + 20, 15, 1)
 
 class Weapon(Sprite):
-    def __init__(self, file, intitial_interval, bullet_class):
+    def __init__(self, file, intitial_interval, range, bullet_class):
         x, y = stage_path.any_install_position()
         super().__init__(file, x, y)
         self.range_image = gfw.image.load('res/weapon/range.png')
@@ -114,6 +114,7 @@ class Weapon(Sprite):
         self.interval = intitial_interval
         self.bullet_class = bullet_class
         self.layer_index = gfw.top().world.layer.weapon
+        self.range = range
     def move_to(self, x, y):
         main_scene = gfw.top()
         tsize = main_scene.bg.tilesize
@@ -135,7 +136,8 @@ class Weapon(Sprite):
             self.time -= self.interval
             self.fire()
     def draw(self):
-        self.range_image.draw(self.x, self.y, 200, 200)
+        size = 2 * self.range
+        self.range_image.draw(self.x, self.y, size, size)
         self.image.composite_draw(self.angle, '', self.x, self.y)
 
     def fire(self):
@@ -158,15 +160,15 @@ class Weapon(Sprite):
 
 class BowWeapon(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/bow_1.png', 2.0, Arrow)
+        super().__init__('res/weapon/bow_1.png', 2.0, 300, Arrow)
 
 class IceSword(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/ice_sword_1.png', 3.0, SnowBall)
+        super().__init__('res/weapon/ice_sword_1.png', 3.0, 400, SnowBall)
 
 class FireThrower(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/fire_thrower.png', 6.0, FireBall)
+        super().__init__('res/weapon/fire_thrower.png', 6.0, 500, FireBall)
 
 WEAPONS = [
     BowWeapon, IceSword, FireThrower
