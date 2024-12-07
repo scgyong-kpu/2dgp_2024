@@ -66,6 +66,8 @@ class Bullet(AnimSprite):
                 elif self.stuns:
                     duration = max(0.5, power / self.power)
                     e.make_stunned(duration)
+    def pos_between(self, other):
+        return (self.x + other.x) / 2, (self.y + other.y) / 2
 
 class Explosion(AnimSprite):
     def __init__(self, file, x, y, fps, duration):
@@ -90,14 +92,15 @@ class SnowBall(Bullet):
         self.splash = True
         self.stuns = True
     def explosion(self, enemy):
-        return Explosion('res/weapon/bullet_snow_explosion.png', enemy.x, enemy.y, 9, 1)
+        return Explosion('res/weapon/bullet_snow_explosion.png', *self.pos_between(enemy), 9, 1)
 
 class FireBall(Bullet):
     def __init__(self, weapon):
         super().__init__('res/weapon/fireball.png', weapon, speed=160, power=80, radius=14)
         self.splash = True
     def explosion(self, enemy):
-        return Explosion('res/weapon/fireball_explosion.png', enemy.x, enemy.y + 20, 15, 1)
+        x, y = self.pos_between(enemy)
+        return Explosion('res/weapon/fireball_explosion.png', x, y + 20, 15, 1)
 
 class Weapon(Sprite):
     def __init__(self, file, x, y, intitial_interval, bullet_class):
