@@ -106,11 +106,13 @@ class Weapon(Sprite):
     def __init__(self, file, x, y, intitial_interval, bullet_class):
         # x, y = 500, 300
         super().__init__(file, x, y)
+        self.enabled = False
         self.time = 0
         self.angle = 0
         self.interval = intitial_interval
         self.bullet_class = bullet_class
     def update(self):
+        if not self.enabled: return
         self.find_neareast_enemy()
         self.time += gfw.frame_time
         if self.time >= self.interval:

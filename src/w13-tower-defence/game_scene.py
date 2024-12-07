@@ -50,13 +50,14 @@ def resume():
     print('[main.resume()]')
 
 def handle_event(e):
-    if e.type == SDL_KEYDOWN and e.key == SDLK_1:
-        print(world.objects)
-        print(bg.tmap)
-        return
-    if e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE:
-        gfw.push(pause_scene)
-        return True
+    if e.type == SDL_KEYDOWN:
+        if e.key == SDLK_ESCAPE:
+            gfw.push(pause_scene)
+            return True
+        if e.key in { SDLK_1, SDLK_2, SDLK_3 }:
+            num = e.key - SDLK_1 + 1
+            print(f'{num=}')
+            return
 
 if __name__ == '__main__':
     gfw.start_main_module()
