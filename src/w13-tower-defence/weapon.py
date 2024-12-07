@@ -113,6 +113,10 @@ class Weapon(Sprite):
         self.bullet_class = bullet_class
         self.layer_index = gfw.top().world.layer.weapon
     def move_to(self, x, y):
+        main_scene = gfw.top()
+        tsize = main_scene.bg.tilesize
+        x = (int(x / tsize) + 0.5) * tsize
+        y = (int(y / tsize) + 0.5) * tsize
         self.x, self.y = x, y
     def install(self):
         self.enabled = True
