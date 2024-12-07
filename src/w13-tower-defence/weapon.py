@@ -112,6 +112,8 @@ class Weapon(Sprite):
         self.interval = intitial_interval
         self.bullet_class = bullet_class
         self.layer_index = gfw.top().world.layer.weapon
+    def install(self):
+        self.enabled = True
     def update(self):
         if not self.enabled: return
         self.find_neareast_enemy()

@@ -68,6 +68,11 @@ def handle_event(e):
             x, y = gfw.mouse_xy(e)
             weapon_to_install.x = x
             weapon_to_install.y = y
+    elif e.type == SDL_MOUSEBUTTONDOWN:
+        if e.button == SDL_BUTTON_LEFT:
+            if weapon_to_install is not None:
+                weapon_to_install.install()
+                weapon_to_install = None
 
 if __name__ == '__main__':
     gfw.start_main_module()
