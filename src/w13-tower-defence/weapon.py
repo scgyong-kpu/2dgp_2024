@@ -107,6 +107,7 @@ class Weapon(Sprite):
     def __init__(self, file, intitial_interval, bullet_class):
         x, y = stage_path.any_install_position()
         super().__init__(file, x, y)
+        self.range_image = gfw.image.load('res/weapon/range.png')
         self.enabled = False
         self.time = 0
         self.angle = 0
@@ -134,6 +135,7 @@ class Weapon(Sprite):
             self.time -= self.interval
             self.fire()
     def draw(self):
+        self.range_image.draw(self.x, self.y, 200, 200)
         self.image.composite_draw(self.angle, '', self.x, self.y)
 
     def fire(self):
