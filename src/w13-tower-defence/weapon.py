@@ -130,10 +130,10 @@ class Weapon(Sprite):
         return False
     def update(self):
         if not self.enabled: return
-        self.find_neareast_enemy()
         self.time += gfw.frame_time
-        if self.time >= self.interval:
-            self.time -= self.interval
+        found = self.find_neareast_enemy()
+        if found and self.time >= self.interval:
+            self.time = 0
             self.fire()
     def draw(self):
         size = 2 * self.range
@@ -157,7 +157,9 @@ class Weapon(Sprite):
 
         if enemy is not None:
             self.angle = math.atan2(enemy.y - self.y, enemy.x - self.x)
-            # print(f'{fly=} {self.angle=:.2f}')
+            return True
+
+        return False
 
 class BowWeapon(Weapon):
     def __init__(self):
