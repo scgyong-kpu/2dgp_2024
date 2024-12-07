@@ -4,7 +4,7 @@ import stage_path
 import fly_gen
 import collision
 import pause_scene
-from weapon import *
+import weapon
 
 tilesize = 48
 canvas_width = 32 * tilesize # 1536 = 32 * 48
@@ -37,7 +37,7 @@ def enter():
 
     # world.append(BowWeapon(), world.layer.weapon)
     # world.append(IceSword(), world.layer.weapon)
-    world.append(FireThrower(), world.layer.weapon)
+    # world.append(FireThrower(), world.layer.weapon)
 
 
 def exit():
@@ -54,9 +54,11 @@ def handle_event(e):
         if e.key == SDLK_ESCAPE:
             gfw.push(pause_scene)
             return True
-        if e.key in { SDLK_1, SDLK_2, SDLK_3 }:
-            num = e.key - SDLK_1 + 1
-            print(f'{num=}')
+        if e.key in { SDLK_1, SDLK_2, SDLK_3, SDLK_4 }:
+            num = e.key - SDLK_1
+            weapon_to_install = weapon.get_weapon(num)
+            print(f'{num=} {weapon_to_install=}')
+            if weapon_to_install is None: return
             return
 
 if __name__ == '__main__':

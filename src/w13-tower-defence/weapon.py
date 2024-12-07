@@ -111,6 +111,7 @@ class Weapon(Sprite):
         self.angle = 0
         self.interval = intitial_interval
         self.bullet_class = bullet_class
+        self.layer_index = gfw.top().world.layer.weapon
     def update(self):
         if not self.enabled: return
         self.find_neareast_enemy()
@@ -151,4 +152,14 @@ class FireThrower(Weapon):
     def __init__(self):
         super().__init__('res/weapon/fire_thrower.png', 500, 500, 6.0, FireBall)
 
+WEAPONS = [
+    BowWeapon, IceSword, FireThrower
+]
+
+def get_weapon(type):
+    try:
+        clazz = WEAPONS[type]
+        return clazz()
+    except:
+        return None
 
