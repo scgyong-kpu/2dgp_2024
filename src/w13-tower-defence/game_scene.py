@@ -58,12 +58,16 @@ def handle_event(e):
             return True
         if e.key in { SDLK_1, SDLK_2, SDLK_3, SDLK_4 }:
             num = e.key - SDLK_1
+            pos = None
             if weapon_to_install is not None:
                 world.remove(weapon_to_install)
-                weapon_to_install = None
-                return
+                pos = weapon_to_install.x, weapon_to_install.y
+                # weapon_to_install = None
+                # return
             weapon_to_install = weapon.get_weapon(num)
             if weapon_to_install is not None: 
+                if pos is not None:
+                    weapon_to_install.x, weapon_to_install.y = pos
                 world.append(weapon_to_install)
             return
     elif e.type == SDL_MOUSEMOTION:
