@@ -112,6 +112,8 @@ class Weapon(Sprite):
         self.interval = intitial_interval
         self.bullet_class = bullet_class
         self.layer_index = gfw.top().world.layer.weapon
+    def move_to(self, x, y):
+        self.x, self.y = x, y
     def install(self):
         self.enabled = True
     def update(self):
