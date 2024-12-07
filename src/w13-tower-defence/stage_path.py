@@ -1,3 +1,4 @@
+import random
 import gfw
 from astar import AStarPath
 
@@ -85,6 +86,9 @@ def search_install_positions():
                 install_positions.append(tile_to_coord(x, (layer.height - y - 1)))
     print(f'{len(install_positions)=}')
 
+def any_install_position():
+    return random.choice(install_positions)
+    
 def can_install_at(x, y):
     print(f'{(x,y)=} {(x,y) in install_positions=} {len(install_positions)=} ')
     return (x, y) in install_positions

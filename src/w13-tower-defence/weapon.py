@@ -104,8 +104,8 @@ class FireBall(Bullet):
         return Explosion('res/weapon/fireball_explosion.png', x, y + 20, 15, 1)
 
 class Weapon(Sprite):
-    def __init__(self, file, x, y, intitial_interval, bullet_class):
-        # x, y = 500, 300
+    def __init__(self, file, intitial_interval, bullet_class):
+        x, y = stage_path.any_install_position()
         super().__init__(file, x, y)
         self.enabled = False
         self.time = 0
@@ -156,15 +156,15 @@ class Weapon(Sprite):
 
 class BowWeapon(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/bow_1.png', 500, 300, 2.0, Arrow)
+        super().__init__('res/weapon/bow_1.png', 2.0, Arrow)
 
 class IceSword(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/ice_sword_1.png', 400, 600, 3.0, SnowBall)
+        super().__init__('res/weapon/ice_sword_1.png', 3.0, SnowBall)
 
 class FireThrower(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/fire_thrower.png', 500, 500, 6.0, FireBall)
+        super().__init__('res/weapon/fire_thrower.png', 6.0, FireBall)
 
 WEAPONS = [
     BowWeapon, IceSword, FireThrower
@@ -174,6 +174,7 @@ def get_weapon(type):
     try:
         clazz = WEAPONS[type]
         return clazz()
-    except:
+    except Exception as e:
+        print(e)
         return None
 
