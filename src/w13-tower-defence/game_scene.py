@@ -25,8 +25,10 @@ def enter():
     world.append(bg, world.layer.bg)
 
     stage_path.set_tile_bg(bg)
+
+    global map_path
     map_path = stage_path.path_shower()
-    world.append(map_path, world.layer.path)
+    # world.append(map_path, world.layer.path)
 
     fly_gen.init()
     world.append(fly_gen, world.layer.controller)
@@ -68,7 +70,11 @@ def handle_event(e):
             if weapon_to_install is not None: 
                 if pos is not None:
                     weapon_to_install.x, weapon_to_install.y = pos
+                else:
+                    world.append(map_path, world.layer.path)
                 world.append(weapon_to_install)
+            else:
+                world.remove(map_path, world.layer.path)
             return
     elif e.type == SDL_MOUSEMOTION:
         if weapon_to_install is not None:
@@ -80,6 +86,7 @@ def handle_event(e):
                 installed = weapon_to_install.install()
                 if installed:
                     weapon_to_install = None
+                    world.remove(map_path, world.layer.path)
 
 if __name__ == '__main__':
     gfw.start_main_module()
