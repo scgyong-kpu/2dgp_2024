@@ -19,7 +19,6 @@ stage = 1
 # stage = 2
 # stage = 3
 
-
 def enter():
     global bg
     bg = MapBackground(f'res/map/stage_{stage:02d}.json', tilesize=tilesize, wraps=False)
@@ -49,7 +48,10 @@ def pause():
 def resume():
     print('[main.resume()]')
 
+weapon_to_install = None
+
 def handle_event(e):
+    global weapon_to_install
     if e.type == SDL_KEYDOWN:
         if e.key == SDLK_ESCAPE:
             gfw.push(pause_scene)
@@ -59,7 +61,13 @@ def handle_event(e):
             weapon_to_install = weapon.get_weapon(num)
             print(f'{num=} {weapon_to_install=}')
             if weapon_to_install is None: return
+            world.append(weapon_to_install)
             return
+    elif e.type == SDL_MOUSEMOTION:
+        if weapon_to_install is not None:
+            x, y = gfw.mouse_xy(e)
+            weapon_to_install.x = x
+            weapon_to_install.y = y
 
 if __name__ == '__main__':
     gfw.start_main_module()
