@@ -1,5 +1,6 @@
 from pico2d import * 
 from gfw import *
+import stage_path
 import random
 
 
@@ -117,7 +118,8 @@ class Weapon(Sprite):
         tsize = main_scene.bg.tilesize
         x = (int(x / tsize) + 0.5) * tsize
         y = (int(y / tsize) + 0.5) * tsize
-        self.x, self.y = x, y
+        if stage_path.can_install_at(x, y):
+            self.x, self.y = x, y
     def install(self):
         self.enabled = True
     def update(self):
