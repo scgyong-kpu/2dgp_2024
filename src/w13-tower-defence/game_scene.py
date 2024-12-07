@@ -25,8 +25,8 @@ def enter():
     world.append(bg, world.layer.bg)
 
     stage_path.set_tile_bg(bg)
-    # map_path = stage_path.path_shower()
-    # world.append(map_path, world.layer.path)
+    map_path = stage_path.path_shower()
+    world.append(map_path, world.layer.path)
 
     fly_gen.init()
     world.append(fly_gen, world.layer.controller)

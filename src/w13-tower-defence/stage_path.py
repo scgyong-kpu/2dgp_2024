@@ -4,6 +4,8 @@ from astar import AStarPath
 SHORTENS = True
 # SHORTENS = False
 
+TILE_GRASS = 13
+
 class MapPath(AStarPath):
     def __init__(self, start_tuple, end_tuple, bg):
         super().__init__(start_tuple, end_tuple)
@@ -27,13 +29,20 @@ class PathDraw:
 
     def draw(self):
         size = self.bg.tilesize
-        for tx, ty in path_coords:
+        for tx, ty in self.path_coords:
             x, y = map_bg.to_screen(tx, ty)
             self.image.draw(x, y, size, size)
+
+def tile_to_coord(x, y=None):
+    if y is None: 
+        x, y = x
+    return (x + 0.5) * map_bg.tilesize,  (y + 0.5) * map_bg.tilesize
 
 def set_tile_bg(bg):
     global map_bg
     map_bg = bg
+
+    search_install_positions()
 
     layer = bg.tmap.layers[1]
 
@@ -43,11 +52,6 @@ def set_tile_bg(bg):
 
     global a_star
     a_star = MapPath(start_pos, end_pos, bg)
-
-    def tile_to_coord(x, y=None):
-        if y is None: 
-            x, y = x
-        return (x + 0.5) * map_bg.tilesize,  (y + 0.5) * map_bg.tilesize
 
     global path_coords
     tiles = a_star.find_tiles()
@@ -70,8 +74,19 @@ def set_tile_bg(bg):
         if not in_line:
             path_coords.append(tile_to_coord(x,y))
 
+def search_install_positions():
+    global install_positions
+    install_positions = []
+    layer = map_bg.tmap.layers[0]
+    for y in range(layer.height):
+        for x in range(layer.width):
+            tile = layer.data[y * layer.width + x]
+            if tile == TILE_GRASS:
+                install_positions.append(tile_to_coord(x, (layer.height - y - 1)))
+    print(f'{len(install_positions)=}')
+
 def spawn_pos():
     return path_coords[0]
 
 def path_shower():
-    return PathDraw(map_bg, path_coords)
+    return PathDraw(map_bg, install_positions)
