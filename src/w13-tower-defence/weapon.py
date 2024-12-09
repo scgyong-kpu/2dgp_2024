@@ -2,7 +2,7 @@ from pico2d import *
 from gfw import *
 import stage_path
 import random
-import cfg
+from cfg import cfg
 
 class Bullet(AnimSprite):
     SPLASH_DISTANCE_SQUARE = 100 ** 2

@@ -1,3 +1,5 @@
+import pickle
+
 class Info:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
@@ -40,3 +42,20 @@ stages = [
         map=1, interval=(3.0, 1.0), gold=300,
     ),
 ]
+
+FILENAME = 'cfg.pickle'
+
+try:
+    with open(FILENAME, 'rb') as f:
+        cfg = pickle.load(f)
+    print(f'{cfg.weapon.arrow.range=}')
+except Exception as e:
+    cfg = Info(weapon=weapon, stages=stages)
+    print(f'{FILENAME} not open: {e}')
+
+def save():
+    cfg = Info(weapon=weapon, stages=stages)
+    with open(FILENAME, 'wb') as f:
+        pickle.dump(cfg, f)
+
+
