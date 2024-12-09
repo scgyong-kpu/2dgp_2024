@@ -104,6 +104,8 @@ class FireBall(Bullet):
         return Explosion('res/weapon/fireball_explosion.png', x, y + 20, 15, 1)
 
 class Weapon(Sprite):
+    selected = None
+    installing = None
     def __init__(self, file, intitial_interval, range, bullet_class):
         x, y = stage_path.any_install_position()
         super().__init__(file, x, y)
@@ -181,11 +183,59 @@ WEAPONS = [
     BowWeapon, IceSword, FireThrower
 ]
 
-def get_weapon(type):
+
+def get_candidate_ready(type):
+    world = gfw.top().world
+    if Weapon.selected is not None:
+        Weapon.selected.select(False)
+        Weapon.selected = None
+    if Weapon.installing is not None:
+        pos = Weapon.installing.x, Weapon.installing.y
+        world.remove(Weapon.installing, world.layer.weapon)
+        world.clear_at(world.layer.path)
+    else:
+        pos = stage_path.any_install_position()
+
     try:
         clazz = WEAPONS[type]
-        return clazz()
+        Weapon.installing = clazz()
     except Exception as e:
-        print(e)
-        return None
+        Weapon.installing = None
+        return
+
+    Weapon.installing.x, Weapon.installing.y = pos
+    world.append(Weapon.installing)
+    world.append(stage_path.path_shower(), world.layer.path)
+    Weapon.selected = Weapon.installing
+    Weapon.selected.select(True)
+
+def move_candidate(x, y):
+    if Weapon.installing is not None:
+        Weapon.installing.move_to(x, y)
+
+def install_candidate():
+    installed = False
+    if Weapon.installing is not None:
+        installed = Weapon.installing.install()
+        if installed:
+            Weapon.installing = None
+            world = gfw.top().world
+            world.clear_at(world.layer.path)
+    return installed
+
+def select_weapon(x, y):
+    if Weapon.selected is not None:
+        Weapon.selected.select(False)
+    world = gfw.top().world
+    for w in world.objects_at(world.layer.weapon):
+        if w.contains_xy(x, y):
+            Weapon.selected = w
+            Weapon.selected.select(True)
+            break
+
+def on_click(x, y):
+    if install_candidate():
+        return
+    select_weapon(x, y)
+
 
