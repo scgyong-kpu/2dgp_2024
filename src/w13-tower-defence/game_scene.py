@@ -56,6 +56,11 @@ def handle_event(e):
             num = e.key - SDLK_1
             weapon.get_candidate_ready(num)
             return True
+        if e.key == SDLK_u:
+            weapon.upgrade()
+            return True
+        if e.key == SDLK_BACKSPACE:
+            weapon.uninstall()
     elif e.type == SDL_MOUSEMOTION:
         weapon.move_candidate(*gfw.mouse_xy(e))
         return True

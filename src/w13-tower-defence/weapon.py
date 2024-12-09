@@ -6,11 +6,11 @@ import random
 
 class Bullet(AnimSprite):
     SPLASH_DISTANCE_SQUARE = 100 ** 2
-    def __init__(self, file, weapon, speed, power, radius):
+    def __init__(self, file, weapon, speed, radius):
         super().__init__(file, weapon.x, weapon.y, 10)
         self.angle = weapon.angle
         self.speed = speed
-        self.power = power
+        self.power = weapon.power
         self.radius = radius
         self.dx = speed * math.cos(self.angle)
         self.dy = speed * math.sin(self.angle)
@@ -85,11 +85,11 @@ class Explosion(AnimSprite):
 
 class Arrow(Bullet):
     def __init__(self, weapon):
-        super().__init__('res/weapon/arrow.png', weapon, speed=300, power=50, radius=15)
+        super().__init__('res/weapon/arrow.png', weapon, speed=300, radius=15)
 
 class SnowBall(Bullet):
     def __init__(self, weapon):
-        super().__init__('res/weapon/bullet_snow.png', weapon, speed=200, power=60, radius=10)
+        super().__init__('res/weapon/bullet_snow.png', weapon, speed=200, radius=10)
         self.splash = True
         self.stuns = True
     def explosion(self, enemy):
@@ -97,7 +97,7 @@ class SnowBall(Bullet):
 
 class FireBall(Bullet):
     def __init__(self, weapon):
-        super().__init__('res/weapon/fireball.png', weapon, speed=160, power=80, radius=14)
+        super().__init__('res/weapon/fireball.png', weapon, speed=160, radius=14)
         self.splash = True
     def explosion(self, enemy):
         x, y = self.pos_between(enemy)
@@ -106,9 +106,9 @@ class FireBall(Bullet):
 class Weapon(Sprite):
     selected = None
     installing = None
-    def __init__(self, file, intitial_interval, range, bullet_class):
-        x, y = stage_path.any_install_position()
-        super().__init__(file, x, y)
+    def __init__(self, file_fmt, intitial_interval, bullet_class, **kwargs):
+        file = file_fmt % 1
+        super().__init__(file, 0, 0)
         self.range_image = gfw.image.load('res/weapon/range.png')
         self.enabled = False
         self.time = 0
@@ -116,8 +116,10 @@ class Weapon(Sprite):
         self.interval = intitial_interval
         self.bullet_class = bullet_class
         self.layer_index = gfw.top().world.layer.weapon
-        self.range = range
         self.selected = False
+        self.file_fmt = file_fmt
+        self.level = 1
+        self.__dict__.update(kwargs)
     def move_to(self, x, y):
         main_scene = gfw.top()
         tsize = main_scene.bg.tilesize
@@ -133,6 +135,20 @@ class Weapon(Sprite):
             self.enabled = True
             return True
         return False
+    def uninstall(self):
+        world = gfw.top().world
+        world.remove(self)
+    def upgrade(self):
+        try:
+            level = self.level + 1
+            file = self.file_fmt % level
+            self.image = gfw.image.load(file)
+        except:
+            return
+        self.level = level
+        self.range *= 1.2
+        self.interval *= 0.8
+        self.power *= 1.2
     def update(self):
         if not self.enabled: return
         self.time += gfw.frame_time
@@ -169,15 +185,15 @@ class Weapon(Sprite):
 
 class BowWeapon(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/bow_1.png', 2.0, 300, Arrow)
+        super().__init__('res/weapon/bow_%d.png', 2.0, Arrow, power=50, range=300)
 
 class IceSword(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/ice_sword_1.png', 3.0, 400, SnowBall)
+        super().__init__('res/weapon/ice_sword_%d.png', 3.0, SnowBall, power=40, range=400)
 
 class FireThrower(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/fire_thrower.png', 6.0, 500, FireBall)
+        super().__init__('res/weapon/fire_thrower_%d.png', 6.0, FireBall, power=80, range=500)
 
 WEAPONS = [
     BowWeapon, IceSword, FireThrower
@@ -237,5 +253,15 @@ def on_click(x, y):
     if install_candidate():
         return
     select_weapon(x, y)
+
+def upgrade():
+    if Weapon.selected is not None:
+        Weapon.selected.upgrade()
+
+def uninstall():
+    if Weapon.selected is not None:
+        Weapon.selected.uninstall()
+        Weapon.selected = None
+
 
 
