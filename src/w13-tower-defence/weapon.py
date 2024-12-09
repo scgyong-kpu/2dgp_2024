@@ -2,7 +2,7 @@ from pico2d import *
 from gfw import *
 import stage_path
 import random
-
+import cfg
 
 class Bullet(AnimSprite):
     SPLASH_DISTANCE_SQUARE = 100 ** 2
@@ -84,20 +84,20 @@ class Explosion(AnimSprite):
 
 
 class Arrow(Bullet):
-    def __init__(self, weapon):
-        super().__init__('res/weapon/arrow.png', weapon, speed=300, radius=15)
+    def __init__(self, weapon, speed):
+        super().__init__('res/weapon/arrow.png', weapon, speed=speed, radius=15)
 
 class SnowBall(Bullet):
-    def __init__(self, weapon):
-        super().__init__('res/weapon/bullet_snow.png', weapon, speed=200, radius=10)
+    def __init__(self, weapon, speed):
+        super().__init__('res/weapon/bullet_snow.png', weapon, speed=speed, radius=10)
         self.splash = True
         self.stuns = True
     def explosion(self, enemy):
         return Explosion('res/weapon/bullet_snow_explosion.png', *self.pos_between(enemy), 9, 1)
 
 class FireBall(Bullet):
-    def __init__(self, weapon):
-        super().__init__('res/weapon/fireball.png', weapon, speed=160, radius=14)
+    def __init__(self, weapon, speed):
+        super().__init__('res/weapon/fireball.png', weapon, speed=speed, radius=14)
         self.splash = True
     def explosion(self, enemy):
         x, y = self.pos_between(enemy)
@@ -106,21 +106,23 @@ class FireBall(Bullet):
 class Weapon(Sprite):
     selected = None
     installing = None
-    def __init__(self, file_fmt, intitial_interval, bullet_class, **kwargs):
-        file = file_fmt % 1
+    def __init__(self, bullet_class, cfg):
+        file = cfg.fmt % 1
         super().__init__(file, 0, 0)
         self.range_image = gfw.image.load('res/weapon/range.png')
         self.enabled = False
         self.time = 0
         self.angle = 0
-        self.interval = intitial_interval
         self.bullet_class = bullet_class
         self.layer_index = gfw.top().world.layer.weapon
         self.selected = False
-        self.file_fmt = file_fmt
         self.level = 1
-        self.costs = []
-        self.__dict__.update(kwargs)
+        self.cfg = cfg
+        self.interval = cfg.interval
+        # self.costs = cfg.costs
+        self.range = cfg.range
+        self.power = cfg.power
+
     def move_to(self, x, y):
         main_scene = gfw.top()
         tsize = main_scene.bg.tilesize
@@ -134,13 +136,13 @@ class Weapon(Sprite):
         if not stage_path.can_install_at(self.x, self.y):
             return False
         if not self.widthdraw_cost():
-            return False            
-        stage_path.install_at(self.x, self.y, 3 * self.width)
+            return False
+        stage_path.install_at(self.x, self.y, self.cfg.block * self.width)
         self.enabled = True
         return True
     def widthdraw_cost(self):
         gold = gfw.top().gold
-        cost = self.costs[self.level - 1]
+        cost = self.cfg.costs[self.level - 1]
         if gold.score < cost:
             return False
         gold.score -= cost
@@ -151,7 +153,7 @@ class Weapon(Sprite):
     def upgrade(self):
         try:
             level = self.level + 1
-            file = self.file_fmt % level
+            file = self.cfg.fmt % level
             image = gfw.image.load(file)
         except:
             print(f'File not found: {file}')
@@ -162,9 +164,9 @@ class Weapon(Sprite):
 
         self.image = image
         self.level = level
-        self.range *= 1.2
-        self.interval *= 0.8
-        self.power *= 1.2
+        self.range *= cfg.weapon.range_increase
+        self.interval *= cfg.weapon.interval_decrease
+        self.power *= cfg.weapon.power_increase
     def update(self):
         if not self.enabled: return
         self.time += gfw.frame_time
@@ -179,7 +181,7 @@ class Weapon(Sprite):
         self.image.composite_draw(self.angle, '', self.x, self.y)
 
     def fire(self):
-        arrow = self.bullet_class(self)
+        arrow = self.bullet_class(self, self.cfg.bullet_speed)
         world = gfw.top().world
         world.append(arrow)
 
@@ -201,18 +203,15 @@ class Weapon(Sprite):
 
 class BowWeapon(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/bow_%d.png', 2.0, Arrow, power=50, range=300)
-        self.costs = [150, 300, 450]
+        super().__init__(Arrow, cfg.weapon.arrow)
 
 class IceSword(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/ice_sword_%d.png', 3.0, SnowBall, power=40, range=400)
-        self.costs = [200, 400, 600]
+        super().__init__(SnowBall, cfg.weapon.ice)
 
 class FireThrower(Weapon):
     def __init__(self):
-        super().__init__('res/weapon/fire_thrower_%d.png', 6.0, FireBall, power=80, range=500)
-        self.costs = [230, 500, 1000]
+        super().__init__(FireBall, cfg.weapon.fire)
 
 WEAPONS = [
     BowWeapon, IceSword, FireThrower
