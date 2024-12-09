@@ -16,7 +16,8 @@ FLY_TYPES = [
     Info(file='res/fly_5.png', fps=1, speed=(30,40), rate=35, bbox=(-20,-20,20,20), life=80),
 ]
 
-GEN_INTERVAL = 1.0
+GEN_INTERVAL_FROM, GEN_INTERVAL_TO = 3.0, 1.0
+
 class Fly(AnimSprite):
     def __init__(self, info):
         # x = random.randint(100, get_canvas_width() - 100)
@@ -58,7 +59,11 @@ class Fly(AnimSprite):
 
     def hit(self, damage): #return True if dead
         self.life -= damage
-        return self.life <= 0
+        dead = self.life <= 0
+        if dead:
+            gold = gfw.top().gold
+            gold.score += self.max_life // 10
+        return dead
 
     def get_bb(self):
         l,b,r,t = self.info.bbox
@@ -96,14 +101,22 @@ def init():
     global type
     type = 1
 
+    global interval
+    interval = GEN_INTERVAL_FROM
+
 def draw(): pass
 def update():
-    global time, type
+    global time, type, interval
     time -= gfw.frame_time
     if time <= 0:
-        time += GEN_INTERVAL
-        generate()
+        interval -= 1/30
+        if interval >= GEN_INTERVAL_TO:
+            time = interval
+            generate()
 
+def cleared():
+    return interval < GEN_INTERVAL_TO and world.count_at(world.layer.fly) == 0
+    
 rate_sum = reduce(lambda sum, i: sum + i.rate, FLY_TYPES, 0)
 # print(f'{rate_sum=}')
 
