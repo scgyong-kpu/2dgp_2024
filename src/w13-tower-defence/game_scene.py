@@ -12,7 +12,7 @@ canvas_height = 18 * tilesize # 864 = 18 * 48
 shows_object_count = True
 shows_bounding_box = True
 
-world = gfw.World(['bg', 'path', 'weapon', 'bullet', 'fly', 'explosion', 'controller'])
+world = gfw.World(['bg', 'path', 'weapon', 'bullet', 'fly', 'explosion', 'ui', 'controller'])
 
 
 stage = 1
@@ -32,10 +32,10 @@ def enter():
     
     world.append(collision, world.layer.controller)
 
-    # world.append(BowWeapon(), world.layer.weapon)
-    # world.append(IceSword(), world.layer.weapon)
-    # world.append(FireThrower(), world.layer.weapon)
-
+    global gold
+    gold = ScoreSprite('res/gold_number.png', canvas_width - 50, canvas_height - 50)
+    gold.showsZero = True
+    world.append(gold, world.layer.ui)
 
 def exit():
     world.clear()
