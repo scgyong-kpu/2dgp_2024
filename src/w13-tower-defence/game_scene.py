@@ -35,6 +35,7 @@ def enter():
     global gold
     gold = ScoreSprite('res/gold_number.png', canvas_width - 50, canvas_height - 50)
     gold.showsZero = True
+    gold.score = 300
     world.append(gold, world.layer.ui)
 
 def exit():

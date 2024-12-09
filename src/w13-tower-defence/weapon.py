@@ -119,6 +119,7 @@ class Weapon(Sprite):
         self.selected = False
         self.file_fmt = file_fmt
         self.level = 1
+        self.costs = []
         self.__dict__.update(kwargs)
     def move_to(self, x, y):
         main_scene = gfw.top()
@@ -130,11 +131,20 @@ class Weapon(Sprite):
     def select(self, selected):
         self.selected = selected
     def install(self):
-        if stage_path.can_install_at(self.x, self.y):
-            stage_path.install_at(self.x, self.y, 2 * self.width)
-            self.enabled = True
-            return True
-        return False
+        if not stage_path.can_install_at(self.x, self.y):
+            return False
+        if not self.widthdraw_cost():
+            return False            
+        stage_path.install_at(self.x, self.y, 3 * self.width)
+        self.enabled = True
+        return True
+    def widthdraw_cost(self):
+        gold = gfw.top().gold
+        cost = self.costs[self.level - 1]
+        if gold.score < cost:
+            return False
+        gold.score -= cost
+        return True
     def uninstall(self):
         world = gfw.top().world
         world.remove(self)
@@ -142,9 +152,15 @@ class Weapon(Sprite):
         try:
             level = self.level + 1
             file = self.file_fmt % level
-            self.image = gfw.image.load(file)
+            image = gfw.image.load(file)
         except:
+            print(f'File not found: {file}')
             return
+
+        if not self.widthdraw_cost():
+            return
+
+        self.image = image
         self.level = level
         self.range *= 1.2
         self.interval *= 0.8
@@ -186,14 +202,17 @@ class Weapon(Sprite):
 class BowWeapon(Weapon):
     def __init__(self):
         super().__init__('res/weapon/bow_%d.png', 2.0, Arrow, power=50, range=300)
+        self.costs = [150, 300, 450]
 
 class IceSword(Weapon):
     def __init__(self):
         super().__init__('res/weapon/ice_sword_%d.png', 3.0, SnowBall, power=40, range=400)
+        self.costs = [200, 400, 600]
 
 class FireThrower(Weapon):
     def __init__(self):
         super().__init__('res/weapon/fire_thrower_%d.png', 6.0, FireBall, power=80, range=500)
+        self.costs = [230, 500, 1000]
 
 WEAPONS = [
     BowWeapon, IceSword, FireThrower
