@@ -39,7 +39,7 @@ weapon = Info(
 
 stages = [
     Info(
-        map=1, interval=(3.0, 1.0), gold=300,
+        map=1, interval=(3.0, 1.0), gold=300, castle=1000
     ),
 ]
 

@@ -59,6 +59,18 @@
                  "width":0,
                  "x":409,
                  "y":72.75
+                }, 
+                {
+                 "height":0,
+                 "id":16,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"castle",
+                 "visible":true,
+                 "width":0,
+                 "x":440,
+                 "y":72
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -67,7 +79,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":16,
+ "nextobjectid":17,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.5",
