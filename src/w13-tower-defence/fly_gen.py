@@ -5,6 +5,7 @@ import random
 from functools import reduce
 import castle
 from cfg import cfg
+import gameover_scene
 
 GEN_INTERVAL_FROM, GEN_INTERVAL_TO = 3.0, 1.0
 
@@ -112,6 +113,10 @@ def update():
         if interval >= GEN_INTERVAL_TO:
             time = interval
             generate()
+
+    if cleared() or castle.game_over():
+        gameover_scene.set_result(castle.life, castle.max_life)
+        gfw.push(gameover_scene)
 
 def cleared():
     return interval < GEN_INTERVAL_TO and world.count_at(world.layer.fly) == 0

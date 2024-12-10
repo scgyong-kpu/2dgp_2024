@@ -8,3 +8,4 @@ def update():
     for b in world.objects_at(world.layer.bullet):
         b.check_collision()
 
+    

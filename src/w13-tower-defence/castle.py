@@ -27,7 +27,7 @@ def hit(power):
     life -= power
     if life < 0: life = 0
 
-def game_opver():
+def game_over():
     return life <= 0
 
 def update():

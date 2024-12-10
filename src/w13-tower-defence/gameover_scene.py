@@ -34,21 +34,12 @@ def set_result(life, max_life):
 def exit():
     world.clear()
 
-life = 1000
-set_result(life, life)
-
 def handle_event(e):
     global life
     if e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE:
         gfw.pop()
         gfw.pop()
         return True
-    if e.type == SDL_KEYDOWN and e.key == SDLK_SPACE:
-        life += 100
-        set_result(life, 1000)
-    if e.type == SDL_KEYDOWN and e.key == SDLK_BACKSPACE:
-        life -= 100
-        set_result(life, 1000)
 
 def draw():
     gfw.font.draw_centered_text(font, msg, center_x, center_y + 30, (63, 0, 0))
