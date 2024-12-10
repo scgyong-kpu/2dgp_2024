@@ -3,17 +3,18 @@ from gfw import *
 import stage_path
 import random
 from functools import reduce
+import castle
 
 class Info:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 
 FLY_TYPES = [
-    Info(file='res/fly_1.png', fps=3, speed=(5,10), rate=5,  bbox=(-20,-20,20,20), life=900),
-    Info(file='res/fly_2.png', fps=3, speed=(10,30), rate=10, bbox=(-20,-20,20,20), life=300),
-    Info(file='res/fly_3.png', fps=3, speed=(20,30), rate=15, bbox=(-20,-20,20,20), life=200),
-    Info(file='res/fly_4.png', fps=2, speed=(30,40), rate=25, bbox=(-20,-20,20,20), life=150),
-    Info(file='res/fly_5.png', fps=1, speed=(30,40), rate=35, bbox=(-20,-20,20,20), life=80),
+    Info(file='res/fly_1.png', fps=3, speed=(5,10), rate=5,  bbox=(-20,-20,20,20), life=900, power=50, cool_time=2.0),
+    Info(file='res/fly_2.png', fps=3, speed=(10,30), rate=10, bbox=(-20,-20,20,20), life=300, power=25, cool_time=2.0),
+    Info(file='res/fly_3.png', fps=3, speed=(20,30), rate=15, bbox=(-20,-20,20,20), life=200, power=15, cool_time=2.0),
+    Info(file='res/fly_4.png', fps=2, speed=(30,40), rate=25, bbox=(-20,-20,20,20), life=150, power=10, cool_time=2.0),
+    Info(file='res/fly_5.png', fps=1, speed=(30,40), rate=35, bbox=(-20,-20,20,20), life=80, power=5, cool_time=2.0),
 ]
 
 GEN_INTERVAL_FROM, GEN_INTERVAL_TO = 3.0, 1.0
@@ -35,12 +36,13 @@ class Fly(AnimSprite):
         self.gauge = Gauge('res/gauge_fg.png', 'res/gauge_bg.png')
         self.angle = 0
         self.stun_timer = 0
+        self.hit_timer = 0
         self.set_target_position()
 
     def set_target_position(self):
         if self.path_index >= len(stage_path.path_coords):
             self.dx, self.dy = 0, 0
-            return
+            return False
         self.tx, self.ty = stage_path.path_coords[self.path_index]
         self.tx += random.uniform(-10, 10)
         self.ty += random.uniform(-10, 10)
@@ -50,6 +52,7 @@ class Fly(AnimSprite):
         self.dx, self.dy = dx / dist, dy / dist
         self.angle = math.atan2(dy, dx)
         # print(f'{(self.dx, self.dy)=}')
+        return True
 
     def draw(self):
         index = self.get_anim_index()
@@ -86,9 +89,16 @@ class Fly(AnimSprite):
         # print(dist)
         if dist < 1:
             self.path_index += 1
-            self.set_target_position()
+            moving = self.set_target_position()
+            if not moving:
+                self.hit_castle()
         # print(f'({self.dx:.1f}, {self.dy:.1f}) ({self.x=:.1f}, {self.y=:.1f}) {self.speed=} * {gfw.frame_time=:.2f} {self.dx * self.speed * gfw.frame_time}')
-
+    def hit_castle(self):
+        if self.hit_timer > 0:
+            self.hit_timer -= gfw.frame_time
+            return
+        castle.hit(self.info.power)
+        self.hit_timer = self.info.cool_time
 
 # module itself as Fly Generator
 
@@ -116,7 +126,7 @@ def update():
 
 def cleared():
     return interval < GEN_INTERVAL_TO and world.count_at(world.layer.fly) == 0
-    
+
 rate_sum = reduce(lambda sum, i: sum + i.rate, FLY_TYPES, 0)
 # print(f'{rate_sum=}')
 

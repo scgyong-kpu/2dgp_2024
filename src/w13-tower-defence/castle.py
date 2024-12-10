@@ -25,9 +25,12 @@ def draw():
 def hit(power):
     global life
     life -= power
+    if life < 0: life = 0
+
+def game_opver():
+    return life <= 0
 
 def update():
-    global life
     world = gfw.top().world
     max_fire = 5 * (1 - life / max_life)
     cnt = world.count_at(world.layer.castle)
@@ -38,7 +41,6 @@ def update():
         exp = Explosion('res/weapon/fireball_explosion.png', ex, ey, 15, 1)
         exp.layer_index = world.layer.castle
         world.append(exp)
-    life -= 0.1
 
 def get_bb():
     return x - 70, y - 70, x + 70, y + 70
