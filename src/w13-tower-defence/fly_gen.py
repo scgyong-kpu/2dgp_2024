@@ -4,18 +4,7 @@ import stage_path
 import random
 from functools import reduce
 import castle
-
-class Info:
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
-
-FLY_TYPES = [
-    Info(file='res/fly_1.png', fps=3, speed=(5,10), rate=5,  bbox=(-20,-20,20,20), life=900, power=50, cool_time=2.0),
-    Info(file='res/fly_2.png', fps=3, speed=(10,30), rate=10, bbox=(-20,-20,20,20), life=300, power=25, cool_time=2.0),
-    Info(file='res/fly_3.png', fps=3, speed=(20,30), rate=15, bbox=(-20,-20,20,20), life=200, power=15, cool_time=2.0),
-    Info(file='res/fly_4.png', fps=2, speed=(30,40), rate=25, bbox=(-20,-20,20,20), life=150, power=10, cool_time=2.0),
-    Info(file='res/fly_5.png', fps=1, speed=(30,40), rate=35, bbox=(-20,-20,20,20), life=80, power=5, cool_time=2.0),
-]
+from cfg import cfg
 
 GEN_INTERVAL_FROM, GEN_INTERVAL_TO = 3.0, 1.0
 
@@ -127,12 +116,12 @@ def update():
 def cleared():
     return interval < GEN_INTERVAL_TO and world.count_at(world.layer.fly) == 0
 
-rate_sum = reduce(lambda sum, i: sum + i.rate, FLY_TYPES, 0)
+rate_sum = reduce(lambda sum, i: sum + i.rate, cfg.flies, 0)
 # print(f'{rate_sum=}')
 
 def generate():
     val = random.randrange(rate_sum)
-    for info in FLY_TYPES:
+    for info in cfg.flies:
         val -= info.rate
         if val < 0: break
     else:
