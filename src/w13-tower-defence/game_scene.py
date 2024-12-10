@@ -5,6 +5,7 @@ import fly_gen
 import collision
 import pause_scene
 import weapon
+import castle
 
 tilesize = 48
 canvas_width = 32 * tilesize # 1536 = 32 * 48
@@ -12,7 +13,7 @@ canvas_height = 18 * tilesize # 864 = 18 * 48
 shows_object_count = True
 shows_bounding_box = True
 
-world = gfw.World(['bg', 'path', 'weapon', 'bullet', 'fly', 'explosion', 'ui', 'controller'])
+world = gfw.World(['bg', 'path', 'castle', 'weapon', 'bullet', 'fly', 'explosion', 'ui', 'controller'])
 
 
 stage = 1
@@ -37,6 +38,9 @@ def enter():
     gold.showsZero = True
     gold.score = 300
     world.append(gold, world.layer.ui)
+
+    castle.init()
+    world.append(castle, world.layer.castle)
 
 def exit():
     world.clear()

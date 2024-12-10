@@ -40,9 +40,11 @@ def tile_to_coord(x, y=None):
     return (x + 0.5) * map_bg.tilesize,  (y + 0.5) * map_bg.tilesize
 
 class MapObjects: pass
-map_objs = MapObjects()
 
 def read_from_object_layer():
+    global map_objs
+    map_objs = MapObjects()
+
     layer = map_bg.tmap.layers[1]
     ts = map_bg.tmap.tileheight
     mh = map_bg.tmap.height
@@ -51,6 +53,8 @@ def read_from_object_layer():
         y = mh - int(o['y'] // ts) - 1
         map_objs.__dict__[o['type']] = (x, y)
     # start_pos, end_pos = map(lambda o: (int(o['x'] // ts), mh - int(o['y'] // ts) - 1), layer.objects[0:2])
+    # print(map_objs.__dict__)
+    map_objs.castle = tile_to_coord(map_objs.castle)
 
 def set_tile_bg(bg):
     global map_bg
@@ -58,6 +62,7 @@ def set_tile_bg(bg):
 
     search_install_positions()
     read_from_object_layer()
+    install_at(*map_objs.castle, 100)
 
     global a_star
     a_star = MapPath(map_objs.start, map_objs.end, bg)
@@ -115,3 +120,7 @@ def spawn_pos():
 
 def path_shower():
     return PathDraw(map_bg, install_positions)
+
+def castle_pos():
+    return map_objs.castle
+
