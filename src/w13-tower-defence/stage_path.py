@@ -39,20 +39,28 @@ def tile_to_coord(x, y=None):
         x, y = x
     return (x + 0.5) * map_bg.tilesize,  (y + 0.5) * map_bg.tilesize
 
+class MapObjects: pass
+map_objs = MapObjects()
+
+def read_from_object_layer():
+    layer = map_bg.tmap.layers[1]
+    ts = map_bg.tmap.tileheight
+    mh = map_bg.tmap.height
+    for o in layer.objects:
+        x = int(o['x'] // ts)
+        y = mh - int(o['y'] // ts) - 1
+        map_objs.__dict__[o['type']] = (x, y)
+    # start_pos, end_pos = map(lambda o: (int(o['x'] // ts), mh - int(o['y'] // ts) - 1), layer.objects[0:2])
+
 def set_tile_bg(bg):
     global map_bg
     map_bg = bg
 
     search_install_positions()
-
-    layer = bg.tmap.layers[1]
-
-    ts = bg.tmap.tileheight
-    mh = bg.tmap.height
-    start_pos, end_pos = map(lambda o: (int(o['x'] // ts), mh - int(o['y'] // ts) - 1), layer.objects[0:2])
+    read_from_object_layer()
 
     global a_star
-    a_star = MapPath(start_pos, end_pos, bg)
+    a_star = MapPath(map_objs.start, map_objs.end, bg)
 
     global path_coords
     tiles = a_star.find_tiles()
@@ -88,7 +96,7 @@ def search_install_positions():
 
 def any_install_position():
     return random.choice(install_positions)
-    
+
 def can_install_at(x, y):
     # print(f'{(x,y)=} {(x,y) in install_positions=} {len(install_positions)=} ')
     return (x, y) in install_positions
